@@ -1,40 +1,79 @@
 <!DOCTYPE html>
 <html>
-<style>
 
-</style>
 <head>
     <title>Basic Computer Compiler</title>
-    <script src="/compailer/instructions.js"></script>
-    <script src="/compailer/baseConvert.js"></script>
-    <script src="/compailer/elements.js"></script>
-    <link rel="stylesheet" href="/compailer/site-stylesheet.css">
+   
 </head>
 
 <body>
-<h1>Basic Computer Compiler</h1>
-    <div id="cmd-container" style="padding: 15px">
-        <div class="cmd-row">
-            <div class="address">
-                <div>Address</div>
-                <div class="address first-row"></div>
-            </div>
-            <div class="label">
-                <div>Label</div>
-            </div>
-            <div class="instruction">
-                <div>Instruction</div>
-                <div>ORG</div>
-            </div>
-            <div class="value">
-                <div>Value</div>
-                <input class="value-input" value="100">
-            </div>
+    <div class="grid-container">
+        <div class="grid-item">
+            
         </div>
+            
+        <div class="grid-item">
+            <h1 class="main-title">Basic Computer Compiler</h1>
+            <div id="cmd-container" style="padding: 15px">
+                <div class="cmd-row">
+                    <div class="address">
+                        <div>Address</div>
+                        <div class="address first-row"></div>
+                    </div>
+                    <div class="label">
+                        <div>Label</div>
+                    </div>
+                    <div class="instruction">
+                        <div>Instruction</div>
+                        <div>ORG</div>
+                    </div>
+                    <div class="value">
+                        <div>Value</div>
+                        <input id="org-value" class="value-input" value="100">
+                    </div>
+                    <button onclick="loadOrgAddress()">load org address</button>
+                    <button onclick="addCmdRow()">add row</button>
+                </div>
+            </div>
+            
+        </div>
+        
+        
+        <div class="grid-item monitor-grid">
+            <div>
+                <div>AC Value</div>
+                <div id="ac-value"></div>
+            </div>
+            <div>
+                <div>E (Carry flag)</div>
+                <div id="E-value"></div>
+            </div>
+            <div>
+                <div>Input register</div>
+                <input id="input-register">
+                <button onclick="inputFlagOn()">input register is ready</button>
+            </div>
+            <div>
+                <div>Output register</div>
+                <input id="output-register">
+                <button onclick="outputFlagOn()">output register is ready</button>
+            </div>
+            <div>
+                <div>Interupt Enable</div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>  
+ 
     </div>
-    <button onclick="addCmdRow()">add row</button>
 
 
 
 </body>
+ <script src="/compailer/instructions.js"></script>
+    <script src="/compailer/baseConvert.js"></script>
+    <script src="/compailer/elements.js"></script>
+    <link rel="stylesheet" href="/compailer/site-stylesheet.css">
 </html>

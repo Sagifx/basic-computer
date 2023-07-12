@@ -104,12 +104,55 @@ function AND(mar) {
     let acArr = hex2bin(acReg);
     marArr = padding(marArr);
     acArr = padding(acArr);
-    marArr = mar.split("");
-    acArr = acReg.split("");
+    // marArr = mar.split("");
+    // acArr = acReg.split("");
     for (let i = 0 ; i < 16 ; i++ ) {
         accumulator += ((marArr[i] == "1" && acArr[i] == "1") ? "1" : "0");
     }
     document.getElementById("demo").innerHTML = accumulator;
 }
 
+// load to accumulator
+function LDA(address) {
+    address = mar;
+}
 
+// store accumulator
+function STA(address) {
+    address = acReg;
+}
+
+function BUN(address) {
+    pc = address;
+}
+
+function BSA(address) {
+    address.value = document.getElementById(pc).getElementsByClassName("address")[0];
+    pc = address;
+}
+
+function ISZ(address) {
+    let mar = document.getElementById(pc).getElementsByClassName("address")[0].value;
+    mar++;
+    mar == 0 ? pc++ : null;
+}
+
+function SPA() {
+    acReg >= 0 ? pc++ : null;
+}
+
+function SNA() {
+    acReg < 0 ? pc++ : null;
+}
+
+function SZA() {
+    acReg == 0 ? pc++ : null;
+}
+
+function inputFlagOn() {
+    let val = document.getElementById("input-register");
+    val = val.split("");
+    for (let i = 0; i < 8; i++) {
+        acReg[i] = val[i];
+    }
+}
