@@ -2,3 +2,14 @@
     display: flex;
 }
 
+.address {
+    width: 70px;
+}
+
+.label, .instruction, .value {
+    width: 85px;
+}
+
+.label-input, .instruction-input, .value-input {
+    width: 75px;
+}

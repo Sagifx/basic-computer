@@ -111,3 +111,5 @@ function AND(mar) {
     }
     document.getElementById("demo").innerHTML = accumulator;
 }
+
+
