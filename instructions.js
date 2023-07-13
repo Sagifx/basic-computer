@@ -3,8 +3,8 @@
  * @param arg (bin)
  * @returns arg (bin) 16 bit
  */
-function padding(arg) {
-    while (arg.length < 16) arg = "0" + arg;
+function padding(arg, paddingTo) {
+    while (arg.length < paddingTo) arg = "0" + arg;
     return arg;
 }
 
@@ -25,62 +25,69 @@ function deviation(arg){
 function INC() {
     let arg = parseInt("0x" + (acReg), 16);
     arg++;
-    arg = arg.toString(16);
-    arg = hex2bin(arg);
+    arg = dec2bin(arg);
+    arg = padding(arg, 16);
     if (deviation(arg)) {
         eFlag = "1";
         arg = arg.slice(1, arg.length + 1);
     }
     acReg = bin2hex(arg);
+    pc++;
 }
 
 // clear accumulator
 function CLA() {
     acReg = "0000";
+    pc++;
 }
 
 // clear E flag
 function CLE() {
     eFlag = "0";
+    pc++;
 }
 
 // compliment AC
 function CMA() {
     let accumulator = "";
     let binAC = hex2bin(acReg);
+    binAC = padding(binAC, 16);
     binAC = binAC.split("");
-    acReg = "";
     binAC.forEach(bit => {
         bit = Number(!Number(bit));
         accumulator += bit;
     });
     acReg = bin2hex(accumulator);
+    pc++;
 }
 
 // compliment E flag
 function CME() {
     let e = Number(eFlag);
     eFlag = Number(!e).toString(2);
+    pc++;
 }
 
 // circulate left accumulator
 function CIL() {
     let accumulator = hex2bin(acReg);
-    while(accumulator.length !== 16) accumulator = "0" + accumulator;
+    accumulator = padding(accumulator);
     accumulator = accumulator + eFlag;
     eFlag = accumulator.slice(0, 1);
-    accumulator = accumulator.slice(1, accumulator.length + 1);
+    accumulator = accumulator.slice(1, accumulator.length);
     acReg = bin2hex(accumulator);
+    pc++;
 }
 
 // circulate right accumulator
 function CIR() {
     let accumulator = hex2bin(acReg);
-    while(accumulator.length !== 16) accumulator = "0" + accumulator;
+    accumulator = padding(accumulator);
     accumulator = eFlag + accumulator;
-    eFlag = accumulator.slice(15, 16);
+    eFlag = accumulator.slice(accumulator.length - 1, accumulator.length);
     accumulator = accumulator.slice(0, accumulator.length - 1);
     acReg = bin2hex(accumulator);
+    pc++;
 }
 
 // add between accumulator and value in the memory
@@ -95,13 +102,14 @@ function ADD(mar) {
         arg = arg.slice(1, arg.length + 1);
     }
     acReg = bin2hex(arg);
+    pc++;
 }
 
 // and between accumulatort and calue in the memory
 function AND(mar) {
     let accumulator = "";
     let acArr = hex2bin(acReg);
-    mar = padding(mar);
+    mar = padding(mar, 16);
     acArr = padding(acArr);
     // marArr = mar.split("");
     // acArr = acReg.split("");
@@ -109,16 +117,19 @@ function AND(mar) {
         accumulator += ((mar[i] == "1" && acArr[i] == "1") ? "1" : "0");
     }
     document.getElementById("demo").innerHTML = accumulator;
+    pc++;
 }
 
 // load to accumulator
 function LDA(address) {
     acReg = address;
+    pc++;
 }
 
 // store accumulator
 function STA(address) {
     address = acReg;
+    pc++;
 }
 
 function BUN(address) {
@@ -129,7 +140,7 @@ function BUN(address) {
 function BSA(address) {
     let addressToBack = pc + 1;
     pc = address;
-    let rowElem = document.getElementById(`row${pc}`);
+    let rowElem = $(`#row${pc}`);
     rowElem.getElementsByClassName("value-input")[0].value = addressToBack;
 }
 
@@ -137,22 +148,27 @@ function ISZ(address) {
     let mar = document.getElementById(pc).getElementsByClassName("address")[0].value;
     mar++;
     mar == 0 ? pc++ : null;
+    pc++;
 }
 
 function SPA() {
     acReg >= 0 ? pc++ : null;
+    pc++;
 }
 
 function SNA() {
     acReg < 0 ? pc++ : null;
+    pc++;
 }
 
 function SZA() {
     acReg == 0 ? pc++ : null;
+    pc++;
 }
 
 function SZE() {
     eFlag == 0 ? pc++ : null;
+    pc++;
 }
 
 function INP() {
@@ -163,35 +179,42 @@ function INP() {
             acReg[i] = val[i];
         }
     }
+    pc++;
 }
 
-function outputFlagOn() {
-    if (interuptOn) {
-        let val = acReg;
-
+function OUT() {
+    if (interuptOn) {;
+        for (let i = 0; i < 8; i++) {
+            acReg[i] = output(i);
+        }
     }
+    pc++;
 }
+
 
 function ION() {
     interuptOn = true;
+    pc++;
 }
 
 function IOF() {
     interuptOn = false;
+    pc++;
+
 }
 
 function SKI() {
     if (inputFlag) {
         inputFlag = false;
-        pc++;
     }
+    pc++;
 }
 
 function SKO() {
     if (outputFlag) {
         outputFlag = false;
-        pc++;
     }
+    pc++;
 }
 
 // get label and direct/indirect

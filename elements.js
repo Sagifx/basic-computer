@@ -2,7 +2,7 @@
 var orgAddress = 256;
 document.getElementById("org-value").value = orgAddress.toString(16);
 var rowCtr = orgAddress;
-var acReg = "0000";
+var acReg;
 var pc;
 var interuptOn = false;
 var inputReg;
@@ -13,7 +13,22 @@ var eFlag = 0;
 let labelsJson;
 
 $("#org-value").keyup((e) => listenToOrg(e));
-$("#ac-value").value = acReg;
+$("#ac-value")[0].value = "0000";
+$("#E-value")[0].value = "0";
+
+
+
+//test
+for (let i = 0; i < 10; i++)addCmdRow();
+setTimeout(() => {
+    $("#row100")[0].getElementsByClassName("label-input")[0].value = 'A';
+    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'CIR';
+ $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
+
+}, 100);
+
+//test
+
 
 function listenToOrg(e) {
     let rows = Array.from($(".count-address"));
@@ -43,22 +58,26 @@ function addCmdRow() {
 // start by pressing the run button until the HLT
 function run() {
     // need to add check for the program values
+    if (!lookForHLT()) { //stop running if missing HLT
+        $("#console")[0].innerHTML = "Missing HLT";
+        return;
+    }
     collectLabels();
     pc = $("#org-value")[0].value;
-    acReg = $("#ac-value").value;
+    acReg = $("#ac-value")[0].value;
+    eFlag = $("#E-value")[0].value;
+    $("#console")[0].innerHTML = "";
     let val;
     let label;
-    let lab;
     let I;
-    let rowElem = document.getElementById(`row${pc}`);
-    let currentInstruction = rowElem.getElementsByClassName("instruction")[0];
+    let rowElem = $(`#row${pc}`)[0];
+    let currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
     while (currentInstruction != "HLT") {
         val = rowElem.getElementsByClassName("value-input")[0].value;
         val = hex2bin(val);
-        label = rowElem.getElementsByClassName("label")[0].value;
+        label = rowElem.getElementsByClassName("label-input")[0].value;
         label = label.split(" ");
-        lab = label[0];
-        I = label[1] == "I" ? true : false;
+        I = currentInstruction.split("0")[1] == "I" ? true : false;
         switch (currentInstruction) {
         // memory
             case "AND":
@@ -116,8 +135,6 @@ function run() {
             case "SZE":
                 SZE();
                 break;
-            case "HLT":
-                break;
         // input output
             case "INP":
                 INP();
@@ -137,23 +154,27 @@ function run() {
             case "IOF":
                 IOF();   //R flag
                 break;
+            default:
+                $("#console")[0].innerHTML = "Missing row in the flow";
+                return;
         }
-        rowElem = document.getElementById(`row${pc}`);
-        currentInstruction = rowElem.getElementsByClassName("instruction")[0];
-        $("#ac-value").value = acReg;
+        rowElem = $(`#row${pc}`)[0];
+        currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
+        $("#ac-value")[0].value = acReg;
+        $("#E-value")[0].value = eFlag;
     }
+    currentInstruction == "HLT" ? $("#console")[0].innerHTML = "The program finished by HLT" : null;
 }
 
 function collectLabels() {
     let rows = Array.from($(".label-input"));
-    let rowNumber = e.target.value.toString(16);
+    let rowNumber = rows[0].parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
     let labels = '';
     rows.forEach(r => {
         rowNumber++;
-        r != "" ? labels = `"${rows[0].value}":["${rows[0].parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` : null;
-        r.innerHTML = dec2hex(rowNumber);
+        r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` : null; //key (label) value (address)
     });
-    labels = labels.slice(0, labels.length);
+    labels = labels.slice(0, labels.length - 1);
     labels = "{" + labels + "}";
     labelsJson = JSON.parse(labels);
 
@@ -168,5 +189,14 @@ const obj = JSON.parse(text);
 a = obj.kc[0]
  */
 
-
+function lookForHLT() {
+    let rows = Array.from($(".instruction-input"));
+    let rowNumber = rows[0].parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
+    let findHLT = false;
+    rows.forEach(r => {
+        rowNumber++;
+        r.value == "HLT" ? findHLT = true : null;
+    });
+    return findHLT;
+}
 

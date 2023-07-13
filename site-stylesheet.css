@@ -40,11 +40,13 @@
 /* MONITOR */
 .monitor-grid div {
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
+    padding-top: 10px;
 }
 .monitor-inputs {
     width: 60px;
 }
+
 
 
 

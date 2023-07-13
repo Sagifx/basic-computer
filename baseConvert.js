@@ -4,11 +4,11 @@
     get string
     return string
     */
-function bin2dec(arg) {
+function binb2dec(arg) {
     arg = "0b" + arg;
     arg = Number(arg);
     arg = arg.toString(10);
-    return arg;
+    return arg.toUpperCase();
 }
 
 /* binary to hexadecimal convert
@@ -19,7 +19,7 @@ function bin2hex(arg) {
     arg = "0b" + arg;
     arg = Number(arg);
     arg = arg.toString(16);
-    return arg;
+    return padding(arg.toUpperCase(), 4);
 }
 
 /* decimal to binary convert
@@ -29,7 +29,7 @@ return string
 function dec2bin(arg) {
     arg = Number(arg);
     arg = arg.toString(2);
-    return arg;
+    return padding(arg.toUpperCase(), 16);
 }
 
 /* decimal to hexadecimal convert
@@ -39,7 +39,7 @@ return string
 function dec2hex(arg) {
     arg = Number(arg);
     arg = arg.toString(16);
-    return arg;
+    return padding(arg.toUpperCase(), 4);
 }
 
 /* hexadecimal to decimal
@@ -50,7 +50,7 @@ function hex2dec(arg) {
     arg = "0x" + arg;
     arg = Number(arg);
     arg = arg.toString(10);
-    return arg;
+    return arg.toUpperCase();
 }
 
 /* hexadecimal to binary
@@ -61,5 +61,5 @@ function hex2bin(arg) {
     arg = "0x" + arg;
     arg = Number(arg);
     arg = arg.toString(2);
-    return arg;
+    return padding(arg.toUpperCase(), 16);
 }
