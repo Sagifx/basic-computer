@@ -60,12 +60,12 @@ function CMA() {
 // compliment E flag
 function CME() {
     let e = Number(eFlag);
-    eFlag = Number(!e).toString(2);;
+    eFlag = Number(!e).toString(2);
 }
 
 // circulate left accumulator
 function CIL() {
-    let accumulator = hex2bin(acReg);;
+    let accumulator = hex2bin(acReg);
     while(accumulator.length !== 16) accumulator = "0" + accumulator;
     accumulator = accumulator + eFlag;
     eFlag = accumulator.slice(0, 1);
@@ -100,21 +100,20 @@ function ADD(mar) {
 // and between accumulatort and calue in the memory
 function AND(mar) {
     let accumulator = "";
-    let marArr = hex2bin(mar);
     let acArr = hex2bin(acReg);
-    marArr = padding(marArr);
+    mar = padding(mar);
     acArr = padding(acArr);
     // marArr = mar.split("");
     // acArr = acReg.split("");
     for (let i = 0 ; i < 16 ; i++ ) {
-        accumulator += ((marArr[i] == "1" && acArr[i] == "1") ? "1" : "0");
+        accumulator += ((mar[i] == "1" && acArr[i] == "1") ? "1" : "0");
     }
     document.getElementById("demo").innerHTML = accumulator;
 }
 
 // load to accumulator
 function LDA(address) {
-    address = mar;
+    acReg = address;
 }
 
 // store accumulator
@@ -126,9 +125,12 @@ function BUN(address) {
     pc = address;
 }
 
+// the function get address, pc+1 get into the value of the address in the argument
 function BSA(address) {
-    address.value = document.getElementById(pc).getElementsByClassName("address")[0];
+    let addressToBack = pc + 1;
     pc = address;
+    let rowElem = document.getElementById(`row${pc}`);
+    rowElem.getElementsByClassName("value-input")[0].value = addressToBack;
 }
 
 function ISZ(address) {
@@ -149,10 +151,50 @@ function SZA() {
     acReg == 0 ? pc++ : null;
 }
 
-function inputFlagOn() {
-    let val = document.getElementById("input-register");
-    val = val.split("");
-    for (let i = 0; i < 8; i++) {
-        acReg[i] = val[i];
+function SZE() {
+    eFlag == 0 ? pc++ : null;
+}
+
+function INP() {
+    if (interuptOn) {
+        let val = document.getElementById("input-register");
+        val = val.split("");
+        for (let i = 0; i < 8; i++) {
+            acReg[i] = val[i];
+        }
     }
+}
+
+function outputFlagOn() {
+    if (interuptOn) {
+        let val = acReg;
+
+    }
+}
+
+function ION() {
+    interuptOn = true;
+}
+
+function IOF() {
+    interuptOn = false;
+}
+
+function SKI() {
+    if (inputFlag) {
+        inputFlag = false;
+        pc++;
+    }
+}
+
+function SKO() {
+    if (outputFlag) {
+        outputFlag = false;
+        pc++;
+    }
+}
+
+// get label and direct/indirect
+function getValue(lab, I) {
+
 }

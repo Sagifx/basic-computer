@@ -20,8 +20,8 @@
 .cmd-row {
     display: flex;
 }
-.cmd-row div {
-
+.cmd-org-row div {
+    font-weight:bold;
 }
 
 .address {
@@ -40,5 +40,11 @@
 /* MONITOR */
 .monitor-grid div {
     display: flex;
+    justify-content: space-between
 }
+.monitor-inputs {
+    width: 60px;
+}
+
+
 
