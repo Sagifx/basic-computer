@@ -15,6 +15,7 @@ let labelsJson;
 $("#org-value").keyup((e) => listenToOrg(e));
 $("#ac-value")[0].value = "0000";
 $("#E-value")[0].value = "0";
+$("#pc")[0].innerHTML = pc;
 
 
 
@@ -66,6 +67,7 @@ function run() {
     pc = $("#org-value")[0].value;
     acReg = $("#ac-value")[0].value;
     eFlag = $("#E-value")[0].value;
+    $("#org-value").keyup((e) => listenToOrg(e));
     $("#console")[0].innerHTML = "";
     let val;
     let label;
@@ -162,6 +164,7 @@ function run() {
         currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
         $("#ac-value")[0].value = acReg;
         $("#E-value")[0].value = eFlag;
+        $("#pc")[0].innerHTML = pc;
     }
     currentInstruction == "HLT" ? $("#console")[0].innerHTML = "The program finished by HLT" : null;
 }

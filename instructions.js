@@ -152,12 +152,14 @@ function ISZ(address) {
 }
 
 function SPA() {
-    acReg >= 0 ? pc++ : null;
+    let binAC = hex2bin(acReg).split("");
+    binAC[0] == 0 ? pc++ : null;
     pc++;
 }
 
 function SNA() {
-    acReg < 0 ? pc++ : null;
+    let binAC = hex2bin(acReg).split("");
+    binAC[0] == 1 ? pc++ : null;
     pc++;
 }
 
