@@ -10,6 +10,7 @@ var outputReg;
 var inputFlag= false;
 var outputFlag= false;
 var eFlag = 0;
+let labelsJson;
 
 $("#org-value").keyup((e) => listenToOrg(e));
 $("#ac-value").value = acReg;
@@ -144,13 +145,17 @@ function run() {
 }
 
 function collectLabels() {
-    let labelsJson = '';
     let rows = Array.from($(".label-input"));
     let rowNumber = e.target.value.toString(16);
+    let labels = '';
     rows.forEach(r => {
         rowNumber++;
+        r != "" ? labels = `"${rows[0].value}":["${rows[0].parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` : null;
         r.innerHTML = dec2hex(rowNumber);
     });
+    labels = labels.slice(0, labels.length);
+    labels = "{" + labels + "}";
+    labelsJson = JSON.parse(labels);
 
 }
 
