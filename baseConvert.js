@@ -63,3 +63,36 @@ function hex2bin(arg) {
     arg = arg.toString(2);
     return padding(arg.toUpperCase(), 16);
 }
+
+/* take the convert that the user chose
+ and return the number in new base 
+ */
+function convert() {
+    let val = $("#number-to-convert")[0].value;
+    let from = $("#base-option-from")[0].value.toLowerCase();
+    let to = $("#base-option-to")[0].value.toLowerCase();
+    funcName = `${from}2${to}`;
+    switch (funcName){
+        case "bin2hex":
+            val = bin2hex(val);
+            break;
+        case "dec2hex":
+            val = dec2hex(val);
+            break;
+        case "bin2dec":
+            val = bin2dec(val);
+            break;
+        case "hex2dec":
+            val = hex2dec(val);
+            break;
+        case "dec2bin":
+            val = dec2bin(val);
+            break;
+        case "hex2bin":
+            val = hex2bin(val);
+            break;
+        default:
+            break;
+    }
+    $("#number-after-convert")[0].innerHTML = val.toUpperCase();
+}

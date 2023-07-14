@@ -196,11 +196,13 @@ function OUT() {
 
 function ION() {
     interuptOn = true;
+    $("#interupt-enable").innerHTML = "ON";
     pc++;
 }
 
 function IOF() {
     interuptOn = false;
+    $("#interupt-enable").innerHTML = "OFF";
     pc++;
 
 }
@@ -208,6 +210,7 @@ function IOF() {
 function SKI() {
     if (inputFlag) {
         inputFlag = false;
+        pc++;
     }
     pc++;
 }
@@ -215,11 +218,9 @@ function SKI() {
 function SKO() {
     if (outputFlag) {
         outputFlag = false;
+        pc++;
     }
     pc++;
 }
 
-// get label and direct/indirect
-function getValue(lab, I) {
 
-}

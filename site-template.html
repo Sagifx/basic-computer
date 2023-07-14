@@ -9,7 +9,30 @@
 
 <body>
     <div class="grid-container">
-        <div class="grid-item"></div>
+        <div class="grid-item">
+            <div class="base-convert">
+                <div>Number to convert </div>
+                <input id="number-to-convert" maxlength="16">
+                <div>From </div>
+                <select id="base-option-from">
+                    <option value="BIN">BIN</option>
+                    <option value="DEC">DEC</option>
+                    <option value="HEX">HEX</option>
+                </select>
+                <div>To </div>
+                <select id="base-option-to">
+                    <option value="BIN">BIN</option>
+                    <option value="DEC">DEC</option>
+                    <option value="HEX">HEX</option>
+                </select>
+                
+                <button onclick="convert()">Convert</button>
+            </div>
+            <div class="base-convert" style="padding-top: 60px; width: 100px">
+                <div>Converted Number </div>
+                <div id="number-after-convert" style="border: solid; width: 100px"></div>
+            </div>
+        </div>
             
         <div class="grid-item">
             <h1 class="main-title">Basic Computer Compiler</h1>
@@ -28,12 +51,13 @@
                     </div>
                     <div class="value">
                         <div>Value</div>
-                        <input id="org-value" class="value-input">
+                        <input id="org-value" class="value-input" maxlength="4">
                     </div>
                     <button onclick="addCmdRow()">add row</button>
                 </div>
             </div>
             <button onclick="run()">Run the code</button>
+            <button onclick="convertToMachineLang()">Convert to machine language</button>
             
         </div>
         
@@ -45,31 +69,37 @@
             </div>
             <div>
                 <div>AC Value</div>
-                <input id="ac-value" class="monitor-inputs">
+                <input id="ac-value" class="monitor-inputs" maxlength="4">
             </div>
             <div>
                 <div>E (Carry flag)</div>
-                <input id="E-value" class="monitor-inputs">
+                <input id="E-value" class="monitor-inputs" maxlength="1">
             </div>
             <div>
                 <div>Input register</div>
-                <input id="input-register" class="monitor-inputs">
+                <input id="input-register" class="monitor-inputs" maxlength="2">
                 <div>input flag</div>
-                <input id="input-flag" type="checkbox">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
             </div>
             <div>
                 <div>Output register</div>
-                <input id="output-register" class="monitor-inputs">
+                <input id="output-register" class="monitor-inputs" maxlength="2">
                 <div>output flag</div>
-                <input id="output-flag" type="checkbox">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
             </div>
             <div>
                 <div>Interupt Enable</div>
-                <input id="interupt-enable" type="checkbox">
+                <div id="interupt-enable">OFF</div>
             </div>
             <div style="padding-top: 60px">
                 <div>Console</div>
-                <div id="console" type="checkbox"></div>
+                <div id="console" style="width: 130px; border: solid"></div>
             </div>
         </div>  
  

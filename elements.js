@@ -33,10 +33,10 @@ setTimeout(() => {
 
 function listenToOrg(e) {
     let rows = Array.from($(".count-address"));
-    let rowNumber = e.target.value.toString(16);
+    let rowNumber = hex2dec(e.target.value);
     rows.forEach(r => {
-        rowNumber++;
         r.innerHTML = dec2hex(rowNumber);
+        rowNumber++;
     });
 }
 
@@ -44,9 +44,9 @@ function listenToOrg(e) {
 function addCmdRow() {
     let newRow = `<div id=row${rowCtr.toString(16)} class="cmd-row">
             <div class="address count-address">${rowCtr.toString(16)}</div>
-            <div class="label"><input class="label-input"></div>
-            <div class="instruction"><input class="instruction-input"></div>
-            <div class="value"><input class="value-input"></div>
+            <div class="label"><input class="label-input" maxlength="4"></div>
+            <div class="instruction"><input class="instruction-input" maxlength="3"></div>
+            <div class="value"><input class="value-input" maxlength="4"></div>
         </div>`;
     rowCtr++;
     document.getElementById("cmd-container").innerHTML += newRow;
@@ -76,17 +76,18 @@ function run() {
     let currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
     while (currentInstruction != "HLT") {
         val = rowElem.getElementsByClassName("value-input")[0].value;
+        I = val.split("")[1] == "I" ? true : false;
+        val = val.split("")[0];
         val = hex2bin(val);
         label = rowElem.getElementsByClassName("label-input")[0].value;
         label = label.split(" ");
-        I = currentInstruction.split("0")[1] == "I" ? true : false;
         switch (currentInstruction) {
         // memory
             case "AND":
-                AND(val);   //ac and bin mar
+                AND(hex2bin(val));   //ac and bin mar
                 break;
             case "ADD":
-                ADD(val);  //ac and bin mar
+                ADD(hex2bin(val));  //ac and bin mar
                 break;
             case "LDA":
                 LDA(getValue(lab, I));  //get value from label to ac
@@ -95,10 +96,10 @@ function run() {
                 STA(getValue(lab, I));  //store value from ac to label
                 break;
             case "BUN":
-                BUN(val);  //the val will be address
+                BUN(getValue(lab, I));  //the val will be address
                 break;
             case "BSA":
-                BSA(val);  //the val will be address
+                BSA(getValue(lab, I));  //the val will be address
                 break;
             case "ISZ":
                 ISZ(val); //?
@@ -174,13 +175,12 @@ function collectLabels() {
     let rowNumber = rows[0].parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
     let labels = '';
     rows.forEach(r => {
-        rowNumber++;
+        //rowNumber++;
         r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` : null; //key (label) value (address)
     });
     labels = labels.slice(0, labels.length - 1);
     labels = "{" + labels + "}";
     labelsJson = JSON.parse(labels);
-
 }
 
 /*example Json
@@ -194,12 +194,133 @@ a = obj.kc[0]
 
 function lookForHLT() {
     let rows = Array.from($(".instruction-input"));
-    let rowNumber = rows[0].parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
     let findHLT = false;
     rows.forEach(r => {
-        rowNumber++;
         r.value == "HLT" ? findHLT = true : null;
     });
     return findHLT;
 }
 
+function convertToMachineLang() {
+    let rows = Array.from($(".instruction-input"));
+    let machineLang;
+    rows.forEach(r => {
+        currentInstruction = r.value;
+        switch (currentInstruction) {
+            // memory
+            case "AND":
+                AND(val);
+                break;
+            case "ADD":
+                ADD(val);
+                break;
+            case "LDA":
+                LDA(getValue(lab, I));
+                break;
+            case "STA":
+                STA(getValue(lab, I));
+                break;
+            case "BUN":
+                BUN(val);
+                break;
+            case "BSA":
+                BSA(val);
+                break;
+            case "ISZ":
+                ISZ(val);
+                break;
+            // register
+            case "CLA":
+                machineLang = "7800";
+                break;
+            case "CLE":
+                machineLang = "7400";
+                break;
+            case "CMA":
+                machineLang = "7200";
+                break;
+            case "CME":
+                machineLang = "7100";
+                break;
+            case "CIR":
+                machineLang = "7080";
+                break;
+            case "CIL":
+                machineLang = "7040"
+                break;
+            case "INC":
+                machineLang = "7020";
+                break;
+            case "SPA":
+                machineLang = "7010";
+                break;
+            case "SNA":
+                machineLang = "7008";
+                break;
+            case "SZA":
+                machineLang = "7004";
+                break;
+            case "SZE":
+                machineLang = "7002";
+                break;
+            // input output
+            case "INP":
+                machineLang = "F800";
+                break;
+            case "OUT":
+                machineLang = "F400";
+                break;
+            case "SKI":
+                machineLang = "F200";
+                break;
+            case "SKO":
+                machineLang = "F100";
+                break;
+            case "ION":
+                machineLang = "F080";
+                break;
+            case "IOF":
+                machineLang = "F040";
+                break;
+            case "HLT":
+                machineLang = "7001";
+                break;
+            default:
+                machineLang = "";
+                break;
+        }
+    machineLang != "" ? r.parentElement.parentElement.innerHTML += `<div>${machineLang}</div>` : null;
+    });  
+}
+
+
+
+function checkInputs() {
+    let rows = Array.from($(".cmd-row"));
+    let machineLang;
+    rows.forEach(r => {
+        
+        
+    r.parentElement.parentElement.innerHTML += `<div>${machineLang}</div>`;
+    });
+    return true;
+}
+
+/* get label and direct/indirect
+*  return address
+*/
+function labelToAddress(lab, I) {
+    let address = labelsJson[lab][0];
+    if (I) {
+        address = getValueByAddress(address);
+        return labelsJson[address][0];
+    }
+    return address;
+}
+
+// get address
+//return the value of this address
+function getValueByAddress(address) {
+    let val = $(`#row${address}`).getElementsByClassName("value-input")[0].value;
+    return val;
+} 
