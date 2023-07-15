@@ -4,7 +4,7 @@
     get string
     return string
     */
-function binb2dec(arg) {
+function bin2dec(arg) {
     arg = "0b" + arg;
     arg = Number(arg);
     arg = arg.toString(10);

@@ -94,14 +94,15 @@ function CIR() {
 function ADD(mar) {
     let arg;
     let accumulator = parseInt("0x" + (acReg), 16);
-    mar = parseInt("0x" + mar, 16);
-    accumulator += mar;
-    arg = hex2bin(accumulator.toString(16));
-    if (deviation(arg)) {
+    mar = bin2dec(mar);
+    accumulator = accumulator + Number(mar);
+    accumulator = String(accumulator);
+    accumulator = dec2bin(accumulator);
+    if (deviation(accumulator)) {
         eFlag = "1";
-        arg = arg.slice(1, arg.length + 1);
+        accumulator = accumulator.slice(1, accumulator.length + 1);
     }
-    acReg = bin2hex(arg);
+    acReg = bin2hex(accumulator);
     pc++;
 }
 
@@ -111,24 +112,22 @@ function AND(mar) {
     let acArr = hex2bin(acReg);
     mar = padding(mar, 16);
     acArr = padding(acArr);
-    // marArr = mar.split("");
-    // acArr = acReg.split("");
     for (let i = 0 ; i < 16 ; i++ ) {
         accumulator += ((mar[i] == "1" && acArr[i] == "1") ? "1" : "0");
     }
-    document.getElementById("demo").innerHTML = accumulator;
+    acReg = bin2hex(accumulator);
     pc++;
 }
 
 // load to accumulator
-function LDA(address) {
-    acReg = address;
+function LDA(mar) {
+    acReg = bin2hex(mar);
     pc++;
 }
 
 // store accumulator
 function STA(address) {
-    address = acReg;
+    $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = acReg;
     pc++;
 }
 
@@ -138,16 +137,19 @@ function BUN(address) {
 
 // the function get address, pc+1 get into the value of the address in the argument
 function BSA(address) {
-    let addressToBack = pc + 1;
-    pc = address;
-    let rowElem = $(`#row${pc}`);
-    rowElem.getElementsByClassName("value-input")[0].value = addressToBack;
+    let backAddress = Number(hex2dec(pc)) + 1;
+    backAddress = dec2hex(backAddress);
+    $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = backAddress;
+    pc = Number(address) + 1;
 }
 
 function ISZ(address) {
-    let mar = document.getElementById(pc).getElementsByClassName("address")[0].value;
-    mar++;
-    mar == 0 ? pc++ : null;
+    let row = $(`#row${address}`)[0];
+    let val = row.getElementsByClassName("value-input")[0].value;
+    isHEX = row.getElementsByClassName("instruction-input")[0].value == "HEX";
+    isHEX ? val = hex2dec(val) : null;
+    val = Number(val) + 1;
+    row.getElementsByClassName("value-input")[0].value = isHEX ? dec2hex(val) : val;
     pc++;
 }
 
@@ -208,16 +210,18 @@ function IOF() {
 }
 
 function SKI() {
-    if (inputFlag) {
-        inputFlag = false;
+    isChecked = $("#input-checkbox")[0].checked;
+    if (isChecked) {
+        $("#input-checkbox")[0].checked = false;
         pc++;
     }
     pc++;
 }
 
 function SKO() {
-    if (outputFlag) {
-        outputFlag = false;
+    isChecked = $("#output-checkbox")[0].checked;
+    if (isChecked) {
+        $("#output-checkbox")[0].checked = false;
         pc++;
     }
     pc++;

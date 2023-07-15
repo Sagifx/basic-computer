@@ -3,7 +3,7 @@ var orgAddress = 256;
 document.getElementById("org-value").value = orgAddress.toString(16);
 var rowCtr = orgAddress;
 var acReg;
-var pc;
+var pc = orgAddress;
 var interuptOn = false;
 var inputReg;
 var outputReg;
@@ -15,16 +15,24 @@ let labelsJson;
 $("#org-value").keyup((e) => listenToOrg(e));
 $("#ac-value")[0].value = "0000";
 $("#E-value")[0].value = "0";
-$("#pc")[0].innerHTML = pc;
+$("#pc")[0].innerHTML = dec2hex(pc);
 
 
 
 //test
-for (let i = 0; i < 10; i++)addCmdRow();
+for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
-    $("#row100")[0].getElementsByClassName("label-input")[0].value = 'A';
-    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'CIR';
- $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
+    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'B';
+    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'BSA';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'A';
+
+    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+
+    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
+    
+    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+
+    $("#row104")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
 
 }, 100);
 
@@ -44,7 +52,7 @@ function listenToOrg(e) {
 function addCmdRow() {
     let newRow = `<div id=row${rowCtr.toString(16)} class="cmd-row">
             <div class="address count-address">${rowCtr.toString(16)}</div>
-            <div class="label"><input class="label-input" maxlength="4"></div>
+            <div class="label"><input class="label-cmd-input" maxlength="4"></div>
             <div class="instruction"><input class="instruction-input" maxlength="3"></div>
             <div class="value"><input class="value-input" maxlength="4"></div>
         </div>`;
@@ -70,39 +78,38 @@ function run() {
     $("#org-value").keyup((e) => listenToOrg(e));
     $("#console")[0].innerHTML = "";
     let val;
-    let label;
+    let indirectValue;
     let I;
     let rowElem = $(`#row${pc}`)[0];
     let currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
     while (currentInstruction != "HLT") {
         val = rowElem.getElementsByClassName("value-input")[0].value;
-        I = val.split("")[1] == "I" ? true : false;
-        val = val.split("")[0];
-        val = hex2bin(val);
-        label = rowElem.getElementsByClassName("label-input")[0].value;
-        label = label.split(" ");
+        I = val.split(" ")[1] == "I" ? true : false; //save true if indirect
+        val = val.split(" ")[0]; //value witout the I
+        indirectValue = val != "" ? getValueByAddress(labelToAddress(val, I)) : null;
+        
         switch (currentInstruction) {
         // memory
             case "AND":
-                AND(hex2bin(val));   //ac and bin mar
+                AND(indirectValue);   //arg- bin value at address (I)
                 break;
             case "ADD":
-                ADD(hex2bin(val));  //ac and bin mar
+                ADD(indirectValue);  //arg- bin value at address (I)
                 break;
             case "LDA":
-                LDA(getValue(lab, I));  //get value from label to ac
+                LDA(indirectValue);  //get value from label to ac
                 break;
             case "STA":
-                STA(getValue(lab, I));  //store value from ac to label
+                STA(labelToAddress(val, I));  //store value from ac to label
                 break;
             case "BUN":
-                BUN(getValue(lab, I));  //the val will be address
+                BUN(labelToAddress(val, I));  //the val will be address
                 break;
             case "BSA":
-                BSA(getValue(lab, I));  //the val will be address
+                BSA(labelToAddress(val, I));  //the val will be address
                 break;
             case "ISZ":
-                ISZ(val); //?
+                ISZ(labelToAddress(val, I)); //?
                 break;
         // register
             case "CLA":
@@ -165,17 +172,15 @@ function run() {
         currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
         $("#ac-value")[0].value = acReg;
         $("#E-value")[0].value = eFlag;
-        $("#pc")[0].innerHTML = pc;
+        $("#pc")[0].innerHTML = dec2hex(pc);
     }
     currentInstruction == "HLT" ? $("#console")[0].innerHTML = "The program finished by HLT" : null;
 }
 
 function collectLabels() {
-    let rows = Array.from($(".label-input"));
-    let rowNumber = rows[0].parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
+    let rows = Array.from($(".label-cmd-input"));
     let labels = '';
     rows.forEach(r => {
-        //rowNumber++;
         r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` : null; //key (label) value (address)
     });
     labels = labels.slice(0, labels.length - 1);
@@ -319,8 +324,21 @@ function labelToAddress(lab, I) {
 }
 
 // get address
-//return the value of this address
+//return the binary value of this address
 function getValueByAddress(address) {
-    let val = $(`#row${address}`).getElementsByClassName("value-input")[0].value;
+    let row = $(`#row${address}`)[0];
+    let base = row.getElementsByClassName("instruction-input")[0].value; //HEX || DEC
+    let val = row.getElementsByClassName("value-input")[0].value; //original value
+    switch (base) {
+        case "HEX":
+            val = hex2bin(val);
+            break;
+        case "DEC":
+            val = dec2bin(val);
+            break;
+        default:
+            $("#console")[0].innerHTML = "The indirect instruction should be HEX or DEC";
+            return;
+    }
     return val;
 } 
