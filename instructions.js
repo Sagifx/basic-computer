@@ -90,9 +90,9 @@ function CIR() {
     pc++;
 }
 
-// add between accumulator and value in the memory
+/* add between accumulator and value in the memory
+get the memory value */
 function ADD(mar) {
-    let arg;
     let accumulator = parseInt("0x" + (acReg), 16);
     mar = bin2dec(mar);
     accumulator = accumulator + Number(mar);
@@ -106,7 +106,8 @@ function ADD(mar) {
     pc++;
 }
 
-// and between accumulatort and calue in the memory
+/* and between accumulator and value in the memory
+get the memory value */
 function AND(mar) {
     let accumulator = "";
     let acArr = hex2bin(acReg);
@@ -119,23 +120,28 @@ function AND(mar) {
     pc++;
 }
 
-// load to accumulator
+/* load to accumulator
+get memory value */
 function LDA(mar) {
     acReg = bin2hex(mar);
     pc++;
 }
 
-// store accumulator
+/* store accumulator in the memory
+get the address to atore at */
 function STA(address) {
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = acReg;
     pc++;
 }
 
+/* branch unconditionally 
+get the address */
 function BUN(address) {
     pc = address;
 }
 
-// the function get address, pc+1 get into the value of the address in the argument
+/* branch and save address
+get the address and store there the address to back */
 function BSA(address) {
     let backAddress = Number(hex2dec(pc)) + 1;
     backAddress = dec2hex(backAddress);
@@ -143,6 +149,8 @@ function BSA(address) {
     pc = Number(address) + 1;
 }
 
+/* increment and skip if zero
+get address */
 function ISZ(address) {
     let row = $(`#row${address}`)[0];
     let val = row.getElementsByClassName("value-input")[0].value;
@@ -150,31 +158,36 @@ function ISZ(address) {
     isHEX ? val = hex2dec(val) : null;
     val = Number(val) + 1;
     row.getElementsByClassName("value-input")[0].value = isHEX ? dec2hex(val) : val;
+    val == 0 ? pc++ : null;
     pc++;
 }
 
+// skip if accumulator positive (or zero)
 function SPA() {
     let binAC = hex2bin(acReg).split("");
     binAC[0] == 0 ? pc++ : null;
     pc++;
 }
 
+// skip if accumulator negetive
 function SNA() {
     let binAC = hex2bin(acReg).split("");
     binAC[0] == 1 ? pc++ : null;
     pc++;
 }
-
+ // skip if accumulator value is 0
 function SZA() {
     acReg == 0 ? pc++ : null;
     pc++;
 }
 
+// skip if the E flag is 0
 function SZE() {
     eFlag == 0 ? pc++ : null;
     pc++;
 }
 
+// if the interupt on the input accumulator get the input register value (8 bit)
 function INP() {
     if (interuptOn) {
         let val = document.getElementById("input-register");
@@ -186,6 +199,7 @@ function INP() {
     pc++;
 }
 
+// if hte interupt off the output regester get the accumulator value (8 bit)
 function OUT() {
     if (interuptOn) {;
         for (let i = 0; i < 8; i++) {
@@ -195,13 +209,14 @@ function OUT() {
     pc++;
 }
 
-
+// interupt on
 function ION() {
     interuptOn = true;
     $("#interupt-enable").innerHTML = "ON";
     pc++;
 }
 
+// interupt off
 function IOF() {
     interuptOn = false;
     $("#interupt-enable").innerHTML = "OFF";
@@ -209,6 +224,7 @@ function IOF() {
 
 }
 
+// skip if the input flag on
 function SKI() {
     isChecked = $("#input-checkbox")[0].checked;
     if (isChecked) {
@@ -218,6 +234,7 @@ function SKI() {
     pc++;
 }
 
+// skip if the output flag on
 function SKO() {
     isChecked = $("#output-checkbox")[0].checked;
     if (isChecked) {

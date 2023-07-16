@@ -38,7 +38,8 @@ setTimeout(() => {
 
 //test
 
-
+/* listener on the valut of the ORG 
+by change all the address will change after the ORG value */
 function listenToOrg(e) {
     let rows = Array.from($(".count-address"));
     let rowNumber = hex2dec(e.target.value);
@@ -48,7 +49,8 @@ function listenToOrg(e) {
     });
 }
 
-
+/* triggered by "add row" btn
+add row to the cmd */
 function addCmdRow() {
     let newRow = `<div id=row${rowCtr.toString(16)} class="cmd-row">
             <div class="address count-address">${rowCtr.toString(16)}</div>
@@ -64,7 +66,8 @@ function addCmdRow() {
 
 
 
-// start by pressing the run button until the HLT
+/* by press run this function will start
+start with check the values and theb run the program */
 function run() {
     // need to add check for the program values
     if (!lookForHLT()) { //stop running if missing HLT
@@ -177,6 +180,8 @@ function run() {
     currentInstruction == "HLT" ? $("#console")[0].innerHTML = "The program finished by HLT" : null;
 }
 
+/* its the first pass
+all the labels saved with their addresses in json as key and value */
 function collectLabels() {
     let rows = Array.from($(".label-cmd-input"));
     let labels = '';
@@ -197,6 +202,7 @@ const obj = JSON.parse(text);
 a = obj.kc[0]
  */
 
+// look for HLT in the program
 function lookForHLT() {
     let rows = Array.from($(".instruction-input"));
     let findHLT = false;
@@ -206,6 +212,7 @@ function lookForHLT() {
     return findHLT;
 }
 
+// convert the instructions and value to machine lang
 function convertToMachineLang() {
     let rows = Array.from($(".instruction-input"));
     let machineLang;
@@ -214,25 +221,25 @@ function convertToMachineLang() {
         switch (currentInstruction) {
             // memory
             case "AND":
-                AND(val);
+                AND();
                 break;
             case "ADD":
-                ADD(val);
+                ADD(v);
                 break;
             case "LDA":
-                LDA(getValue(lab, I));
+                LDA();
                 break;
             case "STA":
-                STA(getValue(lab, I));
+                STA();
                 break;
             case "BUN":
-                BUN(val);
+                BUN();
                 break;
             case "BSA":
-                BSA(val);
+                BSA();
                 break;
             case "ISZ":
-                ISZ(val);
+                ISZ();
                 break;
             // register
             case "CLA":
@@ -299,7 +306,7 @@ function convertToMachineLang() {
 }
 
 
-
+//check inputs
 function checkInputs() {
     let rows = Array.from($(".cmd-row"));
     let machineLang;
@@ -312,7 +319,7 @@ function checkInputs() {
 }
 
 /* get label and direct/indirect
-*  return address
+*  return  the labels address
 */
 function labelToAddress(lab, I) {
     let address = labelsJson[lab][0];
