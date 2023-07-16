@@ -374,16 +374,16 @@ function getValueByAddress(address) {
  */
 $("input").change((e) => listenToInputs(e));
  function listenToInputs(e) {
-    // let elem = e.target;
-    // let inputType = e.target.classList;
-    // let currrentInstruction;
-    // if (inputType.includes("instruction-input")) {
-    //     currrentInstruction = elem.target.value;
-    //     convertToMachineLang(e); //change the function to get
-    // } else if (currentInsrruction == ('HEX' || 'DEC') &&
-    //             inputType.includes("value-input")) {
-    //     padding(e.target.value, )
-    // }
+    let elem = e.target;
+    let inputType = e.target.classList;
+    let currrentInstruction;
+    if (inputType.includes("instruction-input")) {
+        currrentInstruction = elem.target.value;
+        convertToMachineLang(e); //change the function to get
+    } else if (currentInsrruction == ('HEX' || 'DEC') &&
+                inputType.includes("value-input")) {
+        padding(e.target.value, )
+    }
  }
 
 function listenToOrg(e) {
