@@ -20,6 +20,11 @@
 .cmd-row {
     display: flex;
 }
+
+.cmd-org-row {
+    display: flex;
+}
+
 .cmd-org-row div {
     font-weight:bold;
 }

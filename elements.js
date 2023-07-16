@@ -57,6 +57,7 @@ function addCmdRow() {
             <div class="label"><input class="label-cmd-input" maxlength="4"></div>
             <div class="instruction"><input class="instruction-input" maxlength="3"></div>
             <div class="value"><input class="value-input" maxlength="4"></div>
+            <div class="machine-lang"></div>
         </div>`;
     rowCtr++;
     document.getElementById("cmd-container").innerHTML += newRow;
@@ -214,32 +215,38 @@ function lookForHLT() {
 
 // convert the instructions and value to machine lang
 function convertToMachineLang() {
-    let rows = Array.from($(".instruction-input"));
+    let rows = Array.from($(".cmd-row"));
     let machineLang;
+    let val;
+    let I;
+    collectLabels();
     rows.forEach(r => {
-        currentInstruction = r.value;
+        currentInstruction = r.getElementsByClassName("instruction-input")[0].value;
+        val = r.getElementsByClassName("value-input")[0].value;
+        val = val.split(" ")[0];
+        I = val.split(" ")[1];
         switch (currentInstruction) {
             // memory
             case "AND":
-                AND();
+                machineLang = (I ? '8' : '0') + labelToAddress(val, I);
                 break;
             case "ADD":
-                ADD(v);
+                machineLang = (I ? '9' : '1') + labelToAddress(val, I);
                 break;
             case "LDA":
-                LDA();
+                machineLang = (I ? 'A' : '2') + labelToAddress(val, I);
                 break;
             case "STA":
-                STA();
+                machineLang = (I ? 'B' : '3') + labelToAddress(val, I);
                 break;
             case "BUN":
-                BUN();
+                machineLang = (I ? 'C' : '4') + labelToAddress(val, I);
                 break;
             case "BSA":
-                BSA();
+                machineLang = (I ? 'D' : '5') + labelToAddress(val, I);
                 break;
             case "ISZ":
-                ISZ();
+                machineLang = (I ? 'E' : '6') + labelToAddress(val, I);
                 break;
             // register
             case "CLA":
@@ -301,7 +308,7 @@ function convertToMachineLang() {
                 machineLang = "";
                 break;
         }
-    machineLang != "" ? r.parentElement.parentElement.innerHTML += `<div>${machineLang}</div>` : null;
+    r.getElementsByClassName("machine-lang")[0].innerHTML = machineLang;
     });  
 }
 
@@ -309,11 +316,22 @@ function convertToMachineLang() {
 //check inputs
 function checkInputs() {
     let rows = Array.from($(".cmd-row"));
-    let machineLang;
+    collectLabels();
     rows.forEach(r => {
-        
-        
-    r.parentElement.parentElement.innerHTML += `<div>${machineLang}</div>`;
+        let instruction = r.getElementsByClassName("instruction-input")[0].value;
+        let I = instruction.split(" ")[1]; //the value without the I
+        instruction = instruction.split(" ")[0];
+        let val = r.getElementsByClassName("value-input")[0].value;
+        if (instruction == ('ADD' || 'AND' || 'LDA' || 'STA' || 'BUN' || 'BSA' || 'ISZ')) {
+            if (typeof labelsJson[val][0] == null) {
+                $("#console")[0].innerHTML = `The label ${val} isn't exist`;
+                return;
+            }
+        } else if (instruction != ('STA' || 'BUN' || 'BSA' || 'CLA' || 'CLE' || 'CMA' ||
+            'CME' || 'CIR' || 'CIL' || 'INC' || 'SPA' || 'SNA' || 'SZA' || 'SZE' || 'HLT' ||
+            'INP' || 'OUT' || 'SKI' || 'SKO' || 'ION' || 'IOF' || 'HEX' || 'DEC')) {
+            $("#console")[0].innerHTML = `${val} isn't allowed instruction`;
+        }
     });
     return true;
 }
