@@ -308,7 +308,9 @@ function convertToMachineLang() {
                 machineLang = "";
                 break;
         }
-    r.getElementsByClassName("machine-lang")[0].innerHTML = machineLang;
+        r.getElementsByClassName("machine-lang")[0].innerHTML = machineLang;
+        if ($(`#show-machine-lang`)[0].innerHTML.includes("Show"))
+            r.getElementsByClassName("machine-lang")[0].style.color = "transparent";
     });  
 }
 
@@ -373,24 +375,34 @@ function getValueByAddress(address) {
 3. dynamic change of the machine language
  */
 $("input").change((e) => listenToInputs(e));
- function listenToInputs(e) {
+function listenToInputs(e) {
     let elem = e.target;
-    let inputType = e.target.classList;
-    let currrentInstruction;
-    if (inputType.includes("instruction-input")) {
-        currrentInstruction = elem.target.value;
-        convertToMachineLang(e); //change the function to get
-    } else if (currentInsrruction == ('HEX' || 'DEC') &&
-                inputType.includes("value-input")) {
-        padding(e.target.value, )
+    elem.value = elem.value.toUpperCase();
+    let val = elem.value; //inputs value
+    let address = elem.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
+    let instruction = $(`#row${address}`)[0].getElementsByClassName("count-address")[0].innerHTML;
+    let inputType = elem.className; //inputs type
+    if (inputType.includes("value-input") && instruction == ('HEX' || 'DEC')) {
+        elem.value = padding(val, 4);
     }
+    convertToMachineLang();
  }
 
-function listenToOrg(e) {
-    let rows = Array.from($(".count-address"));
-    let rowNumber = hex2dec(e.target.value);
+function showMachineLangToggle() {
+    let btn = $(`#show-machine-lang`)[0];
+    let rows = Array.from($(".machine-lang"));
     rows.forEach(r => {
-        r.innerHTML = dec2hex(rowNumber);
-        rowNumber++;
+        if (btn.innerHTML == "Show machine language") {
+            r.style.color = "black";
+        }
+        else {
+            r.style.color = "transparent";
+        }
     });
+    if (btn.innerHTML == "Show machine language") {
+        btn.innerHTML = "Hide machine language";
+    } else {
+        btn.innerHTML = "Show machine language";
+    }
 }
+   
