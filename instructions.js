@@ -137,14 +137,13 @@ function STA(address) {
 /* branch unconditionally 
 get the address */
 function BUN(address) {
-    pc = address;
+    pc = hex2dec(address);
 }
 
 /* branch and save address
 get the address and store there the address to back */
 function BSA(address) {
-    let backAddress = Number(hex2dec(pc)) + 1;
-    backAddress = dec2hex(backAddress);
+    let backAddress = dec2hex(Number(pc) + 1);
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = backAddress;
     pc = Number(address) + 1;
 }
@@ -154,6 +153,7 @@ get address */
 function ISZ(address) {
     let row = $(`#row${address}`)[0];
     let val = row.getElementsByClassName("value-input")[0].value;
+    let isHEX;
     isHEX = row.getElementsByClassName("instruction-input")[0].value == "HEX";
     isHEX ? val = hex2dec(val) : null;
     val = Number(val) + 1;
@@ -189,7 +189,7 @@ function SZE() {
 
 // if the interupt on the input accumulator get the input register value (8 bit)
 function INP() {
-    if (interuptOn) {
+    if ($("#interupt-enable")[0].innerHTML) {
         let val = document.getElementById("input-register");
         val = val.split("");
         for (let i = 0; i < 8; i++) {
@@ -201,7 +201,7 @@ function INP() {
 
 // if hte interupt off the output regester get the accumulator value (8 bit)
 function OUT() {
-    if (interuptOn) {;
+    if ($("#interupt-enable")[0].innerHTML) {
         for (let i = 0; i < 8; i++) {
             acReg[i] = output(i);
         }
@@ -211,15 +211,13 @@ function OUT() {
 
 // interupt on
 function ION() {
-    interuptOn = true;
-    $("#interupt-enable").innerHTML = "ON";
+    $("#interupt-enable")[0].innerHTML = "ON";
     pc++;
 }
 
 // interupt off
 function IOF() {
-    interuptOn = false;
-    $("#interupt-enable").innerHTML = "OFF";
+    $("#interupt-enable")[0].innerHTML = "OFF";
     pc++;
 
 }

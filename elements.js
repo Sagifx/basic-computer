@@ -1,39 +1,38 @@
 
-var orgAddress = 256;
-document.getElementById("org-value").value = orgAddress.toString(16);
-var rowCtr = orgAddress;
+var rowCtr = 256;
 var acReg;
-var pc = orgAddress;
+var pc = rowCtr;
 var interuptOn = false;
 var inputReg;
 var outputReg;
-var inputFlag= false;
-var outputFlag= false;
 var eFlag = 0;
 let labelsJson;
 
-$("#org-value").keyup((e) => listenToOrg(e));
+// default values
+$("#org-value")[0].value = dec2hex(rowCtr).slice(1, 4);
+$("#pc")[0].innerHTML = $("#org-value")[0].value;
 $("#ac-value")[0].value = "0000";
 $("#E-value")[0].value = "0";
-$("#pc")[0].innerHTML = dec2hex(pc);
-
+$("#org-value").keyup((e) => listenToOrg(e));
 
 
 //test
 for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
-    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'B';
-    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'BSA';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'A';
+    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'ION';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
 
-    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
+    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'SKI';
 
-    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
+    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'BUN';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A';
     
-    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INP';
 
     $("#row104")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
-
+    convertToMachineLang();
 }, 100);
 
 //test
@@ -41,55 +40,69 @@ setTimeout(() => {
 /* listener on the valut of the ORG 
 by change all the address will change after the ORG value */
 function listenToOrg(e) {
+    let pattern = new RegExp(/[0-9a-fA-F]/);
+    if (!pattern.test(e.target.value) || e.target.value.length > 3) {
+        console("ORG value get 3 chars, 0-9 and A-F");
+        return;
+    }
+    pc = hex2dec($("#org-value")[0].value);
     let rows = Array.from($(".count-address"));
     let rowNumber = hex2dec(e.target.value);
+    let newAddress;
     rows.forEach(r => {
-        r.innerHTML = dec2hex(rowNumber);
+        newAddress = dec2hex(rowNumber).toUpperCase();
+        newAddress = newAddress.slice(1, 4);
+        r.innerHTML = newAddress;
         rowNumber++;
     });
+    rowCtr = rowNumber;
+    $("#pc")[0].innerHTML = pc;
 }
 
 /* triggered by "add row" btn
 add row to the cmd */
 function addCmdRow() {
-    let newRow = `<div id=row${rowCtr.toString(16)} class="cmd-row">
-            <div class="address count-address">${rowCtr.toString(16)}</div>
+    let newRow = document.createElement("div");
+    newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
+    newRow.setAttribute("class", "cmd-row");
+    newRow.innerHTML= `
+            <div class="address count-address">${rowCtr.toString(16).toUpperCase()}</div>
             <div class="label"><input class="label-cmd-input" maxlength="4"></div>
             <div class="instruction"><input class="instruction-input" maxlength="3"></div>
             <div class="value"><input class="value-input" maxlength="4"></div>
             <div class="machine-lang"></div>
-        </div>`;
+            `;
     rowCtr++;
-    document.getElementById("cmd-container").innerHTML += newRow;
-    document.getElementById("org-value").value = orgAddress.toString(16);
+    $("#cmd-container")[0].appendChild(newRow);
     $("#org-value").keyup((e) => listenToOrg(e));
 }
 
 
 
 /* by press run this function will start
-start with check the values and theb run the program */
+with check the values and then run the program */
 function run() {
     // need to add check for the program values
     if (!lookForHLT()) { //stop running if missing HLT
-        $("#console")[0].innerHTML = "Missing HLT";
+        console("Missing HLT");
         return;
     }
     collectLabels();
-    pc = $("#org-value")[0].value;
+    pc = hex2dec($("#org-value")[0].value);
     acReg = $("#ac-value")[0].value;
     eFlag = $("#E-value")[0].value;
     $("#org-value").keyup((e) => listenToOrg(e));
-    $("#console")[0].innerHTML = "";
+    console("");
     let val;
     let indirectValue;
     let I;
-    let rowElem = $(`#row${pc}`)[0];
+    let index = dec2hex(pc).slice(1, 4);
+    let rowElem = $(`#row${index}`)[0];
     let currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
     while (currentInstruction != "HLT") {
         val = rowElem.getElementsByClassName("value-input")[0].value;
         I = val.split(" ")[1] == "I" ? true : false; //save true if indirect
-        val = val.split(" ")[0]; //value witout the I
+        val = val.split(" ")[0]; //value without the 'I'
         indirectValue = val != "" ? getValueByAddress(labelToAddress(val, I)) : null;
         
         switch (currentInstruction) {
@@ -157,7 +170,7 @@ function run() {
                 OUT();
                 break;
             case "SKI":
-                SKI();
+                $("#input-checkbox").click((e) => SKI());
                 break;
             case "SKO":
                 SKO();
@@ -169,19 +182,20 @@ function run() {
                 IOF();   //R flag
                 break;
             default:
-                $("#console")[0].innerHTML = "Missing row in the flow";
+                console("Missing row in the flow");
                 return;
         }
-        rowElem = $(`#row${pc}`)[0];
+        index = dec2hex(pc).slice(1, 4);
+        rowElem = $(`#row${index}`)[0];
         currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
         $("#ac-value")[0].value = acReg;
         $("#E-value")[0].value = eFlag;
-        $("#pc")[0].innerHTML = dec2hex(pc);
+        $("#pc")[0].innerHTML = pc;
     }
-    currentInstruction == "HLT" ? $("#console")[0].innerHTML = "The program finished by HLT" : null;
+    currentInstruction == "HLT" ? console("The program finished by HLT") : null;
 }
 
-/* its the first pass
+/* it's the first pass
 all the labels saved with their addresses in json as key and value */
 function collectLabels() {
     let rows = Array.from($(".label-cmd-input"));
@@ -326,13 +340,14 @@ function checkInputs() {
         let val = r.getElementsByClassName("value-input")[0].value;
         if (instruction == ('ADD' || 'AND' || 'LDA' || 'STA' || 'BUN' || 'BSA' || 'ISZ')) {
             if (typeof labelsJson[val][0] == null) {
-                $("#console")[0].innerHTML = `The label ${val} isn't exist`;
+                console(`The label ${val} isn't exist`);
                 return;
             }
         } else if (instruction != ('STA' || 'BUN' || 'BSA' || 'CLA' || 'CLE' || 'CMA' ||
             'CME' || 'CIR' || 'CIL' || 'INC' || 'SPA' || 'SNA' || 'SZA' || 'SZE' || 'HLT' ||
             'INP' || 'OUT' || 'SKI' || 'SKO' || 'ION' || 'IOF' || 'HEX' || 'DEC')) {
-            $("#console")[0].innerHTML = `${val} isn't allowed instruction`;
+            console(`${val} isn't allowed instruction`);
+            return;
         }
     });
     return true;
@@ -363,8 +378,8 @@ function getValueByAddress(address) {
         case "DEC":
             val = dec2bin(val);
             break;
-        default:
-            $("#console")[0].innerHTML = "The indirect instruction should be HEX or DEC";
+        default: // it's probably just for BSA
+            //console("The indirect instruction should be HEX or DEC");
             return;
     }
     return val;
@@ -377,13 +392,15 @@ function getValueByAddress(address) {
 $("input").change((e) => listenToInputs(e));
 function listenToInputs(e) {
     let elem = e.target;
+    if (elem.id =="org-value") return;
     elem.value = elem.value.toUpperCase();
     let val = elem.value; //inputs value
     let address = elem.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
     let instruction = $(`#row${address}`)[0].getElementsByClassName("count-address")[0].innerHTML;
     let inputType = elem.className; //inputs type
     if (inputType.includes("value-input") && instruction == ('HEX' || 'DEC')) {
-        elem.value = padding(val, 4);
+        elem.value.length > 3 ? console(`Too long value at row ${address}`) : null;
+        elem.value = padding(val, 3);
     }
     convertToMachineLang();
  }
@@ -405,4 +422,7 @@ function showMachineLangToggle() {
         btn.innerHTML = "Show machine language";
     }
 }
-   
+
+function console(txt) {
+    $("#console")[0].innerHTML = txt;
+}
