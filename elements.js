@@ -40,7 +40,7 @@ setTimeout(() => {
 /* listener on the valut of the ORG 
 by change all the address will change after the ORG value */
 function listenToOrg(e) {
-    let pattern = new RegExp(/[0-9a-fA-F]/);
+    let pattern = new RegExp(/^[0-9a-fA-F]{1,3}$/);
     if (!pattern.test(e.target.value) || e.target.value.length > 3) {
         console("ORG value get 3 chars, 0-9 and A-F");
         return;
@@ -56,7 +56,7 @@ function listenToOrg(e) {
         rowNumber++;
     });
     rowCtr = rowNumber;
-    $("#pc")[0].innerHTML = pc;
+    $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4);
 }
 
 /* triggered by "add row" btn
@@ -74,7 +74,7 @@ function addCmdRow() {
             `;
     rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
-    $("#org-value").keyup((e) => listenToOrg(e));
+    //$("#org-value").keyup((e) => listenToOrg(e));
 }
 
 
@@ -88,7 +88,7 @@ function run() {
         return;
     }
     collectLabels();
-    pc = hex2dec($("#org-value")[0].value);
+    //pc = hex2dec($("#org-value")[0].value);
     acReg = $("#ac-value")[0].value;
     eFlag = $("#E-value")[0].value;
     $("#org-value").keyup((e) => listenToOrg(e));
@@ -170,7 +170,9 @@ function run() {
                 OUT();
                 break;
             case "SKI":
-                $("#input-checkbox").click((e) => SKI());
+            //    $("#input-checkbox").click(() => async function wait4inputFlag() {
+                    SKI();
+            //    });
                 break;
             case "SKO":
                 SKO();

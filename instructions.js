@@ -224,12 +224,15 @@ function IOF() {
 
 // skip if the input flag on
 function SKI() {
+    return new Promise((resolve) => {
     isChecked = $("#input-checkbox")[0].checked;
-    if (isChecked) {
-        $("#input-checkbox")[0].checked = false;
+        if (isChecked) {
+            $("#input-checkbox")[0].checked = false;
+            pc++;
+        }
         pc++;
-    }
-    pc++;
+        resolve();
+    })
 }
 
 // skip if the output flag on
