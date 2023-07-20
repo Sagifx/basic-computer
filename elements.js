@@ -7,12 +7,15 @@ var inputReg;
 var outputReg;
 var eFlag = 0;
 let labelsJson;
+var step = false;
 
 // default values
 $("#org-value")[0].value = dec2hex(rowCtr).slice(1, 4);
 $("#pc")[0].innerHTML = $("#org-value")[0].value;
 $("#ac-value")[0].value = "0000";
 $("#E-value")[0].value = "0";
+$("#output-register")[0].value = "00";
+$("#input-register")[0].value = "00";
 $("#org-value").keyup((e) => listenToOrg(e));
 
 
@@ -24,12 +27,12 @@ setTimeout(() => {
     $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
-    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'SKI';
+    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
 
-    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'BUN';
+    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
     $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A';
     
-    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INP';
+    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
 
     $("#row104")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
     convertToMachineLang();
@@ -77,11 +80,18 @@ function addCmdRow() {
     //$("#org-value").keyup((e) => listenToOrg(e));
 }
 
-
+function runStep() {
+    step = true;
+    exe();
+}
+function run() {
+    step = false;
+    exe();
+}
 
 /* by press run this function will start
 with check the values and then run the program */
-function run() {
+function exe() {
     // need to add check for the program values
     if (!lookForHLT()) { //stop running if missing HLT
         console("Missing HLT");
@@ -170,9 +180,7 @@ function run() {
                 OUT();
                 break;
             case "SKI":
-            //    $("#input-checkbox").click(() => async function wait4inputFlag() {
-                    SKI();
-            //    });
+                SKI();
                 break;
             case "SKO":
                 SKO();
@@ -189,12 +197,14 @@ function run() {
         }
         index = dec2hex(pc).slice(1, 4);
         rowElem = $(`#row${index}`)[0];
-        currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
+        currentInstruction = currentInstruction == "HLT" ? null : rowElem.getElementsByClassName("instruction-input")[0].value;
         $("#ac-value")[0].value = acReg;
         $("#E-value")[0].value = eFlag;
-        $("#pc")[0].innerHTML = pc;
+        $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4);
+        if (step && currentInstruction != "HLT") return;
     }
     currentInstruction == "HLT" ? console("The program finished by HLT") : null;
+    pc = hex2dec($("#org-value")[0].value);
 }
 
 /* it's the first pass
