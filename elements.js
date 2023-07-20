@@ -8,6 +8,9 @@ var outputReg;
 var eFlag = 0;
 let labelsJson;
 var step = false;
+var lastIndex;
+
+
 
 // default values
 $("#org-value")[0].value = dec2hex(rowCtr).slice(1, 4);
@@ -23,14 +26,14 @@ $("#org-value").keyup((e) => listenToOrg(e));
 for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
     $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'ION';
+    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
     $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
 
-    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
-    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'A';
+    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'BSA';
 
     $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
-    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A';
+    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
     
     $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
 
@@ -92,13 +95,14 @@ function run() {
 /* by press run this function will start
 with check the values and then run the program */
 function exe() {
-    // need to add check for the program values
-    if (!lookForHLT()) { //stop running if missing HLT
-        console("Missing HLT");
-        return;
+    if (pc == hex2dec($("#org-value")[0].value)) {
+        if (lookForHLT()) { //stop running if missing HLT
+            console("Missing HLT");
+            return;
+        }
+        collectLabels();
+        lastIndex = "@";
     }
-    collectLabels();
-    //pc = hex2dec($("#org-value")[0].value);
     acReg = $("#ac-value")[0].value;
     eFlag = $("#E-value")[0].value;
     $("#org-value").keyup((e) => listenToOrg(e));
@@ -106,6 +110,7 @@ function exe() {
     let val;
     let indirectValue;
     let I;
+    let cashStep = false;
     let index = dec2hex(pc).slice(1, 4);
     let rowElem = $(`#row${index}`)[0];
     let currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
@@ -114,7 +119,6 @@ function exe() {
         I = val.split(" ")[1] == "I" ? true : false; //save true if indirect
         val = val.split(" ")[0]; //value without the 'I'
         indirectValue = val != "" ? getValueByAddress(labelToAddress(val, I)) : null;
-        
         switch (currentInstruction) {
         // memory
             case "AND":
@@ -195,16 +199,27 @@ function exe() {
                 console("Missing row in the flow");
                 return;
         }
+        lastIndex != "@" ? $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent" : null;
+        $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
+        lastIndex = index;
         index = dec2hex(pc).slice(1, 4);
         rowElem = $(`#row${index}`)[0];
         currentInstruction = currentInstruction == "HLT" ? null : rowElem.getElementsByClassName("instruction-input")[0].value;
         $("#ac-value")[0].value = acReg;
         $("#E-value")[0].value = eFlag;
         $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4);
+        $("#run-btn")[0].innerHTML = "Keep running";
+        cashStep = true;
         if (step && currentInstruction != "HLT") return;
     }
+    if (cashStep && step) {
+        return;
+    }
+    $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
+    $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent";
     currentInstruction == "HLT" ? console("The program finished by HLT") : null;
     pc = hex2dec($("#org-value")[0].value);
+    $("#run-btn")[0].innerHTML = "Run the code";
 }
 
 /* it's the first pass
@@ -232,11 +247,13 @@ a = obj.kc[0]
 // look for HLT in the program
 function lookForHLT() {
     let rows = Array.from($(".instruction-input"));
-    let findHLT = false;
     rows.forEach(r => {
-        r.value == "HLT" ? findHLT = true : null;
+        if (r.value == "HLT") {
+            r.parentElement.parentElement.getElementsByClassName("address")[0].style.backgroundColor = "transparent";
+            return true;
+        }
     });
-    return findHLT;
+    return false;
 }
 
 // convert the instructions and value to machine lang
@@ -407,14 +424,19 @@ function listenToInputs(e) {
     if (elem.id =="org-value") return;
     elem.value = elem.value.toUpperCase();
     let val = elem.value; //inputs value
-    let address = elem.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
-    let instruction = $(`#row${address}`)[0].getElementsByClassName("count-address")[0].innerHTML;
-    let inputType = elem.className; //inputs type
-    if (inputType.includes("value-input") && instruction == ('HEX' || 'DEC')) {
-        elem.value.length > 3 ? console(`Too long value at row ${address}`) : null;
-        elem.value = padding(val, 3);
+    try {
+        let address = elem.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
+        let instruction = $(`#row${address}`)[0].getElementsByClassName("count-address")[0].innerHTML;
+        let inputType = elem.className; //inputs type
+        if (inputType.includes("value-input") && instruction == ('HEX' || 'DEC')) {
+            elem.value.length > 3 ? console(`Too long value at row ${address}`) : null;
+            elem.value = padding(val, 3);
+        }
+        convertToMachineLang();
     }
-    convertToMachineLang();
+    catch (error) {
+        return;
+    }
  }
 
 function showMachineLangToggle() {

@@ -145,7 +145,7 @@ get the address and store there the address to back */
 function BSA(address) {
     let backAddress = dec2hex(Number(pc) + 1);
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = backAddress;
-    pc = Number(address) + 1;
+    pc = (Number(hex2dec(address)) + 1);
 }
 
 /* increment and skip if zero
