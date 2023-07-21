@@ -216,15 +216,17 @@ function IOF() {
 
 // skip if the input flag on
 function SKI() {
-    return new Promise((resolve) => {
     isChecked = $("#input-checkbox")[0].checked;
-        if (isChecked) {
-            $("#input-checkbox")[0].checked = false;
-            pc++;
-        }
+    if (isChecked) {
+        $("#input-checkbox")[0].checked = false;
         pc++;
-        resolve();
-    })
+    }
+    pc++;
+}
+function runSKI() {
+    $("#input-switch")[0].removeEventListener("click", runSKI);
+    $("#input-checkbox")[0].checked = false;
+    pc += 2;
 }
 
 // skip if the output flag on

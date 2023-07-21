@@ -26,16 +26,16 @@ $("#org-value").keyup((e) => listenToOrg(e));
 for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
     $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'ADD';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'A';
+    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
 
-    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'A';
-    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'AND';
+    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
+    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'SKI';
 
-    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'LDA';
-    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'B I';
+    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'BUN';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A';
     
-    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INP';
 
     $("#row104")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
 
@@ -192,7 +192,13 @@ function exe() {
                 OUT();
                 break;
             case "SKI":
-                SKI();
+                if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
+                $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("value-input")[0].value) &&
+                $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("instruction-input")[0].value == "BUN") {
+                        $("#input-switch")[0].addEventListener("click", runSKI);
+                        return;
+                }
+                else SKI();
                 break;
             case "SKO":
                 SKO();
@@ -494,4 +500,15 @@ function addMemoryRow() {
     //rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
     //$("#org-value").keyup((e) => listenToOrg(e));
+}
+
+var num = 1;
+function Dlay() {
+    $("#console")[0].innerHTML = num;
+    num++;
+    if (false) {
+
+    } else {
+        setTimeout(Dlay, 500);
+    }
 }

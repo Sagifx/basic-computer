@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Computer Compiler</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
 
@@ -31,7 +30,7 @@
         </div>
         <div class="base-convert" style="padding-top: 60px; width: 100px">
             <div>Converted Number </div>
-            <div id="number-after-convert" style="border: solid; width: 100px"></div>
+            <div id="number-after-convert" style="padding-left: 20px"></div>
         </div>
 
         <!-- test -->
@@ -93,7 +92,7 @@
             <div>Input register</div>
             <input id="input-register" class="monitor-inputs" maxlength="2">
             <div>input flag</div>
-            <label class="switch">
+            <label id="input-switch" class="switch">
                 <input id="input-checkbox" type="checkbox">
                 <span class="slider round"></span>
             </label>
@@ -102,7 +101,7 @@
             <div>Output register</div>
             <input id="output-register" class="monitor-inputs" maxlength="2">
             <div>output flag</div>
-            <label class="switch">
+            <label id="output-switch" class="switch">
                 <input id="output-checkbox" type="checkbox">
                 <span class="slider round"></span>
             </label>
@@ -111,9 +110,9 @@
             <div>Interupt Enable</div>
             <div id="interupt-enable">OFF</div>
         </div>
-        <div style="padding-top: 60px">
+        <div style="padding-top: 100px">
             <div>Console</div>
-            <div id="console" style="width: 130px; border: solid"></div>
+            <div id="console"></div>
         </div>
     </div>
 </div>

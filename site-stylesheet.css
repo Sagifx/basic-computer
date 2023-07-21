@@ -16,6 +16,7 @@ body {
     min-width: 300px;
     padding: 20px;
     box-sizing: border-box;
+    padding-top: 60px;
 }
 /* Optional: Apply some styling to the columns */
 .column:nth-child(odd) {
@@ -27,6 +28,7 @@ body {
 .main-title {
     font-size: 20px;
 }
+
 
 /* CMD style */
 .cmd-row {
