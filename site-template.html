@@ -1,49 +1,51 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Computer Compiler</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
+
 </head>
-
 <body>
-    <div class="grid-container">
-        <div class="grid-item">
-            <div class="base-convert">
-                <div>Number to convert </div>
-                <input id="number-to-convert" maxlength="16">
-                <div>From </div>
-                <select id="base-option-from">
-                    <option value="BIN">BIN</option>
-                    <option value="DEC">DEC</option>
-                    <option value="HEX">HEX</option>
-                </select>
-                <div>To </div>
-                <select id="base-option-to">
-                    <option value="BIN">BIN</option>
-                    <option value="DEC">DEC</option>
-                    <option value="HEX">HEX</option>
-                </select>
-                
-                <button onclick="convert()">Convert</button>
-            </div>
-            <div class="base-convert" style="padding-top: 60px; width: 100px">
-                <div>Converted Number </div>
-                <div id="number-after-convert" style="border: solid; width: 100px"></div>
-            </div>
+<div class="container">
+    <div id="left-col" class="column">
+        <div class="base-convert">
+            <div>Number to convert </div>
+            <input id="number-to-convert" maxlength="16">
+            <div>From </div>
+            <select id="base-option-from">
+                <option value="BIN">BIN</option>
+                <option value="DEC">DEC</option>
+                <option value="HEX">HEX</option>
+            </select>
+            <div>To </div>
+            <select id="base-option-to">
+                <option value="BIN">BIN</option>
+                <option value="DEC">DEC</option>
+                <option value="HEX">HEX</option>
+            </select>
 
-<!-- test -->
-<div id="row200" class="memory-row">
+            <button onclick="convert()">Convert</button>
+        </div>
+        <div class="base-convert" style="padding-top: 60px; width: 100px">
+            <div>Converted Number </div>
+            <div id="number-after-convert" style="border: solid; width: 100px"></div>
+        </div>
+
+        <!-- test -->
+        <div id="row200" class="memory-row">
             <div class="address">200</div>
             <div class="label"><input class="label-input" maxlength="4" value="X"></div>
             <div class="instruction"><input class="instruction-input" maxlength="3" value="HEX"></div>
             <div class="value"><input class="value-input" maxlength="4" value="0005"></div>
         </div>
-<!-- test -->
+        <!-- test -->
+    </div>
 
-        </div>
-            
+
+    <div id="mid-col" class="column">
         <div class="grid-item">
             <h1 class="main-title">Basic Computer Assembler</h1>
             <div id="cmd-container" style="padding: 15px">
@@ -69,59 +71,56 @@
             <button id="run-btn" onclick="run()">Run the code</button>
             <button onclick="runStep()">step by step</button>
             <button id="show-machine-lang" onclick="showMachineLangToggle()">Show machine language</button>
-            
+
         </div>
-        
-        
-        <div class="grid-item monitor-grid">
-            <div>
-                <div>PC</div>
-                <div id="pc"></div>
-            </div>
-            <div>
-                <div>AC Value</div>
-                <input id="ac-value" class="monitor-inputs" maxlength="4">
-            </div>
-            <div>
-                <div>E (Carry flag)</div>
-                <input id="E-value" class="monitor-inputs" maxlength="1">
-            </div>
-            <div>
-                <div>Input register</div>
-                <input id="input-register" class="monitor-inputs" maxlength="2">
-                <div>input flag</div>
-                <label class="switch">
-                    <input id="input-checkbox" type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div>
-                <div>Output register</div>
-                <input id="output-register" class="monitor-inputs" maxlength="2">
-                <div>output flag</div>
-                <label class="switch">
-                    <input id="output-checkbox" type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div>
-                <div>Interupt Enable</div>
-                <div id="interupt-enable">OFF</div>
-            </div>
-            <div style="padding-top: 60px">
-                <div>Console</div>
-                <div id="console" style="width: 130px; border: solid"></div>
-            </div>
-        </div>  
- 
     </div>
 
 
-
+    <div id="right-col" class="column">
+        <div>
+            <div>PC</div>
+            <div id="pc"></div>
+        </div>
+        <div>
+            <div>AC Value</div>
+            <input id="ac-value" class="monitor-inputs" maxlength="4">
+        </div>
+        <div>
+            <div>E (Carry flag)</div>
+            <input id="E-value" class="monitor-inputs" maxlength="1">
+        </div>
+        <div>
+            <div>Input register</div>
+            <input id="input-register" class="monitor-inputs" maxlength="2">
+            <div>input flag</div>
+            <label class="switch">
+                <input id="input-checkbox" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div>
+            <div>Output register</div>
+            <input id="output-register" class="monitor-inputs" maxlength="2">
+            <div>output flag</div>
+            <label class="switch">
+                <input id="output-checkbox" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div>
+            <div>Interupt Enable</div>
+            <div id="interupt-enable">OFF</div>
+        </div>
+        <div style="padding-top: 60px">
+            <div>Console</div>
+            <div id="console" style="width: 130px; border: solid"></div>
+        </div>
+    </div>
+</div>
 </body>
-    <script src="/compailer/instructions.js"></script>
-    <script src="/compailer/baseConvert.js"></script>
-    <script src="/compailer/elements.js"></script>
-    <link rel="stylesheet" href="/compailer/site-stylesheet.css">
+<script src="/compailer/instructions.js"></script>
+<script src="/compailer/baseConvert.js"></script>
+<script src="/compailer/elements.js"></script>
+<link rel="stylesheet" href="/compailer/site-stylesheet.css">
 
 </html>

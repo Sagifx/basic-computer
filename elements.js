@@ -366,13 +366,16 @@ function convertToMachineLang() {
 }
 
 
-//check inputs
+/*check inputs
+* 1. check that used label exist
+* 2. check the instruction is allowed
+* */
 function checkInputs() {
     let rows = Array.from($(".cmd-row"));
     collectLabels();
     rows.forEach(r => {
         let instruction = r.getElementsByClassName("instruction-input")[0].value;
-        let I = instruction.split(" ")[1]; //the value without the I
+        let I = instruction.split(" ")[1]; //indirect- true/false
         instruction = instruction.split(" ")[0];
         let val = r.getElementsByClassName("value-input")[0].value;
         if (instruction == ('ADD' || 'AND' || 'LDA' || 'STA' || 'BUN' || 'BSA' || 'ISZ')) {
@@ -405,8 +408,9 @@ function labelToAddress(lab, I) {
     return address;
 }
 
-// get address
-//return the binary value of this address
+/* get address
+return the binary value of this address
+*/
 function getValueByAddress(address) {
     let row = $(`#row${address}`)[0];
     let base = row.getElementsByClassName("instruction-input")[0].value; //HEX || DEC
@@ -424,7 +428,8 @@ function getValueByAddress(address) {
     }
     return val;
 }
-/* listen to the input
+
+/* listen to the inputs
 1. padding to hex
 2. convert values to upper case
 3. dynamic change of the machine language
@@ -450,6 +455,7 @@ function listenToInputs(e) {
     }
  }
 
+ // shoe ot hide machine lang by show/hide btn
 function showMachineLangToggle() {
     let btn = $(`#show-machine-lang`)[0];
     let rows = Array.from($(".machine-lang"));
@@ -468,14 +474,15 @@ function showMachineLangToggle() {
     }
 }
 
+// print msg to the user
 function console(txt) {
     $("#console")[0].innerHTML = txt;
 }
 
-/*
+
 function addMemoryRow() {
     let newRow = document.createElement("div");
-    newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
+    //newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
     newRow.setAttribute("class", "memory-row");
     newRow.innerHTML= `
             <div class="memory-address address"><input class="label-memory-input" maxlength="4"></div>
@@ -484,7 +491,7 @@ function addMemoryRow() {
             <div class="memory-value"><input class="value-input" maxlength="4"></div>
 <!--            <div class="machine-lang"></div>-->
             `;
-    rowCtr++;
+    //rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
     //$("#org-value").keyup((e) => listenToOrg(e));
-}*/
+}

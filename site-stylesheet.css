@@ -1,16 +1,28 @@
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #2196F3;
-  padding: 10px;
-  
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
-.grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 16px;
-  text-align: center;
+body {
+    display: flex;
+    flex-direction: column;
+}
+.container {
+    flex: 1;
+    display: flex;
+}
+.column {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+/* Optional: Apply some styling to the columns */
+.column:nth-child(odd) {
+    background-color: #f0f0f0;
+}
+.column:nth-child(even) {
+    background-color: #e0e0e0;
 }
 .main-title {
     font-size: 20px;
@@ -43,7 +55,7 @@
 
 
 /* MONITOR */
-.monitor-grid div {
+#right-col div {
     display: flex;
     justify-content: space-between;
     padding-top: 10px;
