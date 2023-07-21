@@ -189,23 +189,15 @@ function SZE() {
 
 // if the interupt on the input accumulator get the input register value (8 bit)
 function INP() {
-    if ($("#interupt-enable")[0].innerHTML) {
-        let val = document.getElementById("input-register");
-        val = val.split("");
-        for (let i = 0; i < 8; i++) {
-            acReg[i] = val[i];
-        }
-    }
+    let val = document.getElementById("input-register").value;
+    acReg = acReg.slice(0,2) + val;
     pc++;
 }
 
 // if hte interupt off the output regester get the accumulator value (8 bit)
 function OUT() {
-    if ($("#interupt-enable")[0].innerHTML) {
-        for (let i = 0; i < 8; i++) {
-            acReg[i] = output(i);
-        }
-    }
+    let val = acReg.slice(2,4);
+    $("#output-register")[0].value = val;
     pc++;
 }
 

@@ -26,18 +26,26 @@ $("#org-value").keyup((e) => listenToOrg(e));
 for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
     $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'ADD';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'A';
 
     $("#row101")[0].getElementsByClassName("value-input")[0].value = 'A';
-    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'BSA';
+    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'AND';
 
-    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
-    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
+    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'LDA';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'B I';
     
     $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
 
     $("#row104")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
+
+    $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
+    $("#row105")[0].getElementsByClassName("instruction-input")[0].value = 'HEX';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = '3';
+
+    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = 'B';
+    $("#row106")[0].getElementsByClassName("instruction-input")[0].value = 'HEX';
+    $("#row106")[0].getElementsByClassName("value-input")[0].value = 'A';
     convertToMachineLang();
 }, 100);
 
@@ -271,25 +279,25 @@ function convertToMachineLang() {
         switch (currentInstruction) {
             // memory
             case "AND":
-                machineLang = (I ? '8' : '0') + labelToAddress(val, I);
+                machineLang = (I ? '8' : '0') + padding(labelToAddress(val, I), 3);
                 break;
             case "ADD":
-                machineLang = (I ? '9' : '1') + labelToAddress(val, I);
+                machineLang = (I ? '9' : '1') + padding(labelToAddress(val, I), 3);
                 break;
             case "LDA":
-                machineLang = (I ? 'A' : '2') + labelToAddress(val, I);
+                machineLang = (I ? 'A' : '2') + padding(labelToAddress(val, I), 3);
                 break;
             case "STA":
-                machineLang = (I ? 'B' : '3') + labelToAddress(val, I);
+                machineLang = (I ? 'B' : '3') + padding(labelToAddress(val, I), 3);
                 break;
             case "BUN":
-                machineLang = (I ? 'C' : '4') + labelToAddress(val, I);
+                machineLang = (I ? 'C' : '4') + padding(labelToAddress(val, I), 3);
                 break;
             case "BSA":
-                machineLang = (I ? 'D' : '5') + labelToAddress(val, I);
+                machineLang = (I ? 'D' : '5') + padding(labelToAddress(val, I), 3);
                 break;
             case "ISZ":
-                machineLang = (I ? 'E' : '6') + labelToAddress(val, I);
+                machineLang = (I ? 'E' : '6') + padding(labelToAddress(val, I), 3);
                 break;
             // register
             case "CLA":
@@ -388,7 +396,10 @@ function checkInputs() {
 function labelToAddress(lab, I) {
     let address = labelsJson[lab][0];
     if (I) {
-        address = getValueByAddress(address);
+        address = bin2hex(getValueByAddress(address));
+        while (address.startsWith("0")){
+            address = address.slice(1, );
+        }
         return labelsJson[address][0];
     }
     return address;
@@ -460,3 +471,20 @@ function showMachineLangToggle() {
 function console(txt) {
     $("#console")[0].innerHTML = txt;
 }
+
+/*
+function addMemoryRow() {
+    let newRow = document.createElement("div");
+    newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
+    newRow.setAttribute("class", "memory-row");
+    newRow.innerHTML= `
+            <div class="memory-address address"><input class="label-memory-input" maxlength="4"></div>
+            <div class="memory-label"><input class="label-memory-input" maxlength="4"></div>
+            <div class="memory-instruction"><input class="instruction-input" maxlength="3"></div>
+            <div class="memory-value"><input class="value-input" maxlength="4"></div>
+<!--            <div class="machine-lang"></div>-->
+            `;
+    rowCtr++;
+    $("#cmd-container")[0].appendChild(newRow);
+    //$("#org-value").keyup((e) => listenToOrg(e));
+}*/
