@@ -9,6 +9,7 @@ var eFlag = 0;
 let labelsJson;
 var step = false;
 var lastIndex;
+var memoryJson;
 
 
 
@@ -26,25 +27,25 @@ $("#org-value").keyup((e) => listenToOrg(e));
 for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
     $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row100")[0].getElementsByClassName("instruction-input")[0].value = 'INC';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
     $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
-    $("#row101")[0].getElementsByClassName("instruction-input")[0].value = 'SKI';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SKI';
 
-    $("#row102")[0].getElementsByClassName("instruction-input")[0].value = 'BUN';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
     $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A';
     
-    $("#row103")[0].getElementsByClassName("instruction-input")[0].value = 'INP';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INP';
 
-    $("#row104")[0].getElementsByClassName("instruction-input")[0].value = 'HLT';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
 
     $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
-    $("#row105")[0].getElementsByClassName("instruction-input")[0].value = 'HEX';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
     $("#row105")[0].getElementsByClassName("value-input")[0].value = '3';
 
     $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = 'B';
-    $("#row106")[0].getElementsByClassName("instruction-input")[0].value = 'HEX';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
     $("#row106")[0].getElementsByClassName("value-input")[0].value = 'A';
     convertToMachineLang();
 }, 100);
@@ -78,11 +79,11 @@ add row to the cmd */
 function addCmdRow() {
     let newRow = document.createElement("div");
     newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
-    newRow.setAttribute("class", "cmd-row");
+    newRow.setAttribute("class", "general-row cmd-row");
     newRow.innerHTML= `
             <div class="address count-address">${rowCtr.toString(16).toUpperCase()}</div>
-            <div class="label"><input class="label-cmd-input" maxlength="4"></div>
-            <div class="instruction"><input class="instruction-input" maxlength="3"></div>
+            <div class="label"><input class="label-cmd-input label-to-collect" maxlength="4"></div>
+            <div class="instruction"><input class="instruction-cmd-input" maxlength="3"></div>
             <div class="value"><input class="value-input" maxlength="4"></div>
             <div class="machine-lang"></div>
             `;
@@ -114,19 +115,19 @@ function exe() {
     acReg = $("#ac-value")[0].value;
     eFlag = $("#E-value")[0].value;
     $("#org-value").keyup((e) => listenToOrg(e));
-    console("");
     let val;
     let indirectValue;
     let I;
     let cashStep = false;
     let index = dec2hex(pc).slice(1, 4);
     let rowElem = $(`#row${index}`)[0];
-    let currentInstruction = rowElem.getElementsByClassName("instruction-input")[0].value;
+    let currentInstruction = rowElem.getElementsByClassName("instruction-cmd-input")[0].value;
     while (currentInstruction != "HLT") {
         val = rowElem.getElementsByClassName("value-input")[0].value;
         I = val.split(" ")[1] == "I" ? true : false; //save true if indirect
         val = val.split(" ")[0]; //value without the 'I'
         indirectValue = val != "" ? getValueByAddress(labelToAddress(val, I)) : null;
+        console("");
         switch (currentInstruction) {
         // memory
             case "AND":
@@ -192,13 +193,14 @@ function exe() {
                 OUT();
                 break;
             case "SKI":
-                if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
-                $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("value-input")[0].value) &&
-                $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("instruction-input")[0].value == "BUN") {
-                        $("#input-switch")[0].addEventListener("click", runSKI);
-                        return;
-                }
-                else SKI();
+                // if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
+                // $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("value-input")[0].value) &&
+                // $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("instruction-cmd-input")[0].value == "BUN") {
+                //         $("#input-switch")[0].addEventListener("click", runSKI);
+                //         return;
+                // }
+                while(runSKI());
+                // else SKI();
                 break;
             case "SKO":
                 SKO();
@@ -218,7 +220,7 @@ function exe() {
         lastIndex = index;
         index = dec2hex(pc).slice(1, 4);
         rowElem = $(`#row${index}`)[0];
-        currentInstruction = currentInstruction == "HLT" ? null : rowElem.getElementsByClassName("instruction-input")[0].value;
+        currentInstruction = currentInstruction == "HLT" ? null : rowElem.getElementsByClassName("instruction-cmd-input")[0].value;
         $("#ac-value")[0].value = acReg;
         $("#E-value")[0].value = eFlag;
         $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4);
@@ -239,7 +241,7 @@ function exe() {
 /* it's the first pass
 all the labels saved with their addresses in json as key and value */
 function collectLabels() {
-    let rows = Array.from($(".label-cmd-input"));
+    let rows = Array.from($(".label-to-collect"));
     let labels = '';
     rows.forEach(r => {
         r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` : null; //key (label) value (address)
@@ -260,7 +262,7 @@ a = obj.kc[0]
 
 // look for HLT in the program
 function lookForHLT() {
-    let rows = Array.from($(".instruction-input"));
+    let rows = Array.from($(".instruction-cmd-input"));
     rows.forEach(r => {
         if (r.value == "HLT") {
             r.parentElement.parentElement.getElementsByClassName("address")[0].style.backgroundColor = "transparent";
@@ -272,13 +274,13 @@ function lookForHLT() {
 
 // convert the instructions and value to machine lang
 function convertToMachineLang() {
-    let rows = Array.from($(".cmd-row"));
+    let rows = Array.from($(".general-row"));
     let machineLang;
     let val;
     let I;
     collectLabels();
     rows.forEach(r => {
-        currentInstruction = r.getElementsByClassName("instruction-input")[0].value;
+        currentInstruction = r.getElementsByClassName("instruction-cmd-input")[0].value;
         val = r.getElementsByClassName("value-input")[0].value;
         val = val.split(" ")[0];
         I = val.split(" ")[1];
@@ -380,8 +382,8 @@ function checkInputs() {
     let rows = Array.from($(".cmd-row"));
     collectLabels();
     rows.forEach(r => {
-        let instruction = r.getElementsByClassName("instruction-input")[0].value;
-        let I = instruction.split(" ")[1]; //indirect- true/false
+        let instruction = r.getElementsByClassName("instruction-cmd-input")[0].value;
+        //let I = instruction.split(" ")[1]; //indirect- true/false
         instruction = instruction.split(" ")[0];
         let val = r.getElementsByClassName("value-input")[0].value;
         if (instruction == ('ADD' || 'AND' || 'LDA' || 'STA' || 'BUN' || 'BSA' || 'ISZ')) {
@@ -419,7 +421,7 @@ return the binary value of this address
 */
 function getValueByAddress(address) {
     let row = $(`#row${address}`)[0];
-    let base = row.getElementsByClassName("instruction-input")[0].value; //HEX || DEC
+    let base = row.getElementsByClassName("instruction-cmd-input")[0].value; //HEX || DEC
     let val = row.getElementsByClassName("value-input")[0].value; //original value
     switch (base) {
         case "HEX":
@@ -451,7 +453,7 @@ function listenToInputs(e) {
         let instruction = $(`#row${address}`)[0].getElementsByClassName("count-address")[0].innerHTML;
         let inputType = elem.className; //inputs type
         if (inputType.includes("value-input") && instruction == ('HEX' || 'DEC')) {
-            elem.value.length > 3 ? console(`Too long value at row ${address}`) : null;
+            elem.value.length > 3 ? console(`The value at row ${address} is too long`) : null;
             elem.value = padding(val, 3);
         }
         convertToMachineLang();
@@ -461,7 +463,7 @@ function listenToInputs(e) {
     }
  }
 
- // shoe ot hide machine lang by show/hide btn
+ // show ot hide machine lang by show/hide btn
 function showMachineLangToggle() {
     let btn = $(`#show-machine-lang`)[0];
     let rows = Array.from($(".machine-lang"));
@@ -486,22 +488,10 @@ function console(txt) {
 }
 
 
-function addMemoryRow() {
-    let newRow = document.createElement("div");
-    //newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
-    newRow.setAttribute("class", "memory-row");
-    newRow.innerHTML= `
-            <div class="memory-address address"><input class="label-memory-input" maxlength="4"></div>
-            <div class="memory-label"><input class="label-memory-input" maxlength="4"></div>
-            <div class="memory-instruction"><input class="instruction-input" maxlength="3"></div>
-            <div class="memory-value"><input class="value-input" maxlength="4"></div>
-<!--            <div class="machine-lang"></div>-->
-            `;
-    //rowCtr++;
-    $("#cmd-container")[0].appendChild(newRow);
-    //$("#org-value").keyup((e) => listenToOrg(e));
-}
 
+
+
+// sketch
 var num = 1;
 function Dlay() {
     $("#console")[0].innerHTML = num;
@@ -511,4 +501,49 @@ function Dlay() {
     } else {
         setTimeout(Dlay, 500);
     }
+}
+
+/* keyword in[""] example a["b"][1]
+key= address, values= (1) label (2) instruction (3) value
+
+ */
+function createMemoryJson() {
+    let memoryString = "";
+    let convertedIndex;
+    for (let i= 0; i < 4096; i++) {
+        convertedIndex = dec2hex(i).slice(1, );
+        memoryString += `"${convertedIndex}":["","",""],`;
+    }
+    memoryString = memoryString.slice(0, memoryString.length - 1);
+    memoryString = "{" + memoryString + "}";
+    memoryJson = JSON.parse(memoryString)
+}
+
+function storeDataInJson(address, label, instruction, value) {
+    memoryJson[`${address}`][0] = label;
+    memoryJson[`${address}`][1] = instruction;
+    memoryJson[`${address}`][2] = value;
+}
+
+function showMemory() {
+    let convertedIndex;
+    for (let i = 0; i < 4096; i++) {
+        convertedIndex = dec2hex(i).slice(1, )
+        if (memoryJson[`${convertedIndex}`][1] != "") {
+            addMemoryRow(convertedIndex);
+        }
+    }
+}
+
+function addMemoryRow(address) {
+    let newRow = document.createElement("div");
+    newRow.setAttribute("class", "memory-row");
+    newRow.setAttribute("style", "display: flex");
+    newRow.innerHTML= `
+            <div class="memory-address">${address}</div>
+            <div class="memory-label">${memoryJson[address][0]}</div>
+            <div class="memory-instruction">${memoryJson[address][1]}</div>
+            <div class="memory-value">${memoryJson[address][2]}</div>
+            `;
+    $("#memory-container")[0].appendChild(newRow);
 }

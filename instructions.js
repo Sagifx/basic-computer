@@ -131,6 +131,7 @@ function LDA(mar) {
 get the address to atore at */
 function STA(address) {
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = acReg;
+    $(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
     pc++;
 }
 
@@ -224,9 +225,15 @@ function SKI() {
     pc++;
 }
 function runSKI() {
-    $("#input-switch")[0].removeEventListener("click", runSKI);
-    $("#input-checkbox")[0].checked = false;
-    pc += 2;
+    $("#console")[0].innerHTML = num;
+    num++;
+    if ($("#input-checkbox")[0].checked) {
+        $("#input-checkbox")[0].checked = false;
+        pc += 2;
+        return false;
+    } else {
+        setTimeout(runSKI, 500);
+    }
 }
 
 // skip if the output flag on

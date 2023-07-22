@@ -1,3 +1,5 @@
+
+/* general body */
 body, html {
     margin: 0;
     padding: 0;
@@ -29,29 +31,33 @@ body {
     font-size: 20px;
 }
 
+/* Memory style */
+
 
 /* CMD style */
-.cmd-row {
+.general-row {
     display: flex;
 }
 
-.cmd-org-row {
+.cmd-org-row, .memory-title-row{
     display: flex;
-}
-
-.cmd-org-row div {
     font-weight:bold;
 }
 
+.address-memory-input {
+    width: 70px;
+}
 .address {
     width: 70px;
+    padding-right: 10px;
 }
 
 .label, .instruction, .value {
     width: 95px;
 }
 
-.label-cmd-input, .instruction-input, .value-input {
+.label-to-collect, .instruction-cmd-input, .value-input,
+    .instruction-memory-input {
     width: 85px;
 }
 
@@ -123,7 +129,6 @@ input:checked + .slider:before {
   transform: translateX(12px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
