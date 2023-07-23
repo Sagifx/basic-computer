@@ -32,7 +32,9 @@ body {
 }
 
 /* Memory style */
-
+.memory-address, .memory-label, .memory-instruction, .memory-value {
+    width: 80px;
+}
 
 /* CMD style */
 .general-row {
