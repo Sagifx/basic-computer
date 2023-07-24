@@ -127,6 +127,7 @@ async function exe() {
         I = val.split(" ")[1] == "I" ? true : false; //save true if indirect
         val = val.split(" ")[0]; //value without the 'I'
         indirectValue = val != "" ? getValueByAddress(labelToAddress(val, I)) : null;
+
         console("");
         switch (currentInstruction) {
         // memory
@@ -193,17 +194,22 @@ async function exe() {
                 OUT();
                 break;
             case "SKI":
-                // if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
-                // $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("value-input")[0].value) &&
-                // $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("instruction-cmd-input")[0].value == "BUN") {
-                //         $("#input-switch")[0].addEventListener("click", runSKI);
-                //         return;
-                // }
-                while(await runSKI());
-                // else SKI();
+                console("Waiting for input flag")
+                if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
+                $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("value-input")[0].value) &&
+                $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("instruction-cmd-input")[0].value == "BUN") {
+                        while(await runSKI());
+                }
+                else SKI();
                 break;
             case "SKO":
-                SKO();
+                console("Waiting for output flag")
+                if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
+                        $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("value-input")[0].value) &&
+                    $(`#row${dec2hex(Number(hex2dec(index))+1).slice(1, )}`)[0].getElementsByClassName("instruction-cmd-input")[0].value == "BUN") {
+                    while(await runSKO());
+                }
+                else SKO();
                 break;
             case "ION":
                 ION();   //R flag
