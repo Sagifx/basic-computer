@@ -92,18 +92,18 @@ function addCmdRow() {
     //$("#org-value").keyup((e) => listenToOrg(e));
 }
 
-function runStep() {
+async function runStep() {
     step = true;
-    exe();
+    await exe();
 }
-function run() {
+async function run() {
     step = false;
-    exe();
+    await exe();
 }
 
 /* by press run this function will start
 with check the values and then run the program */
-function exe() {
+async function exe() {
     if (pc == hex2dec($("#org-value")[0].value)) {
         if (lookForHLT()) { //stop running if missing HLT
             console("Missing HLT");
@@ -199,7 +199,7 @@ function exe() {
                 //         $("#input-switch")[0].addEventListener("click", runSKI);
                 //         return;
                 // }
-                while(runSKI());
+                while(await runSKI());
                 // else SKI();
                 break;
             case "SKO":

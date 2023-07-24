@@ -224,7 +224,7 @@ function SKI() {
     }
     pc++;
 }
-function runSKI() {
+async function runSKI() {
     $("#console")[0].innerHTML = num;
     num++;
     if ($("#input-checkbox")[0].checked) {
@@ -232,8 +232,12 @@ function runSKI() {
         pc += 2;
         return false;
     } else {
-        setTimeout(runSKI, 500);
+       await sleep(500);
     }
+}
+
+function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 // skip if the output flag on
