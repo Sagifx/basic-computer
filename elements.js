@@ -48,12 +48,15 @@ setTimeout(() => {
     $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
     $("#row106")[0].getElementsByClassName("value-input")[0].value = 'A';
     convertToMachineLang();
+    createMemoryJson();
+    fetchMemory();
 }, 100);
 
 //test
 
-/* listener on the valut of the ORG 
-by change all the address will change after the ORG value */
+/* listener on the value of the ORG 
+*  by change ORG all the addresses will change 
+*/
 function listenToOrg(e) {
     let pattern = new RegExp(/^[0-9a-fA-F]{1,3}$/);
     if (!pattern.test(e.target.value) || e.target.value.length > 3) {
@@ -75,7 +78,8 @@ function listenToOrg(e) {
 }
 
 /* triggered by "add row" btn
-add row to the cmd */
+*  add row to the cmd 
+*/
 function addCmdRow() {
     let newRow = document.createElement("div");
     newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
@@ -92,10 +96,19 @@ function addCmdRow() {
     //$("#org-value").keyup((e) => listenToOrg(e));
 }
 
+/**
+ * triggered by run the code btn
+ * run all the program
+ */
 async function runStep() {
     step = true;
     await exe();
 }
+
+/**
+ * triggered by step by step btn
+ * run one line at the program
+ */
 async function run() {
     step = false;
     await exe();
@@ -110,6 +123,7 @@ async function exe() {
             return;
         }
         collectLabels();
+        fetchMemory();
         lastIndex = "@";
     }
     acReg = $("#ac-value")[0].value;
@@ -235,6 +249,7 @@ async function exe() {
         if (step && currentInstruction != "HLT") return;
     }
     if (cashStep && step) {
+        fetchMemory();
         return;
     }
     $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
@@ -407,8 +422,9 @@ function checkInputs() {
     return true;
 }
 
-/* get label and direct/indirect
-*  return  the labels address
+/** 
+*  get label and direct/indirect
+*  return  the label's address
 */
 function labelToAddress(lab, I) {
     let address = labelsJson[lab][0];
@@ -422,8 +438,9 @@ function labelToAddress(lab, I) {
     return address;
 }
 
-/* get address
-return the binary value of this address
+/**
+*  get address
+*  return the binary value of this address
 */
 function getValueByAddress(address) {
     let row = $(`#row${address}`)[0];
@@ -494,25 +511,10 @@ function console(txt) {
 }
 
 
-
-
-
-// sketch
-var num = 1;
-function Dlay() {
-    $("#console")[0].innerHTML = num;
-    num++;
-    if (false) {
-
-    } else {
-        setTimeout(Dlay, 500);
-    }
-}
-
-/* keyword in[""] example a["b"][1]
-key= address, values= (1) label (2) instruction (3) value
-
- */
+/** 
+* keyword in[""] example a["b"][1]
+* key= address, values= (1) label (2) instruction (3) value
+*/
 function createMemoryJson() {
     let memoryString = "";
     let convertedIndex;
@@ -520,27 +522,45 @@ function createMemoryJson() {
         convertedIndex = dec2hex(i).slice(1, );
         memoryString += `"${convertedIndex}":["","",""],`;
     }
-    memoryString = memoryString.slice(0, memoryString.length - 1);
+    //memoryString = memoryString.slice(0, memoryString.length - 1);
+    memoryString += `"ac":[""],`;
+    memoryString += `"eFlag":[""],`;
+    memoryString += `"input":[""],`;
+    memoryString += `"output":[""],`;
+    memoryString += `"ORG":[""]`;
     memoryString = "{" + memoryString + "}";
-    memoryJson = JSON.parse(memoryString)
+    memoryJson = JSON.parse(memoryString);
 }
 
-function storeDataInJson(address, label, instruction, value) {
-    memoryJson[`${address}`][0] = label;
-    memoryJson[`${address}`][1] = instruction;
-    memoryJson[`${address}`][2] = value;
+/**
+ * get address label instruction and value and
+ * store the data into the Json data
+ */
+function storeDataInJson(address) {
+    r = $(`#row${address}`)[0];
+    memoryJson[`${address}`][0] = r.getElementsByClassName("label-to-collect")[0].value;
+    memoryJson[`${address}`][1] = r.getElementsByClassName("instruction-cmd-input")[0].value;
+    memoryJson[`${address}`][2] = r.getElementsByClassName("value-input")[0].value;
 }
 
+/**
+ * this function check every rom in the memory
+ * and add memory with the row (if exist data for this address)
+ */
 function showMemory() {
     let convertedIndex;
+    $("#memory-container")[0].innerHTML = "";
     for (let i = 0; i < 4096; i++) {
         convertedIndex = dec2hex(i).slice(1, )
-        if (memoryJson[`${convertedIndex}`][1] != "") {
+        if (memoryJson[convertedIndex][1] != "") {
             addMemoryRow(convertedIndex);
         }
     }
 }
 
+/**
+ * get address and creat div element with all the data
+ */
 function addMemoryRow(address) {
     let newRow = document.createElement("div");
     newRow.setAttribute("class", "memory-row");
@@ -552,4 +572,14 @@ function addMemoryRow(address) {
             <div class="memory-value">${memoryJson[address][2]}</div>
             `;
     $("#memory-container")[0].appendChild(newRow);
+}
+
+/**
+ * copy the CMD data to the memory 
+ */
+function fetchMemory() {
+    let cmdRows = Array.from($(".count-address"));
+    cmdRows.forEach(r => {
+        storeDataInJson(r.innerHTML);
+    });
 }
