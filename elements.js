@@ -40,7 +40,7 @@ setTimeout(() => {
 
     $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
 
-    $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
+   // $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
     $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
     $("#row105")[0].getElementsByClassName("value-input")[0].value = '3';
 
