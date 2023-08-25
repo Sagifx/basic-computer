@@ -2,9 +2,6 @@
 var rowCtr = 256;
 var acReg;
 var pc = rowCtr;
-var interuptOn = false;
-var inputReg;
-var outputReg;
 var eFlag = 0;
 let labelsJson;
 var step = false;
@@ -32,13 +29,15 @@ setTimeout(() => {
 
     $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
     $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SKI';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'C';
 
     $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
-    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A I';
     
     $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INP';
 
     $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = 'C';
 
    // $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
     $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
@@ -78,7 +77,7 @@ function listenToOrg(e) {
 }
 
 /* triggered by "add row" btn
-*  add row to the cmd 
+*  add row to cmd
 */
 function addCmdRow() {
     let newRow = document.createElement("div");
@@ -122,8 +121,8 @@ async function exe() {
             console("Missing HLT");
             return;
         }
-        collectLabels();
-        fetchMemory();
+        collectLabels(); // creat Json of labels (as key) and addresses (as values)
+        fetchMemory(); //fetch the cmd data to the memoryJson
         lastIndex = "@";
     }
     acReg = $("#ac-value")[0].value;
@@ -430,7 +429,7 @@ function labelToAddress(lab, I) {
     let address = labelsJson[lab][0];
     if (I) {
         address = bin2hex(getValueByAddress(address));
-        while (address.startsWith("0")){
+        while (address.startsWith("0")) {
             address = address.slice(1, );
         }
         return labelsJson[address][0];
@@ -454,6 +453,7 @@ function getValueByAddress(address) {
             val = dec2bin(val);
             break;
         default: // it's probably just for BSA
+
             //console("The indirect instruction should be HEX or DEC");
             return;
     }
