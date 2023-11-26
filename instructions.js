@@ -132,6 +132,7 @@ get the address to atore at */
 function STA(address) {
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = acReg;
     $(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
+    storeDataInJson(address);
     pc++;
 }
 
@@ -146,6 +147,7 @@ get the address and store there the address to back */
 function BSA(address) {
     let backAddress = dec2hex(Number(pc) + 1);
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = backAddress;
+    storeDataInJson(address);
     pc = (Number(hex2dec(address)) + 1);
 }
 
@@ -159,6 +161,7 @@ function ISZ(address) {
     isHEX ? val = hex2dec(val) : null;
     val = Number(val) + 1;
     row.getElementsByClassName("value-input")[0].value = isHEX ? dec2hex(val) : val;
+    storeDataInJson(address);
     val == 0 ? pc++ : null;
     pc++;
 }
