@@ -1,12 +1,14 @@
-
-var rowCtr = 256;
-var acReg;
-var pc = rowCtr;
-var eFlag = 0;
-let labelsJson;
-var step = false;
-var lastIndex;
-var memoryJson;
+/**
+ * global variables
+ */
+var rowCtr = 256; // row counter/pointer
+var acReg; // accumulator register value
+var pc = rowCtr; // program counter register
+var eFlag = 0; // carry flag
+let labelsJson; // json for all the labels
+var step = false; // bin val for run program or just one step
+var lastIndex; // keep the last index value
+var memoryJson; // json for all the memory
 
 
 
@@ -20,7 +22,7 @@ $("#input-register")[0].value = "00";
 $("#org-value").keyup((e) => listenToOrg(e));
 
 
-//test
+//test, initial program and values
 for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
     $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';

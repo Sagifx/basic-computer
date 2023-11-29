@@ -8,7 +8,7 @@ function padding(arg, paddingTo) {
     return arg;
 }
 
-/*check accumulator deviation
+/* check accumulator deviation
 get accumulator future value (16/17 bit) binary base
 return true or false
 */
@@ -22,6 +22,12 @@ function deviation(arg){
 }
 
 // increment accumulator
+/**
+ * convert to dec and add 1 to the val
+ * convert to bin and add padding
+ * slice first char if reconize diviation
+ * placement binary new val at acReg (global variable)
+ */
 function INC() {
     let arg = parseInt("0x" + (acReg), 16);
     arg++;
@@ -54,17 +60,17 @@ function CMA() {
     binAC = padding(binAC, 16);
     binAC = binAC.split("");
     binAC.forEach(bit => {
-        bit = Number(!Number(bit));
-        accumulator += bit;
+        bit = Number(!Number(bit)); // compliment every bit
+        accumulator += bit; // add the compliment bit to the new value of the ac
     });
-    acReg = bin2hex(accumulator);
+    acReg = bin2hex(accumulator); // placement the new value at the ac reg
     pc++;
 }
 
 // compliment E flag
 function CME() {
     let e = Number(eFlag);
-    eFlag = Number(!e).toString(2);
+    eFlag = Number(!e).toString(2); // place the compliment value at the eFlag
     pc++;
 }
 
@@ -72,14 +78,14 @@ function CME() {
 function CIL() {
     let accumulator = hex2bin(acReg);
     accumulator = padding(accumulator);
-    accumulator = accumulator + eFlag;
-    eFlag = accumulator.slice(0, 1);
-    accumulator = accumulator.slice(1, accumulator.length);
-    acReg = bin2hex(accumulator);
+    accumulator = accumulator + eFlag; // 17 chars string
+    eFlag = accumulator.slice(0, 1); // took the first char tot he eFlag (after circulate)
+    accumulator = accumulator.slice(1, accumulator.length); // took the rest of the chars tot he ac
+    acReg = bin2hex(accumulator); // placement the new ac val into the acReg global var
     pc++;
 }
 
-// circulate right accumulator
+// circulate right accumulator, as same logic as the CIL instruction
 function CIR() {
     let accumulator = hex2bin(acReg);
     accumulator = padding(accumulator);
@@ -90,8 +96,10 @@ function CIR() {
     pc++;
 }
 
-/* add between accumulator and value in the memory
-get the memory value */
+/**
+ * add between accumulator and value in the memory
+ * get the memory value as argument
+ */ 
 function ADD(mar) {
     let accumulator = parseInt("0x" + (acReg), 16);
     mar = bin2dec(mar);
@@ -106,8 +114,10 @@ function ADD(mar) {
     pc++;
 }
 
-/* and between accumulator and value in the memory
-get the memory value */
+/** 
+ * and between accumulator and value in the memory
+ * get the memory value 
+ */
 function AND(mar) {
     let accumulator = "";
     let acArr = hex2bin(acReg);
@@ -179,7 +189,7 @@ function SNA() {
     binAC[0] == 1 ? pc++ : null;
     pc++;
 }
- // skip if accumulator value is 0
+ // skip if accumulators value is 0
 function SZA() {
     acReg == 0 ? pc++ : null;
     pc++;
@@ -198,7 +208,7 @@ function INP() {
     pc++;
 }
 
-// if hte interupt off the output regester get the accumulator value (8 bit)
+// if the interupt off the output register get the accumulator value (8 bit)
 function OUT() {
     let val = acReg.slice(2,4);
     $("#output-register")[0].value = val;

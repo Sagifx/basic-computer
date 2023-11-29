@@ -1,4 +1,9 @@
-
+/**
+ * This file include thebackend base converts and 
+ * the users option to convert between bases (the switch case function)
+ * The argument gets as string and converts to number and then back to string
+ *  
+ */
 
 /* binary to decimal convert
     get string
@@ -64,8 +69,9 @@ function hex2bin(arg) {
     return padding(arg.toUpperCase(), 16);
 }
 
-/* take the convert that the user chose
- and return the number in new base 
+/* use for the user converter 
+  take the convert that the user chose
+   and return the number in new base 
  */
 function convert() {
     let val = $("#number-to-convert")[0].value;
