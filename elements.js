@@ -85,7 +85,8 @@ function addCmdRow() {
     let newRow = document.createElement("div");
     newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
     newRow.setAttribute("class", "general-row cmd-row");
-    newRow.innerHTML= `
+    // convert the rewCtr to string by argument base
+    newRow.innerHTML = `
             <div class="address count-address">${rowCtr.toString(16).toUpperCase()}</div>
             <div class="label"><input class="label-cmd-input label-to-collect" maxlength="4"></div>
             <div class="instruction"><input class="instruction-cmd-input" maxlength="3"></div>
@@ -115,7 +116,7 @@ async function run() {
     await exe();
 }
 
-/* by press run this function will start
+/* by press 'run' this function will start
 with check the values and then run the program */
 async function exe() {
     if (pc == hex2dec($("#org-value")[0].value)) {
@@ -127,9 +128,9 @@ async function exe() {
         fetchMemory(); //fetch the cmd data to the memoryJson
         lastIndex = "@";
     }
-    acReg = $("#ac-value")[0].value;
-    eFlag = $("#E-value")[0].value;
-    $("#org-value").keyup((e) => listenToOrg(e));
+    acReg = $("#ac-value")[0].value; //acReg value
+    eFlag = $("#E-value")[0].value; //carry flag value
+    $("#org-value").keyup((e) => listenToOrg(e)); //change the adresses by changing the org
     let val;
     let indirectValue;
     let I;
