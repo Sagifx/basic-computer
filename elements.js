@@ -131,8 +131,8 @@ async function exe() {
     acReg = $("#ac-value")[0].value; //acReg value
     eFlag = $("#E-value")[0].value; //carry flag value
     $("#org-value").keyup((e) => listenToOrg(e)); //change the adresses by changing the org
-    let val;
-    let indirectValue;
+    let val; //hold the input value without the I
+    let indirectValue; //hold boolean for direct or indirect instruction value
     let I;
     let cashStep = false;
     let index = dec2hex(pc).slice(1, 4);
@@ -146,7 +146,7 @@ async function exe() {
 
         console("");
         switch (currentInstruction) {
-        // memory
+        // memory instruction
             case "AND":
                 AND(indirectValue);   //arg- bin value at address (I)
                 break;
@@ -168,7 +168,7 @@ async function exe() {
             case "ISZ":
                 ISZ(labelToAddress(val, I)); //?
                 break;
-        // register
+        // register instruction
             case "CLA":
                 CLA();  //ac
                 break;
@@ -202,7 +202,7 @@ async function exe() {
             case "SZE":
                 SZE();
                 break;
-        // input output
+        // input/output intructions
             case "INP":
                 INP();
                 break;
@@ -240,7 +240,7 @@ async function exe() {
         lastIndex != "@" ? $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent" : null;
         $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
         lastIndex = index;
-        index = dec2hex(pc).slice(1, 4);
+        index = dec2hex(pc).slice(1, 4); //get the new index after change the pc
         rowElem = $(`#row${index}`)[0];
         currentInstruction = currentInstruction == "HLT" ? null : rowElem.getElementsByClassName("instruction-cmd-input")[0].value;
         $("#ac-value")[0].value = acReg;
