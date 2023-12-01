@@ -25,29 +25,47 @@ $("#org-value").keyup((e) => listenToOrg(e));
 //test, initial program and values
 for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
-    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
-    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SKI';
-    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'C';
-
-    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
-    $("#row102")[0].getElementsByClassName("value-input")[0].value = 'A I';
+    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = '2';
     
-    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INP';
+    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'SUB';
 
-    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
-    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = 'C';
+    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CMA';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
 
-   // $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'A';
-    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row105")[0].getElementsByClassName("value-input")[0].value = '3';
+    $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row103")[0].getElementsByClassName("value-input")[0].value = '';
 
-    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = 'B';
-    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row106")[0].getElementsByClassName("value-input")[0].value = 'A';
+    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ADD';
+    $("#row104")[0].getElementsByClassName("value-input")[0].value = 'MIN';
+
+    $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = 'DIF';
+
+    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row106")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = 'MIN';
+    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row107")[0].getElementsByClassName("value-input")[0].value = '83';
+
+    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = 'SUB';
+    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row108")[0].getElementsByClassName("value-input")[0].value = '-23';
+
+    $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = 'DIF';
+    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row109")[0].getElementsByClassName("value-input")[0].value = '0';
+
+    
     convertToMachineLang();
     createMemoryJson();
     fetchMemory();
@@ -120,8 +138,8 @@ async function run() {
 with check the values and then run the program */
 async function exe() {
     if (pc == hex2dec($("#org-value")[0].value)) {
-        if (lookForHLT()) { //stop running if missing HLT
-            console("Missing HLT");
+        if (lookForHLTandEND()) { //stop running if missing HLT
+            console("Missing HLT or END");
             return;
         }
         collectLabels(); // creat Json of labels (as key) and addresses (as values)
@@ -287,14 +305,21 @@ a = obj.kc[0]
  * look for HLT in the program
  * without halt the program shouldnt run and the error message will appear in the console
  */ 
-function lookForHLT() {
+function lookForHLTandEND() {
     let rows = Array.from($(".instruction-cmd-input"));
+    let findHLT = false;
+    let findEND = false;
     rows.forEach(r => {
         if (r.value == "HLT") {
             r.parentElement.parentElement.getElementsByClassName("address")[0].style.backgroundColor = "transparent";
-            return true;
+            findHLT = true;
+        }
+        if (r.value == "END") {
+            r.parentElement.parentElement.getElementsByClassName("address")[0].style.backgroundColor = "transparent";
+            findEND = true;
         }
     });
+    if (findEND && findHLT) return true;
     return false;
 }
 
@@ -308,90 +333,95 @@ function convertToMachineLang() {
     rows.forEach(r => {
         currentInstruction = r.getElementsByClassName("instruction-cmd-input")[0].value;
         val = r.getElementsByClassName("value-input")[0].value;
-        val = val.split(" ")[0];
-        I = val.split(" ")[1];
-        switch (currentInstruction) {
-            // memory
-            case "AND":
-                machineLang = (I ? '8' : '0') + padding(labelToAddress(val, I), 3);
-                break;
-            case "ADD":
-                machineLang = (I ? '9' : '1') + padding(labelToAddress(val, I), 3);
-                break;
-            case "LDA":
-                machineLang = (I ? 'A' : '2') + padding(labelToAddress(val, I), 3);
-                break;
-            case "STA":
-                machineLang = (I ? 'B' : '3') + padding(labelToAddress(val, I), 3);
-                break;
-            case "BUN":
-                machineLang = (I ? 'C' : '4') + padding(labelToAddress(val, I), 3);
-                break;
-            case "BSA":
-                machineLang = (I ? 'D' : '5') + padding(labelToAddress(val, I), 3);
-                break;
-            case "ISZ":
-                machineLang = (I ? 'E' : '6') + padding(labelToAddress(val, I), 3);
-                break;
-            // register
-            case "CLA":
-                machineLang = "7800";
-                break;
-            case "CLE":
-                machineLang = "7400";
-                break;
-            case "CMA":
-                machineLang = "7200";
-                break;
-            case "CME":
-                machineLang = "7100";
-                break;
-            case "CIR":
-                machineLang = "7080";
-                break;
-            case "CIL":
-                machineLang = "7040"
-                break;
-            case "INC":
-                machineLang = "7020";
-                break;
-            case "SPA":
-                machineLang = "7010";
-                break;
-            case "SNA":
-                machineLang = "7008";
-                break;
-            case "SZA":
-                machineLang = "7004";
-                break;
-            case "SZE":
-                machineLang = "7002";
-                break;
-            // input output
-            case "INP":
-                machineLang = "F800";
-                break;
-            case "OUT":
-                machineLang = "F400";
-                break;
-            case "SKI":
-                machineLang = "F200";
-                break;
-            case "SKO":
-                machineLang = "F100";
-                break;
-            case "ION":
-                machineLang = "F080";
-                break;
-            case "IOF":
-                machineLang = "F040";
-                break;
-            case "HLT":
-                machineLang = "7001";
-                break;
-            default:
-                machineLang = "";
-                break;
+        if (currentInstruction === "DEC") {
+            machineLang = padding(dec2hex(val), 4);
+        }
+        else {
+            val = val.split(" ")[0];
+            I = val.split(" ")[1];
+            switch (currentInstruction) {
+                // memory
+                case "AND":
+                    machineLang = (I ? '8' : '0') + padding(labelToAddress(val, I), 3);
+                    break;
+                case "ADD":
+                    machineLang = (I ? '9' : '1') + padding(labelToAddress(val, I), 3);
+                    break;
+                case "LDA":
+                    machineLang = (I ? 'A' : '2') + padding(labelToAddress(val, I), 3);
+                    break;
+                case "STA":
+                    machineLang = (I ? 'B' : '3') + padding(labelToAddress(val, I), 3);
+                    break;
+                case "BUN":
+                    machineLang = (I ? 'C' : '4') + padding(labelToAddress(val, I), 3);
+                    break;
+                case "BSA":
+                    machineLang = (I ? 'D' : '5') + padding(labelToAddress(val, I), 3);
+                    break;
+                case "ISZ":
+                    machineLang = (I ? 'E' : '6') + padding(labelToAddress(val, I), 3);
+                    break;
+                // register
+                case "CLA":
+                    machineLang = "7800";
+                    break;
+                case "CLE":
+                    machineLang = "7400";
+                    break;
+                case "CMA":
+                    machineLang = "7200";
+                    break;
+                case "CME":
+                    machineLang = "7100";
+                    break;
+                case "CIR":
+                    machineLang = "7080";
+                    break;
+                case "CIL":
+                    machineLang = "7040"
+                    break;
+                case "INC":
+                    machineLang = "7020";
+                    break;
+                case "SPA":
+                    machineLang = "7010";
+                    break;
+                case "SNA":
+                    machineLang = "7008";
+                    break;
+                case "SZA":
+                    machineLang = "7004";
+                    break;
+                case "SZE":
+                    machineLang = "7002";
+                    break;
+                // input output
+                case "INP":
+                    machineLang = "F800";
+                    break;
+                case "OUT":
+                    machineLang = "F400";
+                    break;
+                case "SKI":
+                    machineLang = "F200";
+                    break;
+                case "SKO":
+                    machineLang = "F100";
+                    break;
+                case "ION":
+                    machineLang = "F080";
+                    break;
+                case "IOF":
+                    machineLang = "F040";
+                    break;
+                case "HLT":
+                    machineLang = "7001";
+                    break;
+                default:
+                    machineLang = "";
+                    break;
+            }
         }
         r.getElementsByClassName("machine-lang")[0].innerHTML = machineLang;
         if ($(`#show-machine-lang`)[0].innerHTML.includes("Show"))
