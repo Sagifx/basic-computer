@@ -274,7 +274,7 @@ function collectLabels() {
     labelsJson = JSON.parse(labels);
 }
 
-/*example Json
+/*example to Json pattern
 
 let text = '{"ck":["a"],"kc":["d"]}';
 
@@ -283,7 +283,10 @@ const obj = JSON.parse(text);
 a = obj.kc[0]
  */
 
-// look for HLT in the program
+/** 
+ * look for HLT in the program
+ * without halt the program shouldnt run and the error message will appear in the console
+ */ 
 function lookForHLT() {
     let rows = Array.from($(".instruction-cmd-input"));
     rows.forEach(r => {
@@ -398,8 +401,8 @@ function convertToMachineLang() {
 
 
 /*check inputs
-* 1. check that used label exist
-* 2. check the instruction is allowed
+* 1. check that the used label exist
+* 2. check that the instruction allowed
 * */
 function checkInputs() {
     let rows = Array.from($(".cmd-row"));
@@ -426,7 +429,7 @@ function checkInputs() {
 
 /** 
 *  get label and direct/indirect
-*  return  the label's address
+*  returns the label's address
 */
 function labelToAddress(lab, I) {
     let address = labelsJson[lab][0];
@@ -489,7 +492,7 @@ function listenToInputs(e) {
     }
  }
 
- // show ot hide machine lang by show/hide btn
+ // toggle between show and hide machine lang by show/hide btn
 function showMachineLangToggle() {
     let btn = $(`#show-machine-lang`)[0];
     let rows = Array.from($(".machine-lang"));
@@ -517,6 +520,7 @@ function console(txt) {
 /** 
 * keyword in[""] example a["b"][1]
 * key= address, values= (1) label (2) instruction (3) value
+* save all the adresses with for loop anf then save the registers value
 */
 function createMemoryJson() {
     let memoryString = "";
@@ -532,12 +536,11 @@ function createMemoryJson() {
     memoryString += `"output":[""],`;
     memoryString += `"ORG":[""]`;
     memoryString = "{" + memoryString + "}";
-    memoryJson = JSON.parse(memoryString);
+    memoryJson = JSON.parse(memoryString); // parse string to Json
 }
 
 /**
- * get address label instruction and value and
- * store the data into the Json data
+ * get address and store in the memory Json label instruction and input values
  */
 function storeDataInJson(address) {
     r = $(`#row${address}`)[0];
@@ -547,8 +550,8 @@ function storeDataInJson(address) {
 }
 
 /**
- * this function check every rom in the memory
- * and add memory with the row (if exist data for this address)
+ * this function checks every row in the memory
+ * and add memory with the row (if data exists for this address)
  */
 function showMemory() {
     let convertedIndex;
@@ -562,7 +565,7 @@ function showMemory() {
 }
 
 /**
- * get address and creat div element with all the data
+ * get address and create div element with all the data
  */
 function addMemoryRow(address) {
     let newRow = document.createElement("div");
