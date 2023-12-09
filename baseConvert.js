@@ -69,6 +69,25 @@ function hex2bin(arg) {
     return padding(arg.toUpperCase(), 16);
 }
 
+
+/**
+ * the function gets negetive decimal value and return 
+ * the binary compliment for sub (padding 16)
+ */
+function compliment(arg) {
+    arg = Math.abs(arg);
+    arg = arg - 1;
+    let binAC = dec2bin(arg);
+    arg = "";
+    binAC = binAC.split("");
+    binAC.forEach(bit => {
+        bit = Number(!Number(bit)); // compliment every bit
+        arg += bit; // add the compliment bit to the new value of the ac
+    });
+    return arg;
+}
+
+
 /* use for the user converter 
   take the convert that the user chose
    and return the number in new base 

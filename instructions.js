@@ -29,7 +29,7 @@ function deviation(arg){
  * placement binary new val at acReg (global variable)
  */
 function INC() {
-    let arg = parseInt("0x" + (acReg), 16);
+    let arg = parseInt("0x" + (acReg), 16); // parse string to int from 0x hex
     arg++;
     arg = dec2bin(arg);
     arg = padding(arg, 16);
@@ -57,7 +57,7 @@ function CLE() {
 function CMA() {
     let accumulator = "";
     let binAC = hex2bin(acReg);
-    binAC = padding(binAC, 16);
+    //binAC = padding(binAC, 16);
     binAC = binAC.split("");
     binAC.forEach(bit => {
         bit = Number(!Number(bit)); // compliment every bit
@@ -141,7 +141,7 @@ function LDA(mar) {
 get the address to atore at */
 function STA(address) {
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = acReg;
-    $(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
+    //$(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
     storeDataInJson(address);
     pc++;
 }
