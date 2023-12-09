@@ -56,7 +56,7 @@ function CLE() {
 // compliment AC
 function CMA() {
     let accumulator = "";
-    let binAC = hex2bin(acReg);
+    let binAC = hex2bin(acReg); // bin and padding to 16
     //binAC = padding(binAC, 16);
     binAC = binAC.split("");
     binAC.forEach(bit => {

@@ -339,8 +339,24 @@ function convertToMachineLang() {
     rows.forEach(r => {
         currentInstruction = r.getElementsByClassName("instruction-cmd-input")[0].value;
         val = r.getElementsByClassName("value-input")[0].value;
-        if (currentInstruction === "DEC") {
-            machineLang = padding(dec2hex(val), 4);
+        if (currentInstruction === "DEC" || "BIN" || "HEX") {
+            /**
+             * for value in memory the value need to convert to hex
+             * if the value is negetive it should: 1. convert to dec
+             *                                     2. 2's compliment (back as bin)
+             *                                     3. convert to hex
+             */
+            switch (currentInstruction) {
+                case "BIN":
+                    machineLang = (val < 0) ? bin2hex(compliment(bin2dec(val))) : bin2hex(val); 
+                    break;
+                case "DEC":
+                    machineLang = (val < 0) ? bin2hex(compliment(val)) : dec2hex(val);
+                    break;
+                case "HEX":
+                    machineLang = (val < 0) ? bin2hex(compliment(hex2dec(val))) : val;
+                    break;
+            }
         }
         else {
             val = val.split(" ")[0];
@@ -759,6 +775,7 @@ async function exe() {
         $("#E-value")[0].value = eFlag;
         $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4);
         $("#run-btn")[0].innerHTML = "Keep running";
+        convertToMachineLang();
         if (step && currentInstruction != "HLT") return;
     }
     $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
