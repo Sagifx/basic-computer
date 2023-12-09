@@ -9,6 +9,7 @@ let labelsJson; // json for all the labels
 var step = false; // bin val for run program or just one step
 var lastIndex; // keep the last index value
 var memoryJson; // json for all the memory
+var lastIndex; // the last index was execute
 
 
 
@@ -291,7 +292,7 @@ function collectLabels() {
     let rows = Array.from($(".label-to-collect"));
     let labels = '';
     rows.forEach(r => {
-        r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` : null; //key (label) value (address)
+        r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` :  [null; //key (label) value (address)
     });
     labels = labels.slice(0, labels.length - 1);
     labels = "{" + labels + "}";
@@ -662,13 +663,19 @@ function fetchMemory() {
     });
 }
 
-
+/**
+ * execute the program
+ * looking for HLT and END, restart values and collect label
+ * running according to the user choise (run or step by step)
+ * and with switch case execute the instructions 
+ */
 async function exe() {
     if (pc == hex2dec($("#org-value")[0].value)) { // if true its the first run
         if (lookForHLTandEND()) { // stop running if missing HLT ot END
             console("Missing HLT or END");
             return;
         }
+        lastIndex = "";
         collectLabels(); // creat Json of labels (as key) and addresses (as values)
         fetchMemory(); // fetch the cmd data to the memoryJson
     }
@@ -678,7 +685,6 @@ async function exe() {
     let val; //hold the input value without the I
     let I;
     let index = dec2hex(pc).slice(1, 4);
-    let lastIndex = "";
     let rowElem = $(`#row${index}`)[0];
     let currentInstruction = rowElem.getElementsByClassName("instruction-cmd-input")[0].value;
     while (currentInstruction != "HLT") {

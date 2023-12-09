@@ -1,0 +1,39 @@
+ $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = '2';
+    
+    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'SUB';
+
+    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CMA';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row103")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ADD';
+    $("#row104")[0].getElementsByClassName("value-input")[0].value = 'MIN';
+
+    $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = 'DIF';
+
+    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row106")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = 'MIN';
+    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row107")[0].getElementsByClassName("value-input")[0].value = '83';
+
+    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = 'SUB';
+    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row108")[0].getElementsByClassName("value-input")[0].value = '-23';
+
+    $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = 'DIF';
+    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row109")[0].getElementsByClassName("value-input")[0].value = '0';
