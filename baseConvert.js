@@ -72,17 +72,17 @@ function hex2bin(arg) {
 
 /**
  * the function gets negetive decimal value and return 
- * the binary compliment for sub (padding 16)
+ * the binary complement for sub (padding 16)
  */
-function compliment(arg) {
+function complement(arg) {
     arg = Math.abs(arg);
     arg = arg - 1;
     let binAC = dec2bin(arg);
     arg = "";
     binAC = binAC.split("");
     binAC.forEach(bit => {
-        bit = Number(!Number(bit)); // compliment every bit
-        arg += bit; // add the compliment bit to the new value of the ac
+        bit = Number(!Number(bit)); // complement every bit
+        arg += bit; // add the complement bit to the new value of the ac
     });
     return arg;
 }
@@ -95,14 +95,20 @@ function compliment(arg) {
 function convert() {
     let val = $("#number-to-convert")[0].value;
     let from = $("#base-option-from")[0].value.toLowerCase();
+    let base2print = from == "bin" ? "binary" : from == "hex" ? "hexadecimal" : "decimal";
+    if (!isValidByBase(val, from, true)) {
+        converterConsole(`The input is invalid for ${base2print} base`);
+        return;
+    }
+    converterConsole("");
     let to = $("#base-option-to")[0].value.toLowerCase();
     funcName = `${from}2${to}`;
-    switch (funcName){
+    switch (funcName) {
         case "bin2hex":
             val = bin2hex(val);
             break;
         case "dec2hex":
-            val = dec2hex(val);
+            val = val < 0 ? bin2hex(complement(val)) : dec2hex(val);
             break;
         case "bin2dec":
             val = bin2dec(val);
@@ -111,7 +117,7 @@ function convert() {
             val = hex2dec(val);
             break;
         case "dec2bin":
-            val = dec2bin(val);
+            val = val < 0 ? complement(val) : dec2bin(val);
             break;
         case "hex2bin":
             val = hex2bin(val);
@@ -120,4 +126,33 @@ function convert() {
             break;
     }
     $("#number-after-convert")[0].innerHTML = val.toUpperCase();
+}
+
+/**
+ * get value, base as string and boolean includeNeg only for decimal base
+ * the function checks if the value match the pattern fo the base
+ */
+function isValidByBase(val, base, includeNeg) {
+    let binPattern = new RegExp(/^[01]+$/);
+    let decPattern = new RegExp(/^-?\d+$/);
+    let absDecPattern = new RegExp(/^\d+$/);
+    let hexPattern = new RegExp(/^[0-9a-fA-F]+$/);
+    base = base.toUpperCase();
+    if (base == "BIN") {
+        if (!binPattern.test(val))
+            return false;
+    }
+    else if (base == "DEC" && includeNeg) { //decimal include negetive
+        if (!decPattern.test(val))
+            return false;
+    }
+    else if (base == "DEC" && !includeNeg) { //only positive decimal
+        if (!absDecPattern.test(val))
+            return false;
+    }
+    else if (base == "HEX") {//only positive decimal
+        if (!hexPattern.test(val))
+            return false;
+    }
+    return true;
 }

@@ -343,18 +343,18 @@ function convertToMachineLang() {
             /**
              * for value in memory the value need to convert to hex
              * if the value is negetive it should: 1. convert to dec
-             *                                     2. 2's compliment (back as bin)
+             *                                     2. 2's complement (back as bin)
              *                                     3. convert to hex
              */
             switch (currentInstruction) {
                 case "BIN":
-                    machineLang = (val < 0) ? bin2hex(compliment(bin2dec(val))) : bin2hex(val); 
+                    machineLang = (val < 0) ? bin2hex(complement(bin2dec(val))) : bin2hex(val); 
                     break;
                 case "DEC":
-                    machineLang = (val < 0) ? bin2hex(compliment(val)) : dec2hex(val);
+                    machineLang = (val < 0) ? bin2hex(complement(val)) : dec2hex(val);
                     break;
                 case "HEX":
-                    machineLang = (val < 0) ? bin2hex(compliment(hex2dec(val))) : val;
+                    machineLang = (val < 0) ? bin2hex(complement(hex2dec(val))) : val;
                     break;
             }
         }
@@ -503,7 +503,7 @@ function getValueByAddress(address) {
     let row = $(`#row${address}`)[0];
     let base = row.getElementsByClassName("instruction-cmd-input")[0].value; //HEX || DEC
     let val = row.getElementsByClassName("value-input")[0].value; //original value
-    if (val < 0) return compliment(val);
+    if (val < 0) return complement(val);
     switch (base) {
         case "HEX":
             val = hex2bin(val);
@@ -572,6 +572,11 @@ function console(txt) {
     $("#console")[0].innerHTML = txt;
 }
 
+// print msg to the user
+function converterConsole(txt) {
+    $("#converterConsole")[0].innerHTML = txt;
+}
+
 
 /** 
 * keyword in[""] example a["b"][1]
@@ -611,13 +616,24 @@ function storeDataInJson(address) {
  */
 function showMemory() {
     let convertedIndex;
-    $("#memory-container")[0].innerHTML = "";
-    for (let i = 0; i < 4096; i++) {
-        convertedIndex = dec2hex(i).slice(1, )
-        if (memoryJson[convertedIndex][1] != "") {
-            addMemoryRow(convertedIndex);
+    let rows = Array.from($(".memory-row"));
+    rows.forEach(row => {
+        row.innerHTML = "";
+    })
+    let btn = $("#show-memory-btn")[0];
+    if (btn.innerHTML == "Show Memory") {
+        for (let i = 0; i < 4096; i++) {
+            convertedIndex = dec2hex(i).slice(1, )
+            if (memoryJson[convertedIndex][1] != "") {
+                addMemoryRow(convertedIndex);
+            }
         }
+        btn.innerHTML = "Hide Memory";
+    } else {
+        btn.innerHTML = "Show Memory";
     }
+    //$("#memory-container")[0].innerHTML = "";
+    
 }
 
 /**
