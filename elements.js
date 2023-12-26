@@ -10,6 +10,7 @@ var step = false; // bin val for run program or just one step
 var lastIndex; // keep the last index value
 var memoryJson; // json for all the memory
 var lastIndex; // the last index was execute
+var haltIndex; // address of HLT instruction
 
 
 
@@ -24,49 +25,92 @@ $("#org-value").keyup((e) => listenToOrg(e));
 
 
 //test, initial program and values
-for (let i = 0; i < 10; i++) addCmdRow();
+for (let i = 0; i < 21; i++) addCmdRow();
 setTimeout(() => {
-    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
-    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = '2';
+    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'FST';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SKI';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
     
     $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
-    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'SUB';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'FST';
 
     $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CMA';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INP';
     $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'OUT';
     $("#row103")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ADD';
-    $("#row104")[0].getElementsByClassName("value-input")[0].value = 'MIN';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BSA';
+    $("#row104")[0].getElementsByClassName("value-input")[0].value = 'SH4';
 
     $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
-    $("#row105")[0].getElementsByClassName("value-input")[0].value = 'DIF';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BSA';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = 'SH4';
 
-    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = 'SCD';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SKI';
     $("#row106")[0].getElementsByClassName("value-input")[0].value = '';
 
-    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = 'MIN';
-    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row107")[0].getElementsByClassName("value-input")[0].value = '83';
+    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
+    $("#row107")[0].getElementsByClassName("value-input")[0].value = 'SCD';
 
-    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = 'SUB';
+    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row108")[0].getElementsByClassName("value-input")[0].value = '-23';
+    $("#row108")[0].getElementsByClassName("value-input")[0].value = '2';
 
-    $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = 'DIF';
-    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row109")[0].getElementsByClassName("value-input")[0].value = '0';
+    $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INP';
+    $("#row109")[0].getElementsByClassName("value-input")[0].value = '';
 
+    $("#row10A")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row10A")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'OUT';
+    $("#row10A")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row10B")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row10B")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = 'SH4';
+    $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row10C")[0].getElementsByClassName("value-input")[0].value = '0';
+
+    $("#row10D")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row10D")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
+    $("#row10D")[0].getElementsByClassName("value-input")[0].value = '';
     
+    $("#row10E")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row10E")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
+    $("#row10E")[0].getElementsByClassName("value-input")[0].value = '';
+    
+    $("#row10F")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row10F")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
+    $("#row10F")[0].getElementsByClassName("value-input")[0].value = '';
+    
+    $("#row110")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row110")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
+    $("#row110")[0].getElementsByClassName("value-input")[0].value = '';
+    
+    $("#row111")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row111")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'AND';
+    $("#row111")[0].getElementsByClassName("value-input")[0].value = 'MSK';
+
+    $("#row112")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row112")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
+    $("#row112")[0].getElementsByClassName("value-input")[0].value = 'SH4 I';
+
+    $("#row113")[0].getElementsByClassName("label-cmd-input")[0].value = 'MSK';
+    $("#row113")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row113")[0].getElementsByClassName("value-input")[0].value = 'FFF0';
+
+    $("#row114")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row114")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
+    $("#row114")[0].getElementsByClassName("value-input")[0].value = '';
+
     convertToMachineLang();
     createMemoryJson();
     fetchMemory();
@@ -103,7 +147,7 @@ function listenToOrg(e) {
 */
 function addCmdRow() {
     let newRow = document.createElement("div");
-    newRow.setAttribute("id", `row${rowCtr.toString(16)}`);
+    newRow.setAttribute("id", `row${rowCtr.toString(16).toUpperCase()}`);
     newRow.setAttribute("class", "general-row cmd-row");
     // convert the rowCtr to string by argument base
     newRow.innerHTML = `
@@ -292,7 +336,7 @@ function collectLabels() {
     let rows = Array.from($(".label-to-collect"));
     let labels = '';
     rows.forEach(r => {
-        r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` :  [null; //key (label) value (address)
+        r.value != "" ? labels += `"${r.value}":["${r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML}"],` :  [null]; //key (label) value (address)
     });
     labels = labels.slice(0, labels.length - 1);
     labels = "{" + labels + "}";
@@ -340,7 +384,7 @@ function convertToMachineLang() {
     rows.forEach(r => {
         currentInstruction = r.getElementsByClassName("instruction-cmd-input")[0].value;
         val = r.getElementsByClassName("value-input")[0].value;
-        if (currentInstruction === "DEC" || "BIN" || "HEX") {
+        if (currentInstruction === ("DEC" || "BIN" || "HEX")) {
             /**
              * for value in memory the value need to convert to hex
              * if the value is negetive it should: 1. convert to dec
@@ -491,7 +535,7 @@ function labelToAddress(lab, I) {
         while (address.startsWith("0")) {
             address = address.slice(1,);
         }
-        return labelsJson[address][0];
+        return address;
     }
     return address;
 }
@@ -670,8 +714,8 @@ function fetchMemory() {
  * and with switch case execute the instructions 
  */
 async function exe() {
-    if (pc == hex2dec($("#org-value")[0].value)) { // if true its the first run
-        if (lookForHLTandEND()) { // stop running if missing HLT ot END
+    if (pc == hex2dec($("#org-value")[0].value) && !lastIndex) { // if true its the first run
+        if (!lookForHLTandEND()) { // stop running if missing HLT ot END
             console("Missing HLT or END");
             return;
         }
@@ -790,7 +834,7 @@ async function exe() {
         lastIndex ? $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent" : null;
         $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
         lastIndex = index;
-        index = dec2hex(pc).slice(1, 4); //get the new index after change the pc
+        index = dec2hex(pc).slice(1, 4); //get the new index after pc was change 
         rowElem = $(`#row${index}`)[0];
         currentInstruction = rowElem.getElementsByClassName("instruction-cmd-input")[0].value;
         $("#ac-value")[0].value = acReg;
@@ -804,5 +848,6 @@ async function exe() {
     $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent";
     currentInstruction == "HLT" ? console("The program finished by HLT") : null;
     pc = hex2dec($("#org-value")[0].value);
+    lastIndex = "";
     $("#run-btn")[0].innerHTML = "Run the code";
 }

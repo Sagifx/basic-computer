@@ -240,7 +240,7 @@ function SKI() {
 async function runSKI() {
     if ($("#input-checkbox")[0].checked) {
         $("#input-checkbox")[0].checked = false;
-        pc += 2;
+        pc = Number(pc) + 2;
         return false;
     } else {
        await sleep(500);

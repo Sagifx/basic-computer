@@ -1,4 +1,6 @@
- $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
+for (let i = 0; i < 10; i++) addCmdRow();
+setTimeout(() => {
+$("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
     $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
     $("#row100")[0].getElementsByClassName("value-input")[0].value = '2';
     
@@ -37,3 +39,8 @@
     $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = 'DIF';
     $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
     $("#row109")[0].getElementsByClassName("value-input")[0].value = '0';
+
+ convertToMachineLang();
+    createMemoryJson();
+    fetchMemory();
+}, 100);
