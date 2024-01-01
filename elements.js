@@ -25,91 +25,103 @@ $("#org-value").keyup((e) => listenToOrg(e));
 
 
 //test, initial program and values
-for (let i = 0; i < 21; i++) addCmdRow();
+for (let i = 0; i < 26; i++) addCmdRow();
 setTimeout(() => {
-    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'FST';
-    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SKI';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BSA';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'INV';
     
     $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
-    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'FST';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = '200';
 
     $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INP';
-    $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = '10';
 
     $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'OUT';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
     $("#row103")[0].getElementsByClassName("value-input")[0].value = '';
 
-    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BSA';
-    $("#row104")[0].getElementsByClassName("value-input")[0].value = 'SH4';
+    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = 'INV';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row104")[0].getElementsByClassName("value-input")[0].value = '0';
 
     $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BSA';
-    $("#row105")[0].getElementsByClassName("value-input")[0].value = 'SH4';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = 'INV I';
 
-    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = 'SCD';
-    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SKI';
-    $("#row106")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row106")[0].getElementsByClassName("value-input")[0].value = 'STR';
 
     $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
-    $("#row107")[0].getElementsByClassName("value-input")[0].value = 'SCD';
+    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ISZ';
+    $("#row107")[0].getElementsByClassName("value-input")[0].value = 'INV';
 
     $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row108")[0].getElementsByClassName("value-input")[0].value = '2';
+    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
+    $("#row108")[0].getElementsByClassName("value-input")[0].value = 'INV I';
 
     $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INP';
-    $("#row109")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row109")[0].getElementsByClassName("value-input")[0].value = '0';
 
     $("#row10A")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10A")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'OUT';
-    $("#row10A")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row10A")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row10A")[0].getElementsByClassName("value-input")[0].value = '0';
 
     $("#row10B")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
-    $("#row10B")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row10B")[0].getElementsByClassName("value-input")[0].value = '0';
 
-    $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = 'SH4';
-    $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row10C")[0].getElementsByClassName("value-input")[0].value = '0';
+    $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row10C")[0].getElementsByClassName("value-input")[0].value = 'CTR';
 
-    $("#row10D")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10D")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
-    $("#row10D")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row10D")[0].getElementsByClassName("label-cmd-input")[0].value = 'CMP';
+    $("#row10D")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
+    $("#row10D")[0].getElementsByClassName("value-input")[0].value = 'STR I';
     
     $("#row10E")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10E")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
+    $("#row10E")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CMA';
     $("#row10E")[0].getElementsByClassName("value-input")[0].value = '';
     
     $("#row10F")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10F")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
+    $("#row10F")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
     $("#row10F")[0].getElementsByClassName("value-input")[0].value = '';
     
     $("#row110")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row110")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CIL';
-    $("#row110")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row110")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row110")[0].getElementsByClassName("value-input")[0].value = 'STR I';
     
     $("#row111")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row111")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'AND';
-    $("#row111")[0].getElementsByClassName("value-input")[0].value = 'MSK';
+    $("#row111")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ISZ';
+    $("#row111")[0].getElementsByClassName("value-input")[0].value = 'STR';
 
     $("#row112")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row112")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
-    $("#row112")[0].getElementsByClassName("value-input")[0].value = 'SH4 I';
+    $("#row112")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ISZ';
+    $("#row112")[0].getElementsByClassName("value-input")[0].value = 'CTR';
 
-    $("#row113")[0].getElementsByClassName("label-cmd-input")[0].value = 'MSK';
-    $("#row113")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row113")[0].getElementsByClassName("value-input")[0].value = 'FFF0';
+    $("#row113")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row113")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
+    $("#row113")[0].getElementsByClassName("value-input")[0].value = 'CMP';
 
     $("#row114")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row114")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
-    $("#row114")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row114")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
+    $("#row114")[0].getElementsByClassName("value-input")[0].value = 'INV I';
+    
+    $("#row115")[0].getElementsByClassName("label-cmd-input")[0].value = 'STR';
+    $("#row115")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row115")[0].getElementsByClassName("value-input")[0].value = '0';
+    
+    $("#row116")[0].getElementsByClassName("label-cmd-input")[0].value = 'CTR';
+    $("#row116")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row116")[0].getElementsByClassName("value-input")[0].value = '0';
+    
+    $("#row117")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row117")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
+    $("#row117")[0].getElementsByClassName("value-input")[0].value = '';
 
     convertToMachineLang();
     createMemoryJson();
@@ -182,7 +194,7 @@ async function run() {
 
 /* by press 'run' this function will start
 with check the values and then run the program */
-async function exe2() {
+/*async function exe2() {
     if (pc == hex2dec($("#org-value")[0].value)) { // if true its the first run
         if (lookForHLTandEND()) { // stop running if missing HLT ot END
             console("Missing HLT or END");
@@ -329,6 +341,7 @@ async function exe2() {
     pc = hex2dec($("#org-value")[0].value);
     $("#run-btn")[0].innerHTML = "Run the code";
 }
+*/
 
 /* it's the first pass
 all the labels saved with their addresses in json as key and value */

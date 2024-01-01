@@ -140,7 +140,13 @@ function LDA(mar) {
 /* store accumulator in the memory
 get the address to atore at */
 function STA(address) {
-    $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = acReg;
+    let base = $(`#row${address}`)[0].getElementsByClassName("instruction-cmd-input")[0].value;
+    let val = acReg;
+    if (base == "DEC")
+        val = hex2dec(acReg);
+    else if (base == "BIN")
+        val = hex2bin(acReg);
+    $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = val;
     //$(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
     storeDataInJson(address);
     pc++;
@@ -156,7 +162,10 @@ function BUN(address) {
 get the address and store there the address to back */
 function BSA(address) {
     let backAddress = dec2hex(Number(pc) + 1);
-    $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = backAddress;
+    let subAddress = $(`#row${address}`)[0]; // subrutin address
+    if (subAddress.getElementsByClassName("instruction-cmd-input")[0].value == "DEC")
+        backAddress = Number(pc) + 1;
+    subAddress.getElementsByClassName("value-input")[0].value = backAddress;
     storeDataInJson(address);
     pc = (Number(hex2dec(address)) + 1);
 }
@@ -167,7 +176,7 @@ function ISZ(address) {
     let row = $(`#row${address}`)[0];
     let val = row.getElementsByClassName("value-input")[0].value;
     let isHEX;
-    isHEX = row.getElementsByClassName("instruction-input")[0].value == "HEX";
+    isHEX = row.getElementsByClassName("instruction-cmd-input")[0].value == "HEX";
     isHEX ? val = hex2dec(val) : null;
     val = Number(val) + 1;
     row.getElementsByClassName("value-input")[0].value = isHEX ? dec2hex(val) : val;
@@ -237,6 +246,7 @@ function SKI() {
     }
     pc++;
 }
+
 async function runSKI() {
     if ($("#input-checkbox")[0].checked) {
         $("#input-checkbox")[0].checked = false;
@@ -256,6 +266,7 @@ function SKO() {
     }
     pc++;
 }
+
 async function runSKO() {
     if ($("#output-checkbox")[0].checked) {
         $("#output-checkbox")[0].checked = false;
