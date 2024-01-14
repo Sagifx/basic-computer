@@ -55,13 +55,21 @@ body {
     padding-right: 10px;
 }
 
-.label, .instruction, .value {
+.instruction, .value {
     width: 95px;
+}
+
+.label {
+    width: 115px;
 }
 
 .label-to-collect, .instruction-cmd-input, .value-input,
     .instruction-memory-input {
     width: 85px;
+}
+
+.icon, button, select {
+  cursor: pointer;
 }
 
 
