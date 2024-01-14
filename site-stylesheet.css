@@ -39,6 +39,7 @@ body {
 /* CMD style */
 .general-row {
     display: flex;
+    padding: 2px;
 }
 
 .cmd-org-row, .memory-title-row{
