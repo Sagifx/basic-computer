@@ -17,30 +17,6 @@ async function run() {
 }
 
 /**
- * add cmd row after fetch from memory
- * build cmd row with the values from the memory
- */
-function addCmdRowFromMemory(address) {
-    let newRow = document.createElement("div");
-    newRow.setAttribute("id", `row${address.toString(16).toUpperCase()}`);
-    newRow.setAttribute("class", "general-row cmd-row");
-    // convert the rowCtr to string by argument base
-    newRow.innerHTML = `
-            <div class="address count-address">${address.toString(16).toUpperCase()}</div>
-            <div class="label"><input class="label-cmd-input label-to-collect" maxlength="4" value="${memoryJson[address][0]}"></div>
-            <div class="instruction"><input class="instruction-cmd-input" maxlength="3" value="${memoryJson[address][1]}"></div>
-            <div class="value"><input class="value-input" maxlength="4" value="${memoryJson[address][2]}"></div>
-            ${TRASH}
-            <div class="machine-lang"></div>
-            `;
-    rowCtr++;
-    $("#cmd-container")[0].appendChild(newRow);
-    $(".rmRow").unbind("click"); //, (evt) => removeRow(evt)
-    $(".rmRow").bind("click", (evt) => removeRow(evt));
-    //$("#org-value").keyup((e) => listenToOrg(e));
-}
-
-/**
  * execute the program
  * looking for HLT and END, restart values and collect label
  * running according to the user choise (run or step by step)
