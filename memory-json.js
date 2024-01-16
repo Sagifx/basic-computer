@@ -151,7 +151,7 @@ function fetchMemory2Cmd() {
         nextHexAddress = dec2hex(i + 1).slice(1,);
         isCurrentRowEmpty = memoryJson[hexAddress][0] != "" || memoryJson[hexAddress][1] != "" || memoryJson[hexAddress][2] != "";
         isNextRowEmpty = i == 4095 ? false : memoryJson[nextHexAddress][0] != "" || memoryJson[nextHexAddress][1] != "" || memoryJson[nextHexAddress][2] != "";
-        if (isCurrentRowEmpty || isNextRowEmpty) { 
+        if (isCurrentRowEmpty || isNextRowEmpty && hexAddress > $("#org-value")[0].value) { 
             addCmdRowFromMemory(hexAddress);
         }
     }
@@ -161,7 +161,7 @@ function fetchMemory2Cmd() {
 }
 
 /**
- * by click on the forward arrow the function will add ro in the middle fo the flow
+ * by click on the forward arrow the function will add row in the middle of the program
  */
 function addMiddleRow(evt) {
     let address;
@@ -201,7 +201,14 @@ function addCmdRowFromMemory(address) {
             `;
     rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
-    $(".rmRow .addRow").unbind("click");
-    $(".rmRow").bind("click", (evt) => removeRow(evt));
-    $(".addRow").bind("click", (evt) => addMiddleRow(evt));
+    $(".rmRow").off();
+    $(".rmRow").bind("click", (evt) => {
+        $(".rmRow").off();
+        removeRow(evt);
+    });
+    $(".addRow").off();
+    $(".addRow").bind("click", (evt) => {
+        $(".addRow").off();
+        addMiddleRow(evt);
+    });
 }

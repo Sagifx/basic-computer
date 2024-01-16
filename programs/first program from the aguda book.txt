@@ -42,5 +42,5 @@ $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
 
  convertToMachineLang();
     createMemoryJson();
-    fetchMemory();
+    fetchCmd2Memory();
 }, 100);

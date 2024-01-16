@@ -9,7 +9,6 @@ var labelsJson; // json for the labels
 var step = false; // bin val for run program or just one step
 var lastIndex; // keep the last index value
 var memoryJson; // json for all the memory
-var lastIndex; // the last index was execute
 var haltIndex; // address of HLT instruction
 const TRASH = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled rmRow" width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><title>Remove row</title><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor" /><path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor" /></svg>`;
 const FORWARD_ARROW = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-forward addRow" width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><title>Add row below</title><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 11l4 4l-4 4m4 -4h-11a4 4 0 0 1 0 -8h1" /></svg>`;
@@ -26,107 +25,47 @@ $("input").change((e) => listenToInputs(e));
 
 
 //test, initial program and values
-for (let i = 0; i < 26; i++) addCmdRow();
+for (let i = 0; i < 10; i++) addCmdRow();
 setTimeout(() => {
-    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'X';
+$("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = '2';
     
     $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CMA';
-    $("#row101")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'SUB';
 
     $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CMA';
     $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ADD';
-    $("#row103")[0].getElementsByClassName("value-input")[0].value = 'W';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row103")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
-    $("#row104")[0].getElementsByClassName("value-input")[0].value = 'SL';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ADD';
+    $("#row104")[0].getElementsByClassName("value-input")[0].value = 'MIN';
 
     $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SZE';
-    $("#row105")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = 'DIF';
 
     $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
-    $("#row106")[0].getElementsByClassName("value-input")[0].value = 'NXT';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row106")[0].getElementsByClassName("value-input")[0].value = '';
 
-    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CLA';
-    $("#row107")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = 'MIN';
+    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row107")[0].getElementsByClassName("value-input")[0].value = '83';
 
-    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
-    $("#row108")[0].getElementsByClassName("value-input")[0].value = 'BR1';
+    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = 'SUB';
+    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
+    $("#row108")[0].getElementsByClassName("value-input")[0].value = '-23';
 
-    $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = 'NXT';
-    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
-    $("#row109")[0].getElementsByClassName("value-input")[0].value = 'Z';
-
-    $("#row10A")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10A")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CMA';
-    $("#row10A")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row10B")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row10B")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ADD';
-    $("#row10C")[0].getElementsByClassName("value-input")[0].value = 'Y';
-
-    $("#row10D")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10D")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'ADD';
-    $("#row10D")[0].getElementsByClassName("value-input")[0].value = 'BR1';
-    
-    $("#row10E")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10E")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
-    $("#row10E")[0].getElementsByClassName("value-input")[0].value = 'SH';
-    
-    $("#row10F")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10F")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
-    $("#row10F")[0].getElementsByClassName("value-input")[0].value = '';
-    
-    $("#row110")[0].getElementsByClassName("label-cmd-input")[0].value = 'W';
-    $("#row110")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row110")[0].getElementsByClassName("value-input")[0].value = '2354';
-    
-    $("#row111")[0].getElementsByClassName("label-cmd-input")[0].value = 'X';
-    $("#row111")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row111")[0].getElementsByClassName("value-input")[0].value = '7645';
-
-    $("#row112")[0].getElementsByClassName("label-cmd-input")[0].value = 'Y';
-    $("#row112")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row112")[0].getElementsByClassName("value-input")[0].value = '2377';
-
-    $("#row113")[0].getElementsByClassName("label-cmd-input")[0].value = 'Z';
-    $("#row113")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row113")[0].getElementsByClassName("value-input")[0].value = '8456';
-
-    $("#row114")[0].getElementsByClassName("label-cmd-input")[0].value = 'SL';
-    $("#row114")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row114")[0].getElementsByClassName("value-input")[0].value = '0000';
-    
-    $("#row115")[0].getElementsByClassName("label-cmd-input")[0].value = 'SH';
-    $("#row115")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'DEC';
-    $("#row115")[0].getElementsByClassName("value-input")[0].value = '0000';
-    
-    $("#row116")[0].getElementsByClassName("label-cmd-input")[0].value = 'BR1';
-    $("#row116")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row116")[0].getElementsByClassName("value-input")[0].value = 'FFFF';
-    
-    $("#row117")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row117")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
-    $("#row117")[0].getElementsByClassName("value-input")[0].value = '';
-    
-    $("#row118")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row118")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
-    $("#row118")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = 'DIF';
+    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row109")[0].getElementsByClassName("value-input")[0].value = '0';
 
     convertToMachineLang();
     createMemoryJson();
@@ -177,9 +116,16 @@ function addCmdRow() {
             `;
     rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
-    $(".rmRow .addRow").unbind("click");
-    $(".rmRow").bind("click", (evt) => removeRow(evt));
-    $(".addRow").bind("click", (evt) => addMiddleRow(evt));
+    $(".rmRow").off();
+    $(".rmRow").bind("click", (evt) => {
+        $(".rmRow").off();
+        removeRow(evt);
+    });
+    $(".addRow").off();
+    $(".addRow").bind("click", (evt) => {
+        $(".addRow").off();
+        addMiddleRow(evt);
+    });
 }
 
 /* it's the first pass
