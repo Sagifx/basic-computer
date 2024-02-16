@@ -8,17 +8,14 @@ function padding(arg, paddingTo) {
     return arg;
 }
 
-/* check accumulator deviation
-get accumulator future value (16/17 bit) binary base
-return true or false
-*/
-/**
- * get accumulator and check if his value deviation
+/**check accumulator deviation
+ * get accumulator future value (16/17 bit) binary base
  * @param arg (bin)
  * @returns boolean
  */
-function deviation(arg){
-    return ((arg.length == 17 && arg[0] == "1") ? true : false);
+function deviation(arg) {
+    //return ((arg.length == 17 && arg[0] == "1") ? true : false);
+    return arg.length == 17; //true or false
 }
 
 // increment accumulator
@@ -131,21 +128,21 @@ function AND(mar) {
 }
 
 /* load to accumulator
-get memory value */
+   get memory value */
 function LDA(mar) {
     acReg = bin2hex(mar);
     pc++;
 }
 
 /* store accumulator in the memory
-get the address to atore at */
+   get the address to store at */
 function STA(address) {
     let base = $(`#row${address}`)[0].getElementsByClassName("instruction-cmd-input")[0].value;
     let val = acReg;
     if (base == "DEC")
-        val = hex2dec(acReg);
+        val = dec2hex(acReg);
     else if (base == "BIN")
-        val = hex2bin(acReg);
+        val = bin2hex(acReg);
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = val;
     //$(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
     storeDataInJson(address);
@@ -239,7 +236,7 @@ function IOF() {
 
 // skip if the input flag on
 function SKI() {
-    isChecked = $("#input-checkbox")[0].checked;
+    let isChecked = $("#input-checkbox")[0].checked;
     if (isChecked) {
         $("#input-checkbox")[0].checked = false;
         pc++;
@@ -279,6 +276,6 @@ async function runSKO() {
 
 
 // solution for waiting for interrupt
-function sleep (time) {
+function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }

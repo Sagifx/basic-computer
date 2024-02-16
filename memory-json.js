@@ -149,9 +149,10 @@ function fetchMemory2Cmd() {
     for (let i = 0; i < 4096; i++) {
         hexAddress = dec2hex(i).slice(1,);
         nextHexAddress = dec2hex(i + 1).slice(1,);
-        isCurrentRowEmpty = memoryJson[hexAddress][0] != "" || memoryJson[hexAddress][1] != "" || memoryJson[hexAddress][2] != "";
-        isNextRowEmpty = i == 4095 ? false : memoryJson[nextHexAddress][0] != "" || memoryJson[nextHexAddress][1] != "" || memoryJson[nextHexAddress][2] != "";
-        if (isCurrentRowEmpty || isNextRowEmpty && hexAddress > $("#org-value")[0].value) { 
+        //isCurrentRowEmpty = memoryJson[hexAddress][0] != "" || memoryJson[hexAddress][1] != "" || memoryJson[hexAddress][2] != "";
+        //isNextRowEmpty = i == 4095 ? false : memoryJson[nextHexAddress][0] != "" || memoryJson[nextHexAddress][1] != "" || memoryJson[nextHexAddress][2] != "";
+        //if (isCurrentRowEmpty || isNextRowEmpty && hexAddress > $("#org-value")[0].value) { 
+        if (i < rowCtr && i > hex2dec($("#org-value")[0].value)) {
             addCmdRowFromMemory(hexAddress);
         }
     }
@@ -201,14 +202,14 @@ function addCmdRowFromMemory(address) {
             `;
     rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
-    $(".rmRow").off();
-    $(".rmRow").bind("click", (evt) => {
-        $(".rmRow").off();
+    $(".rmRow").off("click");
+    $(".rmRow").on("click", (evt) => {
+        $(".rmRow").off("click");
         removeRow(evt);
     });
-    $(".addRow").off();
-    $(".addRow").bind("click", (evt) => {
-        $(".addRow").off();
+    $(".addRow").off("click");
+    $(".addRow").on("click", (evt) => {
+        $(".addRow").off("click");
         addMiddleRow(evt);
     });
 }

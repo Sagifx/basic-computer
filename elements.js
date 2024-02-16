@@ -122,7 +122,7 @@ function addCmdRow() {
         removeRow(evt);
     });
     $(".addRow").off();
-    $(".addRow").bind("click", (evt) => {
+    $(".addRow").on("click", (evt) => {
         $(".addRow").off();
         addMiddleRow(evt);
     });
