@@ -144,7 +144,7 @@ function fetchMemory2Cmd() {
     let isCurrentRowEmpty;
     let isNextRowEmpty;
     let nextHexAddress;
-    cmdContainer[0].innerHTML = ""; 
+    cmdContainer[0].innerHTML = "";
     cmdContainer[0].appendChild(title); //remove all the cmd rows and stay with the title only
     for (let i = 0; i < 4096; i++) {
         hexAddress = dec2hex(i).slice(1,);
@@ -153,16 +153,20 @@ function fetchMemory2Cmd() {
         //isNextRowEmpty = i == 4095 ? false : memoryJson[nextHexAddress][0] != "" || memoryJson[nextHexAddress][1] != "" || memoryJson[nextHexAddress][2] != "";
         //if (isCurrentRowEmpty || isNextRowEmpty && hexAddress > $("#org-value")[0].value) { 
         if (i < rowCtr && i > hex2dec($("#org-value")[0].value)) {
-            addCmdRowFromMemory(hexAddress);
+            isCurrentRowEmpty = memoryJson[hexAddress][0] != "" || memoryJson[hexAddress][1] != "" || memoryJson[hexAddress][2] != "";
+            isNextRowEmpty = i == 4095 ? false : memoryJson[nextHexAddress][0] != "" || memoryJson[nextHexAddress][1] != "" || memoryJson[nextHexAddress][2] != "";
+            if (isCurrentRowEmpty || isNextRowEmpty) {
+                addCmdRowFromMemory(hexAddress);
+            }
         }
+        if ($(`#show-machine-lang`)[0].innerHTML.includes("Hide"))
+            showMachineLangToggle();
+        convertToMachineLang();
     }
-    if ($(`#show-machine-lang`)[0].innerHTML.includes("Hide"))
-        showMachineLangToggle();
-    convertToMachineLang();
 }
 
 /**
- * by click on the forward arrow the function will add row in the middle of the program
+ * by click on the forward arrow the function will add ro in the middle fo the flow
  */
 function addMiddleRow(evt) {
     let address;
@@ -193,13 +197,13 @@ function addCmdRowFromMemory(address) {
     newRow.setAttribute("class", "general-row cmd-row");
     // convert the rowCtr to string by argument base
     newRow.innerHTML = `
-            <div class="address count-address">${address.toString(16).toUpperCase()}</div>
-            <div class="label">${FORWARD_ARROW}<input class="label-cmd-input label-to-collect" maxlength="4" value="${memoryJson[address][0]}"></div>
-            <div class="instruction"><input class="instruction-cmd-input" maxlength="3" value="${memoryJson[address][1]}"></div>
-            <div class="value"><input class="value-input" maxlength="4" value="${memoryJson[address][2]}"></div>
-            ${TRASH}
-            <div class="machine-lang"></div>
-            `;
+        <div class="address count-address">${address.toString(16).toUpperCase()}</div>
+        <div class="label">${FORWARD_ARROW}<input class="label-cmd-input label-to-collect" maxlength="4" value="${memoryJson[address][0]}"></div>
+        <div class="instruction"><input class="instruction-cmd-input" maxlength="3" value="${memoryJson[address][1]}"></div>
+        <div class="value"><input class="value-input" maxlength="4" value="${memoryJson[address][2]}"></div>
+        ${TRASH}
+        <div class="machine-lang"></div>
+        `;
     rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
     $(".rmRow").off("click");
