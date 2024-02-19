@@ -120,7 +120,7 @@ function removeRow(evt) {
     memoryJson["FFF"][0] = ``;
     memoryJson["FFF"][1] = ``;
     memoryJson["FFF"][2] = ``;
-    fetchMemory2Cmd();
+    fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), 4095);
 }
 
 /**
@@ -137,32 +137,21 @@ function fetchCmd2Memory() {
  * delete the cmd rows
  * copy memory data to the cmd 
  */
-function fetchMemory2Cmd() {
+function fetchMemory2Cmd(firstFlag, lastFlag) {
     let cmdContainer = $("#cmd-container");
     let title = cmdContainer.children()[0];
     let hexAddress;
-    let isCurrentRowEmpty;
-    let isNextRowEmpty;
-    let nextHexAddress;
     cmdContainer[0].innerHTML = "";
     cmdContainer[0].appendChild(title); //remove all the cmd rows and stay with the title only
-    for (let i = 0; i < 4096; i++) {
+    for (let i = firstFlag; i <= lastFlag; i++) {
         hexAddress = dec2hex(i).slice(1,);
-        nextHexAddress = dec2hex(i + 1).slice(1,);
-        //isCurrentRowEmpty = memoryJson[hexAddress][0] != "" || memoryJson[hexAddress][1] != "" || memoryJson[hexAddress][2] != "";
-        //isNextRowEmpty = i == 4095 ? false : memoryJson[nextHexAddress][0] != "" || memoryJson[nextHexAddress][1] != "" || memoryJson[nextHexAddress][2] != "";
-        //if (isCurrentRowEmpty || isNextRowEmpty && hexAddress > $("#org-value")[0].value) { 
-        if (i < rowCtr && i > hex2dec($("#org-value")[0].value)) {
-            isCurrentRowEmpty = memoryJson[hexAddress][0] != "" || memoryJson[hexAddress][1] != "" || memoryJson[hexAddress][2] != "";
-            isNextRowEmpty = i == 4095 ? false : memoryJson[nextHexAddress][0] != "" || memoryJson[nextHexAddress][1] != "" || memoryJson[nextHexAddress][2] != "";
-            if (isCurrentRowEmpty || isNextRowEmpty) {
-                addCmdRowFromMemory(hexAddress);
-            }
-        }
-        if ($(`#show-machine-lang`)[0].innerHTML.includes("Hide"))
-            showMachineLangToggle();
-        convertToMachineLang();
+        // if (i < rowCtr && i >= Number(hex2dec($("#org-value")[0].value))) {
+            addCmdRowFromMemory(hexAddress);
+        // } else if (i > rowCtr) break;
     }
+    if ($(`#show-machine-lang`)[0].innerHTML.includes("Hide"))
+        showMachineLangToggle();
+    convertToMachineLang();
 }
 
 /**
@@ -170,21 +159,29 @@ function fetchMemory2Cmd() {
  */
 function addMiddleRow(evt) {
     let address;
+    let lastFlag = 0;
     if (evt.target.tagName == 'path')
         address = evt.target.parentElement.parentElement.parentElement.id.split("row")[1];
     else
         address = evt.target.parentElement.parentElement.id.split("row")[1];
     address = Number(hex2dec(address)) + 1; //one address after the clicked one
     for (let i = 4095; i > address; i--) {
-        memoryJson[dec2hex(i).slice(1,)][0] = memoryJson[dec2hex(i - 1).slice(1,)][0];
-        memoryJson[dec2hex(i).slice(1,)][1] = memoryJson[dec2hex(i - 1).slice(1,)][1];
-        memoryJson[dec2hex(i).slice(1,)][2] = memoryJson[dec2hex(i - 1).slice(1,)][2];
+        let nextRow = memoryJson[dec2hex(i).slice(1,)];
+        let currentRow = memoryJson[dec2hex(i - 1).slice(1,)];
+        nextRow[0] = currentRow[0];
+        nextRow[1] = currentRow[1];
+        nextRow[2] = currentRow[2];
+        if (currentRow[0] || currentRow[1] || currentRow[2]) {
+            if (lastFlag == 0)
+                lastFlag = i;
+        }
+
     }
     address = dec2hex(address).slice(1,);
     memoryJson[address][0] = "";
     memoryJson[address][1] = "";
     memoryJson[address][2] = "";
-    fetchMemory2Cmd();
+    fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
 }
 
 /**
