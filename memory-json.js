@@ -65,7 +65,7 @@ function showMemory() {
     let rows = Array.from($(".memory-row"));
     rows.forEach(row => {
         row.innerHTML = "";
-    })
+    });
     let btn = $("#show-memory-btn")[0];
     if (btn.innerHTML == "Show Memory") {
         for (let i = 0; i < 4096; i++) {
@@ -145,9 +145,7 @@ function fetchMemory2Cmd(firstFlag, lastFlag) {
     cmdContainer[0].appendChild(title); //remove all the cmd rows and stay with the title only
     for (let i = firstFlag; i <= lastFlag; i++) {
         hexAddress = dec2hex(i).slice(1,);
-        // if (i < rowCtr && i >= Number(hex2dec($("#org-value")[0].value))) {
-            addCmdRowFromMemory(hexAddress);
-        // } else if (i > rowCtr) break;
+        addCmdRowFromMemory(hexAddress);
     }
     if ($(`#show-machine-lang`)[0].innerHTML.includes("Hide"))
         showMachineLangToggle();
@@ -168,12 +166,10 @@ function addMiddleRow(evt) {
     for (let i = 4095; i > address; i--) {
         let nextRow = memoryJson[dec2hex(i).slice(1,)];
         let currentRow = memoryJson[dec2hex(i - 1).slice(1,)];
-        nextRow[0] = currentRow[0];
-        nextRow[1] = currentRow[1];
-        nextRow[2] = currentRow[2];
-        if (currentRow[0] || currentRow[1] || currentRow[2]) {
+        nextRow = currentRow;
+        if (currentRow[0] != "" || currentRow[1] != "" || currentRow[2] != "") {
             if (lastFlag == 0)
-                lastFlag = i;
+                lastFlag = i + 1;
         }
 
     }
