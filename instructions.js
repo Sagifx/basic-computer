@@ -140,9 +140,9 @@ function STA(address) {
     let base = $(`#row${address}`)[0].getElementsByClassName("instruction-cmd-input")[0].value;
     let val = acReg;
     if (base == "DEC")
-        val = dec2hex(acReg);
+        val = hex2dec(acReg);
     else if (base == "BIN")
-        val = bin2hex(acReg);
+        val = hex2bin(acReg);
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = val;
     //$(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
     storeDataInJson(address);

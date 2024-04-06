@@ -1,10 +1,10 @@
 /*example to Json pattern
 
-let text = '{"ck":["a"],"kc":["d"]}';
+    let text = '{"ck":["a"],"kc":["d"]}';
 
-const obj = JSON.parse(text);
+    const obj = JSON.parse(text);
 
-a = obj.kc[0]
+    a = obj.kc[0]   
  */
 
 
@@ -13,6 +13,10 @@ a = obj.kc[0]
 *  returns the label's address
 */
 function labelToAddress(lab, I) {
+    if (labelsJson[lab] == undefined) {
+        console(`Missing label ${label}`);
+        return;
+    }
     let address = labelsJson[lab][0];
     if (I) {
         address = bin2hex(getValueByAddress(address));
@@ -116,11 +120,13 @@ function removeRow(evt) {
     else
         address = evt.target.parentElement.id.split("row")[1];
     for (let i = Number(hex2dec(address)); i < 4096 - 1; i++) {
-        memoryJson[dec2hex(i).slice(1,)] = memoryJson[dec2hex(Number(i) + 1).slice(1, )];
-        if (memoryJson[dec2hex(i).slice(1,)][1] != "") {
+        let currentRow = memoryJson[dec2hex(Number(i) + 1).slice(1,)];
+        memoryJson[dec2hex(i).slice(1,)] = currentRow;
+        if (currentRow[1] != "") {
             lastFlag = i + 1;
         }
     }
+    if (lastFlag == 0) return; // mean that the deleted row hasnt contant in the next rows
     memoryJson["FFF"][0] = ``;
     memoryJson["FFF"][1] = ``;
     memoryJson["FFF"][2] = ``;
@@ -168,20 +174,26 @@ function addMiddleRow(evt) {
         address = evt.target.parentElement.parentElement.id.split("row")[1];
     address = Number(hex2dec(address)) + 1; //one address after the clicked one
     for (let i = 4095; i > address; i--) {
-        let nextRow = memoryJson[dec2hex(i).slice(1,)];
         let currentRow = memoryJson[dec2hex(i - 1).slice(1,)];
-        nextRow = currentRow;
+        //memoryJson[dec2hex(i).slice(1,)] = currentRow;
+        memoryJson[dec2hex(i).slice(1,)][0] = currentRow[0];
+        memoryJson[dec2hex(i).slice(1,)][1] = currentRow[1];
+        memoryJson[dec2hex(i).slice(1,)][2] = currentRow[2];
         // if (currentRow[0] != "" || currentRow[1] != "" || currentRow[2] != "") {
         if (currentRow[1] != "") {
             if (lastFlag == 0)
                 lastFlag = i + 1;
         }
     }
-    address = dec2hex(address).slice(1,);
-    memoryJson[address][0] = "";
-    memoryJson[address][1] = "";
-    memoryJson[address][2] = "";
-    fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
+    if (!lastFlag) {
+        addCmdRow();
+    } else {
+        address = dec2hex(address).slice(1,);
+        memoryJson[address][0] = "";
+        memoryJson[address][1] = "";
+        memoryJson[address][2] = "";
+        fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
+    }
 }
 
 /**

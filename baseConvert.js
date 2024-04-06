@@ -118,9 +118,11 @@ function convert() {
             break;
         case "dec2bin":
             val = val < 0 ? complement(val) : dec2bin(val);
+            val = Number(val).toString();
             break;
         case "hex2bin":
             val = hex2bin(val);
+            val = Number(val).toString();
             break;
         default:
             break;
