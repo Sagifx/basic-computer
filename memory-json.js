@@ -124,6 +124,7 @@ function removeRow(evt) {
         memoryJson[dec2hex(i).slice(1,)] = currentRow;
         if (currentRow[1] != "") {
             lastFlag = i + 1;
+            lastIndex = i;
         }
     }
     if (lastFlag == 0) return; // mean that the deleted row hasnt contant in the next rows
@@ -131,6 +132,7 @@ function removeRow(evt) {
     memoryJson["FFF"][1] = ``;
     memoryJson["FFF"][2] = ``;
     fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
+    rowCtr--;
 }
 
 /**
@@ -183,6 +185,7 @@ function addMiddleRow(evt) {
         if (currentRow[1] != "") {
             if (lastFlag == 0)
                 lastFlag = i + 1;
+            lastIndex = i;
         }
     }
     if (!lastFlag) {
@@ -193,6 +196,7 @@ function addMiddleRow(evt) {
         memoryJson[address][1] = "";
         memoryJson[address][2] = "";
         fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
+        rowCtr++;
     }
 }
 
@@ -213,7 +217,7 @@ function addCmdRowFromMemory(address) {
         ${TRASH}
         <div class="machine-lang"></div>
         `;
-    rowCtr++;
+    //rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
     $(".rmRow").off("click");
     $(".rmRow").on("click", (evt) => {
