@@ -157,7 +157,7 @@ async function exe() {
         $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4);
         $("#run-btn")[0].innerHTML = "Keep running";
         convertToMachineLang();
-        if (step && currentInstruction != "HLT") return;
+        if (step) return; //if (step && currentInstruction != "HLT") return;
     }
     $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
     $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent";

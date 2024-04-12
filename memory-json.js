@@ -133,6 +133,7 @@ function removeRow(evt) {
     memoryJson["FFF"][2] = ``;
     fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
     rowCtr--;
+    //restartAddAndRemoveListeners();
 }
 
 /**
@@ -197,6 +198,7 @@ function addMiddleRow(evt) {
         memoryJson[address][2] = "";
         fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
         rowCtr++;
+        //restartAddAndRemoveListeners();
     }
 }
 
@@ -227,6 +229,18 @@ function addCmdRowFromMemory(address) {
     $(".addRow").off("click");
     $(".addRow").on("click", (evt) => {
         $(".addRow").off("click");
+        addMiddleRow(evt);
+    });
+}
+function restartAddAndRemoveListeners() {
+    $(".rmRow").off();
+    $(".rmRow").on("click", (evt) => {
+        $(".rmRow").off();
+        removeRow(evt);
+    });
+    $(".addRow").off();
+    $(".addRow").on("click", (evt) => {
+        $(".addRow").off();
         addMiddleRow(evt);
     });
 }
