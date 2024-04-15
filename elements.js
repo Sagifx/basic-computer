@@ -276,7 +276,7 @@ function getValueByAddress(address) {
  */
 
 function listenToInputs(e) {
-    let elem = e.target; alert("1");
+    let elem = e.target; 
     if (elem.id == "org-value") return;
     elem.value = elem.value.toUpperCase();
     let val = elem.value; //inputs value
