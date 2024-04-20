@@ -1,0 +1,47 @@
+//test, initial program and values
+for (let i = 0; i < 26; i++) addCmdRow();
+setTimeout(() => {
+    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'NUM';
+    
+    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BSA';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'JMP';
+
+    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row103")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row104")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = '000';
+
+    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = 'JMP';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row106")[0].getElementsByClassName("value-input")[0].value = '000';
+
+    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row107")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'BUN';
+    $("#row108")[0].getElementsByClassName("value-input")[0].value = 'JMP I';
+
+    $("#row118")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row118")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
+    $("#row118")[0].getElementsByClassName("value-input")[0].value = '';
+
+    convertToMachineLang();
+    createMemoryJson();
+    fetchCmd2Memory();
+}, 100);

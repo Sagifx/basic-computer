@@ -124,7 +124,7 @@ function removeRow(evt) {
         memoryJson[dec2hex(i).slice(1,)] = currentRow;
         if (currentRow[1] != "") {
             lastFlag = i + 1;
-            lastIndex = i;
+            //lastIndex = i;
         }
     }
     if (lastFlag == 0) return; // mean that the deleted row hasnt contant in the next rows
@@ -186,7 +186,7 @@ function addMiddleRow(evt) {
         if (currentRow[1] != "") {
             if (lastFlag == 0)
                 lastFlag = i + 1;
-            lastIndex = i;
+            //lastIndex = i;
         }
     }
     if (!lastFlag) {

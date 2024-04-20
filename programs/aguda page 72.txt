@@ -102,5 +102,5 @@ setTimeout(() => {
 
     convertToMachineLang();
     createMemoryJson();
-    fetchMemory();
+    fetchCmd2Memory();
 }, 100);
