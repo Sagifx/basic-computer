@@ -136,7 +136,7 @@ function LDA(mar) {
 
 /* store accumulator in the memory
    get the address to store at */
-function STA(address) {
+function STAa(address) {
     let base = $(`#row${address}`)[0].getElementsByClassName("instruction-cmd-input")[0].value;
     let val = acReg;
     if (base == "DEC")
@@ -146,6 +146,16 @@ function STA(address) {
     $(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = val;
     //$(`#row${address}`)[0].getElementsByClassName("label-cmd-input")[0].value = "HEX";
     storeDataInJson(address);
+    pc++;
+}
+
+function STA(address) {
+    let val = acReg;
+    hardStoreDataInJson(address, val);
+    let firstFlag = hex2dec($("#org-value")[0].value);
+    let lastFlag = hex2dec(document.getElementById("cmd-container").lastChild.getElementsByClassName("count-address")[0].innerHTML); //get the address of the last row
+    fetchCmd2Memory();
+    fetchMemory2Cmd(firstFlag, lastFlag);
     pc++;
 }
 

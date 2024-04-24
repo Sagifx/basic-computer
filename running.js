@@ -182,6 +182,7 @@ function lookForHLTandEND() {
         }
         if (r.value == "END") {
             r.parentElement.parentElement.getElementsByClassName("address")[0].style.backgroundColor = "transparent";
+            endFlag = r.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
             findEND = true;
         }
     });

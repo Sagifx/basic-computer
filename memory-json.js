@@ -60,6 +60,11 @@ function storeDataInJson(address) {
     memoryJson[`${address}`][2] = r.getElementsByClassName("value-input")[0].value;
 }
 
+function hardStoreDataInJson(address, val) {
+    memoryJson[`${address}`][1] = "HEX";
+    memoryJson[`${address}`][2] = val;
+}
+
 /**
  * this function checks every row in the memory
  * and add memory with the row (if data exists for this address)
