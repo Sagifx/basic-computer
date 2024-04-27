@@ -4,7 +4,8 @@
  * @returns arg (bin) 16 bit
  */
 function padding(arg, paddingTo) {
-    while (arg.length < paddingTo) arg = "0" + arg;
+    if (arg)
+        while (arg.length < paddingTo) arg = "0" + arg;
     return arg;
 }
 
@@ -154,7 +155,8 @@ function STA(address) {
     hardStoreDataInJson(address, val);
     let firstFlag = hex2dec($("#org-value")[0].value);
     let lastFlag = hex2dec(document.getElementById("cmd-container").lastChild.getElementsByClassName("count-address")[0].innerHTML); //get the address of the last row
-    fetchCmd2Memory();
+    //$(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = val;
+    //fetchCmd2Memory();
     fetchMemory2Cmd(firstFlag, lastFlag);
     pc++;
 }
@@ -219,12 +221,12 @@ function SZE() {
 
 // if the interupt on the input accumulator get the input register value (8 bit)
 function INP() {
-    if ($("#interupt-enable")[0].innerHTML == "ON") {
+    //if ($("#interupt-enable")[0].innerHTML == "ON") {
         let val = document.getElementById("input-register").value;
         acReg = acReg.slice(0, 2) + val;
-    } else {
-        console("Interupt disable");
-    }
+    //} else {
+    //    console("Interupt disable");
+    //}
     pc++;
 }
 

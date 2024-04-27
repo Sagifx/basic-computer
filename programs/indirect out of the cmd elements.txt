@@ -1,0 +1,36 @@
+//test, initial program and values
+for (let i = 0; i < 15; i++) addCmdRow();
+setTimeout(() => {
+    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CLA';
+    $("#row100")[0].getElementsByClassName("value-input")[0].value = '';
+    
+    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row101")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row103")[0].getElementsByClassName("value-input")[0].value = 'MEM I';
+
+    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
+    $("#row104")[0].getElementsByClassName("value-input")[0].value = '';
+
+    $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = 'MEM';
+    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
+    $("#row105")[0].getElementsByClassName("value-input")[0].value = '110';
+
+    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = '';
+    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
+    $("#row106")[0].getElementsByClassName("value-input")[0].value = '';
+
+
+    convertToMachineLang();
+    createMemoryJson();
+    fetchCmd2Memory();
+}, 100);

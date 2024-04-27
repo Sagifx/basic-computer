@@ -45,7 +45,7 @@ setTimeout(() => {
     $("#row10A")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row10B")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CZE';
+    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SZE';
     $("#row10B")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = '';

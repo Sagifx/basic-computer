@@ -14,7 +14,7 @@
 */
 function labelToAddress(lab, I) {
     if (labelsJson[lab] == undefined) {
-        console(`Missing label ${label}`);
+        console(`Missing label ${lab}`);
         return;
     }
     let address = labelsJson[lab][0];
