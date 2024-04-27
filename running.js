@@ -46,7 +46,7 @@ async function exe() {
         val = val.split(" ")[0]; //value without the 'I'
         console("");
         switch (currentInstruction) {
-            // memory instruction
+            // memory instructions
             case "AND":
                 AND(getValueByAddress(labelToAddress(val, I)));   //arg- bin value at address (I)
                 break;
@@ -68,7 +68,7 @@ async function exe() {
             case "ISZ":
                 ISZ(labelToAddress(val, I)); //?
                 break;
-            // register instruction
+            // register instructions
             case "CLA":
                 CLA();  //ac
                 break;
@@ -110,7 +110,7 @@ async function exe() {
                 OUT();
                 break;
             case "SKI":
-                console("Waiting for input flag")
+                console("Waiting for input flag");
                 if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
                     $(`#row${dec2hex(Number(hex2dec(index)) + 1).slice(1,)}`)[0].getElementsByClassName("value-input")[0].value) &&
                     $(`#row${dec2hex(Number(hex2dec(index)) + 1).slice(1,)}`)[0].getElementsByClassName("instruction-cmd-input")[0].value == "BUN") {
@@ -119,7 +119,7 @@ async function exe() {
                 else SKI();
                 break;
             case "SKO":
-                console("Waiting for output flag")
+                console("Waiting for output flag");
                 if (!step && ($(`#row${index}`)[0].getElementsByClassName("label-cmd-input")[0].value ==
                     $(`#row${dec2hex(Number(hex2dec(index)) + 1).slice(1,)}`)[0].getElementsByClassName("value-input")[0].value) &&
                     $(`#row${dec2hex(Number(hex2dec(index)) + 1).slice(1,)}`)[0].getElementsByClassName("instruction-cmd-input")[0].value == "BUN") {

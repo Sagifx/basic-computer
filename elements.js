@@ -179,6 +179,10 @@ function collectLabels() {
     labelsJson = JSON.parse(labels);
 }
 
+function labelsValidation() {
+
+}
+
 /*check inputs
 * 1. check that the used label exist
 * 2. check that the instruction allowed
@@ -192,7 +196,7 @@ function checkInputs() {
         instruction = instruction.split(" ")[0];
         let val = r.getElementsByClassName("value-input")[0].value;
         if (instruction == ('ADD' || 'AND' || 'LDA' || 'STA' || 'BUN' || 'BSA' || 'ISZ')) {
-            if (typeof labelsJson[val][0] == null) {
+            if (typeof labelsJson[val][0] == null || typeof labelsJson.val == undefined) {
                 console(`The label ${val} isn't exist`);
                 return;
             }
