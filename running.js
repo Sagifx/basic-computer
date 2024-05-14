@@ -29,7 +29,8 @@ async function exe() {
             return;
         }
         lastIndex = "";
-        collectLabels(); // creat Json of labels (as key) and addresses (as values)
+        //collectLabels(); // creat Json of labels (as key) and addresses (as values)
+        checkInputs();
         fetchCmd2Memory(); // fetch the cmd data to the memoryJson
     }
     acReg = $("#ac-value")[0].value; //acReg value

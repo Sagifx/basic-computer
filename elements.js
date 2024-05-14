@@ -13,6 +13,10 @@ var haltIndex; // address of HLT instruction
 var endFlag; // the address of the the END "instruction"
 const TRASH = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled rmRow" width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><title>Remove row</title><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor" /><path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor" /></svg>`;
 const FORWARD_ARROW = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-forward addRow" width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><title>Add row below</title><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 11l4 4l-4 4m4 -4h-11a4 4 0 0 1 0 -8h1" /></svg>`;
+const instructionsWithLabel = ['ADD', 'AND', 'LDA' , 'STA', 'BUN', 'BSA', 'ISZ'];
+const instructionsWithoutLabel = ['STA', 'BUN', 'BSA', 'CLA', 'CLE', 'CMA',
+    'CME', 'CIR', 'CIL', 'INC', 'SPA', 'SNA', 'SZA', 'SZE', 'HLT',
+    'INP', 'OUT', 'SKI', 'SKO', 'ION', 'IOF', 'HEX', 'DEC'];
 
 // default values and listeners
 $("#org-value")[0].value = dec2hex(rowCtr).slice(1, 4);
@@ -195,15 +199,15 @@ function checkInputs() {
         //let I = instruction.split(" ")[1]; //indirect- true/false
         instruction = instruction.split(" ")[0];
         let val = r.getElementsByClassName("value-input")[0].value;
-        if (instruction == ('ADD' || 'AND' || 'LDA' || 'STA' || 'BUN' || 'BSA' || 'ISZ')) {
-            if (typeof labelsJson[val][0] == null || typeof labelsJson.val == undefined) {
+        // if the instruction use label check its exist
+        if (instructionsWithLabel.includes(instruction)) {
+            if (labelsJson[val] == undefined) {
                 console(`The label ${val} isn't exist`);
                 return;
             }
-        } else if (instruction != ('STA' || 'BUN' || 'BSA' || 'CLA' || 'CLE' || 'CMA' ||
-            'CME' || 'CIR' || 'CIL' || 'INC' || 'SPA' || 'SNA' || 'SZA' || 'SZE' || 'HLT' ||
-            'INP' || 'OUT' || 'SKI' || 'SKO' || 'ION' || 'IOF' || 'HEX' || 'DEC')) {
-            console(`${val} isn't allowed instruction`);
+            // if true the instruction isnt legal
+        } else if (!instructionsWithoutLabel.includes(instruction)) {
+            console(`"${instruction}" isn't legal instruction`);
             return;
         }
     });
@@ -215,6 +219,10 @@ function checkInputs() {
 *  return the binary value of this address
 */
 function getValueByAddress(address) {
+    if (!address) {
+        console("The label couldn't convert to address");
+        return;
+    }
     let row = $(`#row${address}`)[0];
     let base = row.getElementsByClassName("instruction-cmd-input")[0].value; //HEX || DEC
     let val = row.getElementsByClassName("value-input")[0].value; //original value
