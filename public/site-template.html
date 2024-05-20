@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAOolxmm5k8Ku3keOpY-SM1LKPGquXQFt0",
+    authDomain: "basic-computer-c5f9f.firebaseapp.com",
+    projectId: "basic-computer-c5f9f",
+    storageBucket: "basic-computer-c5f9f.appspot.com",
+    messagingSenderId: "549671873335",
+    appId: "1:549671873335:web:c945ede2958fb74d01c8b2",
+    measurementId: "G-0C9E3XGXBE"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+
+</head>
+<body>
+<div class="container">
+    <div id="left-col" class="column">
+        <div class="base-convert">
+            <div>Number to convert </div>
+            <input id="number-to-convert" maxlength="16">
+            <div>From </div>
+            <select id="base-option-from">
+                <option value="BIN">BIN</option>
+                <option value="DEC">DEC</option>
+                <option value="HEX">HEX</option>
+            </select>
+            <div>To </div>
+            <select id="base-option-to">
+                <option value="BIN">BIN</option>
+                <option value="DEC">DEC</option>
+                <option value="HEX">HEX</option>
+            </select>                                                                                                                                
+
+            <button onclick="convert()">Convert</button>
+        </div>
+        <div class="base-convert" style="padding-top: 60px; width: 100px">
+            <div>Converted Number </div>
+            <div id="number-after-convert" style="padding-left: 20px"></div>
+        </div>
+        <div style="padding-top: 100px">
+            <div>Converter Console</div>
+            <div id="converterConsole"></div>
+        </div>
+        <div id="memory-container" style="padding-top: 40px">
+            <button id="show-memory-btn" onclick="showMemory()">Show Memory</button>
+        </div>
+    </div>
+
+
+    <div id="mid-col" class="column">
+        <div class="grid-item">
+            <h1 class="main-title">Basic Computer Assembler</h1>
+            <div id="cmd-container" style="padding: 15px">
+                <div class="cmd-org-row">
+                    <div class="address">
+                        <div>Address</div>
+                        <div class="address first-row"></div>
+                    </div>
+                    <div class="label">
+                        <div>Label</div>
+                    </div>
+                    <div class="instruction">
+                        <div>Instruction</div>
+                        <div style="font-weight: normal">ORG</div>
+                    </div>
+                    <div class="value">
+                        <div>Value</div>
+                        <input id="org-value" class="value-input" maxlength="4">
+                    </div>
+                    <button onclick="addCmdRow()">add row</button>
+                </div>
+            </div>
+            <button id="run-btn" onclick="run()">Run the code</button>
+            <button onclick="runStep()">Step by step</button>
+            <button id="show-machine-lang" onclick="showMachineLangToggle()">Show machine language</button>
+
+        </div>
+    </div>
+
+
+    <div id="right-col" class="column">
+        <div>
+            <div>PC</div>
+            <div id="pc"></div>
+        </div>
+        <div>
+            <div>AC Value</div>
+            <input id="ac-value" class="monitor-inputs" maxlength="4">
+        </div>
+        <div>
+            <div>E (Carry flag)</div>
+            <input id="E-value" class="monitor-inputs" maxlength="1">
+        </div>
+        <div>
+            <div>Input register</div>
+            <input id="input-register" class="monitor-inputs" maxlength="2">
+            <div>input flag</div>
+            <label id="input-switch" class="switch">
+                <input id="input-checkbox" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div>
+            <div>Output register</div>
+            <div id="output-register" class="monitor-inputs" maxlength="2"></div>
+            <div>output flag</div>
+            <label id="output-switch" class="switch">
+                <input id="output-checkbox" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div>
+            <div>Interupt Enable</div>
+            <div id="interupt-enable">OFF</div>
+        </div>
+        <div style="padding-top: 100px">
+            <div>Console</div>
+            <div id="console"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/compailer/instructions.js"></script>
+<script src="/compailer/baseConvert.js"></script>
+<script src="/compailer/elements.js"></script>
+<script src="/compailer/running.js"></script>
+<script src="/compailer/memory-json.js"></script>
+<link rel="stylesheet" href="/compailer/site-stylesheet.css">
+
+</html>

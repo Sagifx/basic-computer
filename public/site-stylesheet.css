@@ -1,0 +1,149 @@
+
+/* general body */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+.container {
+    flex: 1;
+    display: flex;
+}
+.column {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+    padding-top: 60px;
+}
+/* Optional: Apply some styling to the columns */
+.column:nth-child(odd) {
+    background-color: #f0f0f0;
+}
+.column:nth-child(even) {
+    background-color: #e0e0e0;
+}
+.main-title {
+    font-size: 20px;
+}
+
+/* Memory style */
+.memory-address, .memory-label, .memory-instruction, .memory-value {
+    width: 80px;
+}
+
+/* CMD style */
+.general-row {
+    display: flex;
+    padding: 2px;
+}
+
+.cmd-org-row, .memory-title-row{
+    display: flex;
+    font-weight:bold;
+}
+
+.address-memory-input {
+    width: 70px;
+}
+.address {
+    width: 70px;
+    padding-right: 10px;
+}
+
+.instruction, .value {
+    width: 95px;
+}
+
+.label {
+    width: 115px;
+}
+
+.label-to-collect, .instruction-cmd-input, .value-input,
+    .instruction-memory-input {
+    width: 85px;
+}
+
+.icon, button, select {
+  cursor: pointer;
+}
+
+
+/* MONITOR */
+#right-col div {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+.monitor-inputs {
+    width: 60px;
+}
+
+/* CONVERTER */
+.base-convert {
+    display: flex;
+}
+
+/* Toggle switch CSS */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 20px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
