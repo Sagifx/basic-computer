@@ -19,13 +19,13 @@ const instructionsWithoutLabel = ['STA', 'BUN', 'BSA', 'CLA', 'CLE', 'CMA',
     'INP', 'OUT', 'SKI', 'SKO', 'ION', 'IOF', 'HEX', 'DEC'];
 
 // default values and listeners
-$("#org-value")[0].value = dec2hex(rowCtr).slice(1, 4);
-$("#pc")[0].innerHTML = $("#org-value")[0].value;
+$("#org-value")[0].innerHTML = dec2hex(rowCtr).slice(1, 4);
+$("#pc")[0].innerHTML = $("#org-value")[0].innerHTML;
 $("#ac-value")[0].value = "0000";
 $("#E-value")[0].value = "0";
 $("#output-register")[0].value = "00";
 $("#input-register")[0].value = "00";
-$("#org-value").keyup((e) => listenToOrg(e));
+//$("#org-value").keyup((e) => listenToOrg(e));
 $("input").change(listenToInputs);
 //$("input").change((e) => listenToInputs(e));
 
@@ -90,7 +90,7 @@ setTimeout(() => {
     
     $("#row10E")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row10E")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
-    $("#row10E")[0].getElementsByClassName("value-input")[0].value = 'SH';
+    $("#row10E")[0].getElementsByClassName("value-input")[0].value = '';
         
     $("#row115")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
     $("#row115")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';

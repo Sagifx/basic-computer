@@ -136,7 +136,7 @@ function removeRow(evt) {
     memoryJson["FFF"][0] = ``;
     memoryJson["FFF"][1] = ``;
     memoryJson["FFF"][2] = ``;
-    fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
+    fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].innerHTML)), lastFlag);
     rowCtr--;
     //restartAddAndRemoveListeners();
 }
@@ -201,7 +201,7 @@ function addMiddleRow(evt) {
         memoryJson[address][0] = "";
         memoryJson[address][1] = "";
         memoryJson[address][2] = "";
-        fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].value)), lastFlag);
+        fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].innerHTML)), lastFlag);
         rowCtr++;
         //restartAddAndRemoveListeners();
     }
@@ -237,6 +237,8 @@ function addCmdRowFromMemory(address) {
         addMiddleRow(evt);
     });
 }
+
+
 function restartAddAndRemoveListeners() {
     $(".rmRow").off();
     $(".rmRow").on("click", (evt) => {

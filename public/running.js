@@ -329,6 +329,7 @@ function convertToMachineLang() {
     });  
 }
 
+
  // toggle between show and hide machine lang by show/hide btn
 function showMachineLangToggle() {
     let btn = $(`#show-machine-lang`)[0];

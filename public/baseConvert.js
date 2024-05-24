@@ -89,7 +89,7 @@ function complement(arg) {
 
 
 /* use for the user converter 
-  take the convert that the user chose
+   take the convert that the user chose
    and return the number in new base 
  */
 function convert() {

@@ -16,7 +16,7 @@ function padding(arg, paddingTo) {
  */
 function deviation(arg) {
     //return ((arg.length == 17 && arg[0] == "1") ? true : false);
-    return arg.length == 17; //true or false
+    return arg.length > 16; //true or false
 }
 
 // increment accumulator
