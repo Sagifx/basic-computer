@@ -26,8 +26,8 @@ $("#E-value")[0].value = "0";
 $("#output-register")[0].value = "00";
 $("#input-register")[0].value = "00";
 //$("#org-value").keyup((e) => listenToOrg(e));
-$("input").change(listenToInputs);
-//$("input").change((e) => listenToInputs(e));
+$("input").change((e) => listenToInputs(e));
+// $("input").on("change",listenToInputs);
 
 
 for (let i = 0; i < 26; i++) addCmdRow();
@@ -263,11 +263,13 @@ function getValueByAddress(address) {
 3. dynamic change of the machine language
  */
 
-function listenToInputs(e) {
+function listenToInputs() {
     let elem = e.target; 
     if (elem.id == "org-value") return;
     elem.value = elem.value.toUpperCase();
     let val = elem.value; //inputs value
+    $("input").off("change");
+    $('input').on('input', listenToInputs);
     fetchCmd2Memory();
     try {
         let address = elem.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;

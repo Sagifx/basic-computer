@@ -147,7 +147,8 @@ async function exe() {
                 console("Missing row in the flow");
                 return;
         }
-        lastIndex ? $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent" : null;
+        if (lastIndex || hex2dec(lastIndex) > pc)
+            $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent";
         $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
         lastIndex = index;
         index = dec2hex(pc).slice(1, 4); //get the new index after pc was change 
@@ -163,8 +164,8 @@ async function exe() {
     $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
     $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent";
     currentInstruction == "HLT" ? console("The program finished by HLT") : null;
-    pc = hex2dec($("#org-value")[0].value);
-    lastIndex = "";
+    pc = hex2dec($("#org-value")[0].innerHTML);
+    lastIndex = index;
     $("#run-btn")[0].innerHTML = "Run the code";
 }
 
