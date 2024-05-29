@@ -26,8 +26,10 @@ $("#E-value")[0].value = "0";
 $("#output-register")[0].value = "00";
 $("#input-register")[0].value = "00";
 //$("#org-value").keyup((e) => listenToOrg(e));
-$("input").change((e) => listenToInputs(e));
-// $("input").on("change",listenToInputs);
+// $("input").change((e) => listenToInputs(e));
+$(document).ready(function() {
+    $("input").change((e) => listenToInputs(e));
+});
 
 
 for (let i = 0; i < 26; i++) addCmdRow();
@@ -263,7 +265,7 @@ function getValueByAddress(address) {
 3. dynamic change of the machine language
  */
 
-function listenToInputs() {
+function listenToInputs(e) {
     let elem = e.target; 
     if (elem.id == "org-value") return;
     elem.value = elem.value.toUpperCase();
@@ -271,6 +273,7 @@ function listenToInputs() {
     $("input").off("change");
     $('input').on('input', listenToInputs);
     fetchCmd2Memory();
+    convertToMachineLang();
     try {
         let address = elem.parentElement.parentElement.getElementsByClassName("count-address")[0].innerHTML;
         let instruction = $(`#row${address}`)[0].getElementsByClassName("count-address")[0].innerHTML;
@@ -279,7 +282,6 @@ function listenToInputs() {
             elem.value.length > 3 ? console(`The value at row ${address} is too long`) : null;
             elem.value = padding(val, 3);
         }
-        convertToMachineLang();
     }
     catch (error) {
         return;

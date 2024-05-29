@@ -4,7 +4,7 @@
  * @returns arg (bin) 16 bit
  */
 function padding(arg, paddingTo) {
-    if (arg)
+    if (arg || arg == "")
         while (arg.length < paddingTo) arg = "0" + arg;
     return arg;
 }

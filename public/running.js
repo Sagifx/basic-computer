@@ -238,8 +238,8 @@ function convertToMachineLang() {
             }
         }
         else {
-            val = val.split(" ")[0];
             I = val.split(" ")[1];
+            val = val.split(" ")[0];
             switch (currentInstruction) {
                 // memory
                 case "AND":
