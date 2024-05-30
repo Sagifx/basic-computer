@@ -139,12 +139,48 @@
 </body>
 
 <!-- local -->
-<script src="/public/instructions.js"></script>
+<script> var home = "";
+    if (window.origin.includes("5500"))
+        home += "/public";
+    var s = document.createElement('script');
+    s.setAttribute('src', home + "/instructions.js");
+    document.body.appendChild(s);
+    
+    var s = document.createElement('script');
+    s.setAttribute('src', home + "/instructions.js");
+    document.body.appendChild(s);
+
+    var s = document.createElement('script');
+    s.setAttribute('src', home + "/baseConvert.js");
+    document.body.appendChild(s);
+
+    var s = document.createElement('script');
+    s.setAttribute('src', home + "/elements.js");
+    document.body.appendChild(s);
+
+    var s = document.createElement('script');
+    s.setAttribute('src', home + "/running.js");
+    document.body.appendChild(s);
+
+    var s = document.createElement('script');
+    s.setAttribute('src', home + "/memory-json.js");
+    document.body.appendChild(s);
+
+    var s = document.createElement('link');
+    s.setAttribute('rel', "stylesheet");
+    s.setAttribute('href', home + "/site-stylesheet.css");
+    document.body.appendChild(s);
+
+
+</script> 
+
+
+<!-- <script src="/public/instructions.js"></script>
 <script src="/public/baseConvert.js"></script>
 <script src="/public/elements.js"></script>
 <script src="/public/running.js"></script>
 <script src="/public/memory-json.js"></script>
-<link rel="stylesheet" href="/public/site-stylesheet.css">
+<link rel="stylesheet" href="/public/site-stylesheet.css"> -->
 
 <!-- firebase -->
 <!-- <script src="/instructions.js"></script>
