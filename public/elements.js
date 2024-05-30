@@ -126,7 +126,7 @@ function listenToOrg(e) {
         console("ORG value get 3 hexadecimal chars");
         return;
     }
-    pc = hex2dec($("#org-value")[0].value); // sync pc to the org
+    pc = hex2dec($("#org-value")[0].innerHTML); // sync pc to the org
     let rows = Array.from($(".count-address"));
     let rowNumber = hex2dec(e.target.value);
     let newAddress;

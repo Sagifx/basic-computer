@@ -1,7 +1,7 @@
 /**
  * add zeros to complete accumulator to 16 bit
  * @param arg (bin)
- * @returns arg (bin) 16 bit
+ * @returns padding arg
  */
 function padding(arg, paddingTo) {
     if (arg || arg == "")
@@ -152,8 +152,9 @@ function STAa(address) {
 
 function STA(address) {
     let val = acReg;
+    address = padding(address, 3);
     hardStoreDataInJson(address, val);
-    let firstFlag = hex2dec($("#org-value")[0].value);
+    let firstFlag = hex2dec($("#org-value")[0].innerHTML);
     let lastFlag = hex2dec(document.getElementById("cmd-container").lastChild.getElementsByClassName("count-address")[0].innerHTML); //get the address of the last row
     //$(`#row${address}`)[0].getElementsByClassName("value-input")[0].value = val;
     //fetchCmd2Memory();

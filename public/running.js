@@ -23,7 +23,7 @@ async function run() {
  * and with switch case execute the instructions 
  */
 async function exe() {
-    if (pc == hex2dec($("#org-value")[0].value) && !lastIndex) { // if true its the first run
+    if (pc == hex2dec($("#org-value")[0].innerHTML) && !lastIndex) { // if true its the first run
         if (!lookForHLTandEND()) { // stop running if missing HLT ot END
             console("Missing HLT or END");
             return;
@@ -41,6 +41,7 @@ async function exe() {
     let index = dec2hex(pc).slice(1, 4);
     let rowElem = $(`#row${index}`)[0];
     let currentInstruction = rowElem.getElementsByClassName("instruction-cmd-input")[0].value;
+    currentInstruction = currentInstruction.toUpperCase();
     while (currentInstruction != "HLT") {
         val = rowElem.getElementsByClassName("value-input")[0].value;
         I = val.split(" ")[1] == "I" ? true : false; //save true if indirect
@@ -217,6 +218,7 @@ function convertToMachineLang() {
     collectLabels();
     rows.forEach(r => {
         currentInstruction = r.getElementsByClassName("instruction-cmd-input")[0].value;
+        currentInstruction = currentInstruction.toUpperCase();
         val = r.getElementsByClassName("value-input")[0].value;
         if (currentInstruction === ("DEC" || "BIN" || "HEX")) {
             /**
