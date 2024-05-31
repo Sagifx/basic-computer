@@ -230,16 +230,7 @@ function addCmdRowFromMemory(address) {
         `;
     //rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
-    $(".rmRow").off("click");
-    $(".rmRow").on("click", (evt) => {
-        $(".rmRow").off("click");
-        removeRow(evt);
-    });
-    $(".addRow").off("click");
-    $(".addRow").on("click", (evt) => {
-        $(".addRow").off("click");
-        addMiddleRow(evt);
-    });
+    restartAddAndRemoveListeners();
 }
 
 

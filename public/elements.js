@@ -34,9 +34,10 @@ function initialValuesAndListeners(progNum) {
     $("#E-value")[0].value = "0";
     $("#output-register")[0].value = "00";
     $("#input-register")[0].value = "00";
-    $("input").change((e) => listenToInputs(e));
+    //$("input").change((e) => listenToInputs(e));
     initialProgram(progNum);
 }
+
 function initialProgram(progNum) {
     switch (progNum) {
         case "1":
@@ -61,6 +62,7 @@ function initialProgram(progNum) {
     convertToMachineLang();
     createMemoryJson();
     fetchCmd2Memory();
+    restartInputsListener()
     restartAddAndRemoveListeners();
     $("#row100")[0].getElementsByClassName("address")[0].setAttribute("style", "background-color:yellow")
 }
@@ -228,7 +230,12 @@ function listenToInputs(e) {
     catch (error) {
         return;
     }
- }
+}
+ 
+function restartInputsListener() {
+    $("input").off("chagne");
+    $("input").change((e) => listenToInputs(e));
+}
 
 
 
