@@ -11,6 +11,7 @@ var lastIndex; // hold the last address that execute
 var memoryJson; // json for all the memory
 var haltIndex; // address of HLT instruction
 var endFlag; // the address of the the END "instruction"
+const title = $("#cmd-container").children()[0];
 const TRASH = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x-filled rmRow" width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><title>Remove row</title><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007h16zm-9.489 5.14a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" stroke-width="0" fill="currentColor" /><path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005h4z" stroke-width="0" fill="currentColor" /></svg>`;
 const FORWARD_ARROW = `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-forward addRow" width="17" height="17" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><title>Add row below</title><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 11l4 4l-4 4m4 -4h-11a4 4 0 0 1 0 -8h1" /></svg>`;
 const instructionsWithLabel = ['ADD', 'AND', 'LDA' , 'STA', 'BUN', 'BSA', 'ISZ'];
@@ -19,7 +20,14 @@ const instructionsWithoutLabel = ['STA', 'BUN', 'BSA', 'CLA', 'CLE', 'CMA',
     'INP', 'OUT', 'SKI', 'SKO', 'ION', 'IOF', 'HEX', 'DEC'];
 
 // default values and listeners
-$(document).ready(function() {
+$(document).ready(initialValuesAndListeners("1"));
+
+function initialValuesAndListenersOverload() {
+    let progNum = $("#select-program")[0].value;
+    initialValuesAndListeners(progNum);
+}
+
+function initialValuesAndListeners(progNum) {
     $("#org-value")[0].innerHTML = "100"; //dec2hex(rowCtr).slice(1, 4);
     $("#pc")[0].innerHTML = $("#org-value")[0].innerHTML;
     $("#ac-value")[0].value = "0000";
@@ -27,92 +35,36 @@ $(document).ready(function() {
     $("#output-register")[0].value = "00";
     $("#input-register")[0].value = "00";
     $("input").change((e) => listenToInputs(e));
-    $("#row100")[0].getElementsByClassName("address")[0].setAttribute("style", "background-color:yellow")
-});
-
-
-for (let i = 0; i < 26; i++) addCmdRow();
-setTimeout(() => {
-    $("#row100")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row100")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
-    $("#row100")[0].getElementsByClassName("value-input")[0].value = 'NUM';
-    
-    $("#row101")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row101")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'AND';
-    $("#row101")[0].getElementsByClassName("value-input")[0].value = 'MSK';
-
-    $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row103")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SPA';
-    $("#row103")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row104")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row104")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row104")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row105")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row105")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row105")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row106")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row106")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SNA';
-    $("#row106")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row107")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SNA';
-    $("#row108")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row109")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row10A")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10A")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SZA';
-    $("#row10A")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row10B")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
-    $("#row10B")[0].getElementsByClassName("value-input")[0].value = 'ZER';
-
-    $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SZA';
-    $("#row10C")[0].getElementsByClassName("value-input")[0].value = '';
-
-    $("#row10D")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10D")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
-    $("#row10D")[0].getElementsByClassName("value-input")[0].value = '';
-    
-    $("#row10E")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10E")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HLT';
-    $("#row10E")[0].getElementsByClassName("value-input")[0].value = '';
-        
-    $("#row115")[0].getElementsByClassName("label-cmd-input")[0].value = 'NUM';
-    $("#row115")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row115")[0].getElementsByClassName("value-input")[0].value = 'F0F';
-    
-    $("#row116")[0].getElementsByClassName("label-cmd-input")[0].value = 'MSK';
-    $("#row116")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row116")[0].getElementsByClassName("value-input")[0].value = '00F';
-    
-    $("#row117")[0].getElementsByClassName("label-cmd-input")[0].value = 'ZER';
-    $("#row117")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row117")[0].getElementsByClassName("value-input")[0].value = '000';
-    
-    $("#row118")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row118")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
-    $("#row118")[0].getElementsByClassName("value-input")[0].value = '';
-
+    initialProgram(progNum);
+}
+function initialProgram(progNum) {
+    switch (progNum) {
+        case "1":
+            prog1();
+            break;
+        case "2":
+            prog2();
+            break;
+        case "3":
+            prog3();
+            break;
+        case "4":
+            prog4();
+            break;
+        case "5":
+            prog5();
+            break;
+        default:
+            prog1();
+            break;
+    }
     convertToMachineLang();
     createMemoryJson();
     fetchCmd2Memory();
-}, 100);
+    restartAddAndRemoveListeners();
+    $("#row100")[0].getElementsByClassName("address")[0].setAttribute("style", "background-color:yellow")
+}
+
 
 //test
 
@@ -159,16 +111,7 @@ function addCmdRow() {
             `;
     rowCtr++;
     $("#cmd-container")[0].appendChild(newRow);
-    $(".rmRow").off();
-    $(".rmRow").on("click", (evt) => {
-        $(".rmRow").off();
-        removeRow(evt);
-    });
-    $(".addRow").off();
-    $(".addRow").on("click", (evt) => {
-        $(".addRow").off();
-        addMiddleRow(evt);
-    });
+    restartAddAndRemoveListeners();
 }
 
 function getLastAddress() {

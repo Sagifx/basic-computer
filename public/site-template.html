@@ -84,7 +84,14 @@
                         <div>Value</div>
                         <div id="org-value" class="value-input" maxlength="4"></div>
                     </div>
-                    <button onclick="addCmdRow()">add row</button>
+                    <button onclick="initialValuesAndListenersOverload()">Select program</button>
+                    <select id="select-program">Change program
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+            </select>
                 </div>
             </div>
             <button id="run-btn" onclick="run()">Run the code</button>
@@ -156,7 +163,7 @@
     document.body.appendChild(s);
 
     var s = document.createElement('script');
-    s.setAttribute('src', home + "/elements.js");
+    s.setAttribute('src', home + "/programs.js");
     document.body.appendChild(s);
 
     var s = document.createElement('script');
@@ -170,6 +177,10 @@
     var s = document.createElement('link');
     s.setAttribute('rel', "stylesheet");
     s.setAttribute('href', home + "/site-stylesheet.css");
+    document.body.appendChild(s);
+
+    var s = document.createElement('script');
+    s.setAttribute('src', home + "/elements.js");
     document.body.appendChild(s);
 
 

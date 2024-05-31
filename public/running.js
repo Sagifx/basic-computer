@@ -211,7 +211,7 @@ function converterConsole(txt) {
 
 
 
-/* MACHINE LANGUAGE                                                      */
+/* MACHINE LANGUAGE */
  
 
 // convert the instructions and value to machine lang
@@ -365,5 +365,7 @@ function rmEmptyRows() {
         }
         i++;
     }
+    let rowsNum = Array.from($(".general-row")).length;
+    fetchMemory2Cmd(256, 256 + rowsNum - 1);
 }
 

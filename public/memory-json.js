@@ -162,7 +162,7 @@ function fetchCmd2Memory() {
  */
 function fetchMemory2Cmd(firstFlag, lastFlag) {
     let cmdContainer = $("#cmd-container");
-    let title = cmdContainer.children()[0];
+    //let title = cmdContainer.children()[0];
     let hexAddress;
     cmdContainer[0].innerHTML = "";
     cmdContainer[0].appendChild(title); //remove all the cmd rows and stay with the title only
@@ -173,6 +173,8 @@ function fetchMemory2Cmd(firstFlag, lastFlag) {
     if ($(`#show-machine-lang`)[0].innerHTML.includes("Hide"))
         showMachineLangToggle();
     convertToMachineLang();
+    // mark again the next to exe
+    $(`#row${dec2hex(pc).slice(1, 4)}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow"; 
 }
 
 /**
