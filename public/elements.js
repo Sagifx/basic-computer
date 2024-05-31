@@ -19,16 +19,15 @@ const instructionsWithoutLabel = ['STA', 'BUN', 'BSA', 'CLA', 'CLE', 'CMA',
     'INP', 'OUT', 'SKI', 'SKO', 'ION', 'IOF', 'HEX', 'DEC'];
 
 // default values and listeners
-$("#org-value")[0].innerHTML = dec2hex(rowCtr).slice(1, 4);
-$("#pc")[0].innerHTML = $("#org-value")[0].innerHTML;
-$("#ac-value")[0].value = "0000";
-$("#E-value")[0].value = "0";
-$("#output-register")[0].value = "00";
-$("#input-register")[0].value = "00";
-//$("#org-value").keyup((e) => listenToOrg(e));
-// $("input").change((e) => listenToInputs(e));
 $(document).ready(function() {
+    $("#org-value")[0].innerHTML = "100"; //dec2hex(rowCtr).slice(1, 4);
+    $("#pc")[0].innerHTML = $("#org-value")[0].innerHTML;
+    $("#ac-value")[0].value = "0000";
+    $("#E-value")[0].value = "0";
+    $("#output-register")[0].value = "00";
+    $("#input-register")[0].value = "00";
     $("input").change((e) => listenToInputs(e));
+    $("#row100")[0].getElementsByClassName("address")[0].setAttribute("style", "background-color:yellow")
 });
 
 

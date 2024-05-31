@@ -112,18 +112,18 @@ function addMemoryRow(address) {
 }
 
 /**
- * get event as argument
- * delete the event's row- copy the next row to the current one 
+ * get event or address as argument and get the address for both of cases
+ * delete the event's/addresses row- copy the next row to the current one 
  * and put empty bracats at the kast row
  * 
  */
 function removeRow(evt) {
     let address;
     let lastFlag = 0;
-    if (evt.target.tagName == 'path')
-        address = evt.target.parentElement.parentElement.id.split("row")[1];
+    if (typeof evt == "object") //if event
+        address = getAddressFromEvent(evt);
     else
-        address = evt.target.parentElement.id.split("row")[1];
+        address = evt;
     for (let i = Number(hex2dec(address)); i < 4096 - 1; i++) {
         let currentRow = memoryJson[dec2hex(Number(i) + 1).slice(1,)];
         memoryJson[dec2hex(i).slice(1,)] = currentRow;
@@ -139,6 +139,11 @@ function removeRow(evt) {
     fetchMemory2Cmd(Number(hex2dec($("#org-value")[0].innerHTML)), lastFlag);
     rowCtr--;
     //restartAddAndRemoveListeners();
+}
+function getAddressFromEvent(evt) {
+    let address;
+    address = evt.target.closest(".general-row").id.split("row")[1]
+    return address;
 }
 
 /**
@@ -176,10 +181,7 @@ function fetchMemory2Cmd(firstFlag, lastFlag) {
 function addMiddleRow(evt) {
     let address;
     let lastFlag = 0;
-    if (evt.target.tagName == 'path')
-        address = evt.target.parentElement.parentElement.parentElement.id.split("row")[1];
-    else
-        address = evt.target.parentElement.parentElement.id.split("row")[1];
+    address = getAddressFromEvent(evt);
     address = Number(hex2dec(address)) + 1; //one address after the clicked one
     for (let i = 4095; i > address; i--) {
         let currentRow = memoryJson[dec2hex(i - 1).slice(1,)];

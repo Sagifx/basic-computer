@@ -4,6 +4,7 @@
  */
 async function runStep() {
     step = true;
+    rmEmptyRows();
     await exe();
 }
 
@@ -13,6 +14,7 @@ async function runStep() {
  */
 async function run() {
     step = false;
+    rmEmptyRows();
     await exe();
 }
 
@@ -148,11 +150,12 @@ async function exe() {
                 console("Missing row in the flow");
                 return;
         }
+        //$(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
+        lastIndex = index;
+        index = dec2hex(pc).slice(1, 4); //get the new index after pc was change 
         if (lastIndex || hex2dec(lastIndex) > pc)
             $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent";
         $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
-        lastIndex = index;
-        index = dec2hex(pc).slice(1, 4); //get the new index after pc was change 
         rowElem = $(`#row${index}`)[0];
         currentInstruction = rowElem.getElementsByClassName("instruction-cmd-input")[0].value;
         $("#ac-value")[0].value = acReg;
@@ -162,11 +165,13 @@ async function exe() {
         convertToMachineLang();
         if (step) return; //if (step && currentInstruction != "HLT") return;
     }
-    $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
-    $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent";
     currentInstruction == "HLT" ? console("The program finished by HLT") : null;
     pc = hex2dec($("#org-value")[0].innerHTML);
     lastIndex = index;
+    index = dec2hex(pc).slice(1, 4);
+    $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4); // update PC value
+    $(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow"; // mark the first row
+    $(`#row${lastIndex}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "transparent"; // un-mark the HLT row
     $("#run-btn")[0].innerHTML = "Run the code";
 }
 
@@ -347,3 +352,18 @@ function showMachineLangToggle() {
     });
     btn.innerHTML = (btn.innerHTML.includes("Show") ? "Hide" : "Show") + " machine language";
 }
+
+function rmEmptyRows() {
+    let i = 256;
+    while (memoryJson[dec2hex(i).slice(1, 4)][1] != "HLT") {
+        // boolean hold true for emty row (three fields)
+        let emptyRow = memoryJson[dec2hex(i).slice(1, 4)][0] == "" &&
+            memoryJson[dec2hex(i).slice(1, 4)][1] == "" &&
+            memoryJson[dec2hex(i).slice(1, 4)][2] == "";
+        if (emptyRow) {
+            removeRow(dec2hex(i).slice(1, 4));
+        }
+        i++;
+    }
+}
+
