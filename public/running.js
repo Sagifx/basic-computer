@@ -150,7 +150,7 @@ async function exe() {
                 console("Missing row in the flow");
                 return;
         }
-        //$(`#row${index}`)[0].getElementsByClassName("address")[0].style.backgroundColor = "yellow";
+        
         lastIndex = index;
         index = dec2hex(pc).slice(1, 4); //get the new index after pc was change 
         if (lastIndex || hex2dec(lastIndex) > pc)
@@ -163,6 +163,7 @@ async function exe() {
         $("#pc")[0].innerHTML = dec2hex(pc).slice(1, 4);
         $("#run-btn")[0].innerHTML = "Keep running";
         convertToMachineLang();
+        restartInputsListener();
         if (step) return; //if (step && currentInstruction != "HLT") return;
     }
     currentInstruction == "HLT" ? console("The program finished by HLT") : null;
@@ -367,5 +368,17 @@ function rmEmptyRows() {
     }
     let rowsNum = Array.from($(".general-row")).length;
     fetchMemory2Cmd(256, 256 + rowsNum - 1);
+}
+
+ 
+function restartInputsListener() {
+    $("input").off("change");
+    $("input").change((e) => listenToInputs(e));
+}
+
+function validateValue(val) {
+    if (val.length > 4 && !val.includes(" "))
+        return "0000";
+    return val;
 }
 

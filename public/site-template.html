@@ -84,7 +84,7 @@
                         <div>Value</div>
                         <div id="org-value" class="value-input" maxlength="4"></div>
                     </div>
-                    <button onclick="initialValuesAndListenersOverload()">Select program</button>
+                    <button onclick="initialValuesAndListenersOverload()">Load program</button>
                     <select id="select-program">Change program
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -150,8 +150,11 @@
 // add scripts with the right root
     if (window.origin.includes("5500"))
         home += "/public";
+
+    
+
     var s = document.createElement('script');
-    s.setAttribute('src', home + "/instructions.js");
+    s.setAttribute('src', home + "/programs.js");
     document.body.appendChild(s);
     
     var s = document.createElement('script');
@@ -160,10 +163,6 @@
 
     var s = document.createElement('script');
     s.setAttribute('src', home + "/baseConvert.js");
-    document.body.appendChild(s);
-
-    var s = document.createElement('script');
-    s.setAttribute('src', home + "/programs.js");
     document.body.appendChild(s);
 
     var s = document.createElement('script');

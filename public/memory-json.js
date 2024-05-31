@@ -86,7 +86,7 @@ function showMemory() {
         btn.innerHTML = "Hide Memory";
         setTimeout(() => { // hide memory for any click if shown
             $("html").bind("click", showMemory);
-        }, 100);
+        }, 50);
     } else {
         btn.innerHTML = "Show Memory";
         $("html").unbind("click", showMemory);
@@ -245,4 +245,5 @@ function restartAddAndRemoveListeners() {
         $(".addRow").off();
         addMiddleRow(evt);
     });
+    restartInputsListener();
 }

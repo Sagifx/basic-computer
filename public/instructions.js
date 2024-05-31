@@ -187,36 +187,37 @@ function ISZ(address) {
     let val = row.getElementsByClassName("value-input")[0].value;
     let isHEX;
     isHEX = row.getElementsByClassName("instruction-cmd-input")[0].value == "HEX";
-    isHEX ? val = hex2dec(val) : null;
+    if (isHEX) val = hex2dec(val);
     val = Number(val) + 1;
+    if (val == 65536) val = 0;
     row.getElementsByClassName("value-input")[0].value = isHEX ? dec2hex(val) : val;
     storeDataInJson(address);
-    val == 0 ? pc++ : null;
+    if (val == 0) pc++;
     pc++;
 }
 
 // skip if accumulator positive (or zero)
 function SPA() {
     let binAC = hex2bin(acReg).split("");
-    binAC[0] == 0 ? pc++ : null;
+    if (binAC[0] == 0) pc++;
     pc++;
 }
 
 // skip if accumulator negetive
 function SNA() {
     let binAC = hex2bin(acReg).split("");
-    binAC[0] == 1 ? pc++ : null;
+    if (binAC[0] == 1) pc++;
     pc++;
 }
  // skip if accumulators value is 0
 function SZA() {
-    acReg == 0 ? pc++ : null;
+    if (acReg == 0) pc++;
     pc++;
 }
 
 // skip if the E flag is 0
 function SZE() {
-    eFlag == 0 ? pc++ : null;
+    if (eFlag == 0) pc++;
     pc++;
 }
 
