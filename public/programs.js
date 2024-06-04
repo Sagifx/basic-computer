@@ -192,7 +192,7 @@ function prog3() {
 
     $("#row10B")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'LDA';
-    $("#row10B")[0].getElementsByClassName("value-input")[0].value = 'ZER';
+    $("#row10B")[0].getElementsByClassName("value-input")[0].value = 'ZER I';
 
     $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SZA';
@@ -216,7 +216,7 @@ function prog3() {
 
     $("#row117")[0].getElementsByClassName("label-cmd-input")[0].value = 'ZER';
     $("#row117")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row117")[0].getElementsByClassName("value-input")[0].value = '000';
+    $("#row117")[0].getElementsByClassName("value-input")[0].value = '116';
 
     $("#row118")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row118")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
@@ -239,7 +239,7 @@ function prog4() {
     $("#row101")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row102")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row102")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CME';
     $("#row102")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row103")[0].getElementsByClassName("label-cmd-input")[0].value = '';
@@ -260,11 +260,11 @@ function prog4() {
 
     $("#row107")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row107")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row107")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row107")[0].getElementsByClassName("value-input")[0].value = '000';
 
     $("#row108")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row108")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row108")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row108")[0].getElementsByClassName("value-input")[0].value = '000';
 
     $("#row109")[0].getElementsByClassName("label-cmd-input")[0].value = 'NXT';
     $("#row109")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SZE';
@@ -275,11 +275,11 @@ function prog4() {
     $("#row10A")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row10B")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'SZE';
-    $("#row10B")[0].getElementsByClassName("value-input")[0].value = '';
+    $("#row10B")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'STA';
+    $("#row10B")[0].getElementsByClassName("value-input")[0].value = 'SV I';
 
     $("#row10C")[0].getElementsByClassName("label-cmd-input")[0].value = '';
-    $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'INC';
+    $("#row10C")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'CLA';
     $("#row10C")[0].getElementsByClassName("value-input")[0].value = '';
 
     $("#row10D")[0].getElementsByClassName("label-cmd-input")[0].value = '';
@@ -292,7 +292,7 @@ function prog4() {
 
     $("#row111")[0].getElementsByClassName("label-cmd-input")[0].value = 'ZER';
     $("#row111")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'HEX';
-    $("#row111")[0].getElementsByClassName("value-input")[0].value = '000';
+    $("#row111")[0].getElementsByClassName("value-input")[0].value = '105';
 
     $("#row115")[0].getElementsByClassName("label-cmd-input")[0].value = '';
     $("#row115")[0].getElementsByClassName("instruction-cmd-input")[0].value = 'END';
