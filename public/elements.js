@@ -20,7 +20,7 @@ const instructionsWithoutLabel = ['STA', 'BUN', 'BSA', 'CLA', 'CLE', 'CMA',
     'INP', 'OUT', 'SKI', 'SKO', 'ION', 'IOF', 'HEX', 'DEC'];
 
 // default values and listeners
-$(document).ready(initialValuesAndListeners("2"));
+$(document).ready(initialValuesAndListeners("1"));
 
 function initialValuesAndListenersOverload() {
     let progNum = $("#select-program")[0].value;
